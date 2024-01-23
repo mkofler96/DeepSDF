@@ -11,6 +11,7 @@ class Decoder(nn.Module):
         self,
         latent_size,
         dims,
+        geom_dimension,
         dropout=None,
         dropout_prob=0.0,
         norm_layers=(),
@@ -25,9 +26,10 @@ class Decoder(nn.Module):
         def make_sequence():
             return []
 
-        dims = [latent_size + 3] + dims + [1]
+        dims = [latent_size + geom_dimension] + dims + [1]
 
         self.num_layers = len(dims)
+        self.geom_dimension = geom_dimension
         self.norm_layers = norm_layers
         self.latent_in = latent_in
         self.latent_dropout = latent_dropout
@@ -43,7 +45,7 @@ class Decoder(nn.Module):
             else:
                 out_dim = dims[layer + 1]
                 if self.xyz_in_all and layer != self.num_layers - 2:
-                    out_dim -= 3
+                    out_dim -= geom_dimension
 
             if weight_norm and layer in self.norm_layers:
                 setattr(
@@ -70,12 +72,12 @@ class Decoder(nn.Module):
         self.dropout = dropout
         self.th = nn.Tanh()
 
-    # input: N x (L+3)
+    # input: N x (L+3), or N x (L+geom_dimension)
     def forward(self, input):
-        xyz = input[:, -3:]
+        xyz = input[:, -self.geom_dimension:]
 
-        if input.shape[1] > 3 and self.latent_dropout:
-            latent_vecs = input[:, :-3]
+        if input.shape[1] > self.geom_dimension and self.latent_dropout:
+            latent_vecs = input[:, :-self.geom_dimension]
             latent_vecs = F.dropout(latent_vecs, p=0.2, training=self.training)
             x = torch.cat([latent_vecs, xyz], 1)
         else:

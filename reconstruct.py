@@ -35,9 +35,15 @@ def reconstruct(
     adjust_lr_every = int(num_iterations / 2)
 
     if type(stat) == type(0.1):
-        latent = torch.ones(1, latent_size).normal_(mean=0, std=stat).cuda()
+        if torch.cuda.is_available():
+            latent = torch.ones(1, latent_size).normal_(mean=0, std=stat).cuda()
+        else:
+            latent = torch.ones(1, latent_size).normal_(mean=0, std=stat)
     else:
-        latent = torch.normal(stat[0].detach(), stat[1].detach()).cuda()
+        if torch.cuda.is_available():
+            latent = torch.normal(stat[0].detach(), stat[1].detach()).cuda()
+        else:
+            latent = torch.normal(stat[0].detach(), stat[1].detach())
 
     latent.requires_grad = True
 
@@ -49,21 +55,29 @@ def reconstruct(
     for e in range(num_iterations):
 
         decoder.eval()
-        sdf_data = deep_sdf.data.unpack_sdf_samples_from_ram(
-            test_sdf, num_samples
-        ).cuda()
-        xyz = sdf_data[:, 0:3]
-        sdf_gt = sdf_data[:, 3].unsqueeze(1)
+        if torch.cuda.is_available():
+            sdf_data = deep_sdf.data.unpack_sdf_samples_from_ram(
+                test_sdf, None
+            ).cuda()
+        else:
+            sdf_data = deep_sdf.data.unpack_sdf_samples_from_ram(
+                test_sdf, None
+            )
+        
+        xyz = sdf_data[:, 0:-1]
+        sdf_gt = sdf_data[:, geom_dimension].unsqueeze(1)
 
         sdf_gt = torch.clamp(sdf_gt, -clamp_dist, clamp_dist)
 
         adjust_learning_rate(lr, optimizer, e, decreased_by, adjust_lr_every)
 
         optimizer.zero_grad()
-
+        num_samples = xyz.shape[0]
         latent_inputs = latent.expand(num_samples, -1)
-
-        inputs = torch.cat([latent_inputs, xyz], 1).cuda()
+        if torch.cuda.is_available():
+            inputs = torch.cat([latent_inputs, xyz], 1).cuda()
+        else:
+            inputs = torch.cat([latent_inputs, xyz], 1)
 
         pred_sdf = decoder(inputs)
 
@@ -89,7 +103,7 @@ def reconstruct(
 
 
 if __name__ == "__main__":
-
+    logging.basicConfig(level=logging.DEBUG)
     arg_parser = argparse.ArgumentParser(
         description="Use a trained DeepSDF decoder to reconstruct a shape given SDF "
         + "samples."
@@ -143,7 +157,10 @@ if __name__ == "__main__":
     deep_sdf.configure_logging(args)
 
     def empirical_stat(latent_vecs, indices):
-        lat_mat = torch.zeros(0).cuda()
+        if torch.cuda.is_available():
+            lat_mat = torch.zeros(0).cuda()
+        else:
+            lat_mat = torch.zeros(0)
         for ind in indices:
             lat_mat = torch.cat([lat_mat, latent_vecs[ind]], 0)
         mean = torch.mean(lat_mat, 0)
@@ -176,8 +193,11 @@ if __name__ == "__main__":
 
     decoder.load_state_dict(saved_model_state["model_state_dict"])
 
-    decoder = decoder.module.cuda()
-
+    if torch.cuda.is_available():
+        decoder = decoder.module.cuda()
+    else:
+        decoder = decoder.module
+    geom_dimension = decoder.geom_dimension
     with open(args.split_filename, "r") as f:
         split = json.load(f)
 
@@ -189,7 +209,7 @@ if __name__ == "__main__":
 
     err_sum = 0.0
     repeat = 1
-    save_latvec_only = False
+    save_latvec_only = True
     rerun = 0
 
     reconstruction_dir = os.path.join(
@@ -226,15 +246,15 @@ if __name__ == "__main__":
 
             if rerun > 1:
                 mesh_filename = os.path.join(
-                    reconstruction_meshes_dir, npz[:-4] + "-" + str(k + rerun)
+                    reconstruction_meshes_dir, npz[:-(geom_dimension+1)] + "-" + str(k + rerun)
                 )
                 latent_filename = os.path.join(
-                    reconstruction_codes_dir, npz[:-4] + "-" + str(k + rerun) + ".pth"
+                    reconstruction_codes_dir, npz[:-(geom_dimension+1)] + "-" + str(k + rerun) + ".pth"
                 )
             else:
-                mesh_filename = os.path.join(reconstruction_meshes_dir, npz[:-4])
+                mesh_filename = os.path.join(reconstruction_meshes_dir, npz[:-(geom_dimension+1)])
                 latent_filename = os.path.join(
-                    reconstruction_codes_dir, npz[:-4] + ".pth"
+                    reconstruction_codes_dir, npz[:-(geom_dimension+1)] + ".pth"
                 )
 
             if (
@@ -257,7 +277,7 @@ if __name__ == "__main__":
                 data_sdf,
                 0.01,  # [emp_mean,emp_var],
                 0.1,
-                num_samples=8000,
+                num_samples=None,
                 lr=5e-3,
                 l2reg=True,
             )

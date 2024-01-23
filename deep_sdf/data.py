@@ -55,44 +55,64 @@ def find_mesh_in_directory(shape_dir):
         raise MultipleMeshFileError()
     return mesh_filenames[0]
 
-
-def remove_nans(tensor):
-    tensor_nan = torch.isnan(tensor[:, 3])
-    return tensor[~tensor_nan, :]
+# and also convert to single precision
+# usually one function should only contain one functionality, but here I think 
+# it makes sense, because the data is loaded at 3 different positions in the code
+def remove_nans(tensor, geom_dimension):
+    tensor_nan = torch.isnan(tensor[:, geom_dimension])
+    return tensor[~tensor_nan, :].float()
 
 
 def read_sdf_samples_into_ram(filename):
     npz = np.load(filename)
-    pos_tensor = torch.from_numpy(npz["pos"])
-    neg_tensor = torch.from_numpy(npz["neg"])
+    pos_tensor = torch.from_numpy(npz["pos.npy"]).float()
+    neg_tensor = torch.from_numpy(npz["neg.npy"]).float()
 
     return [pos_tensor, neg_tensor]
 
 
-def unpack_sdf_samples(filename, subsample=None):
+def unpack_sdf_samples(filename, geom_dimension, subsample=None):
     npz = np.load(filename)
+    
+    pos_tensor = remove_nans(torch.from_numpy(npz["pos.npy"]), geom_dimension)
+    neg_tensor = remove_nans(torch.from_numpy(npz["neg.npy"]), geom_dimension)
+
     if subsample is None:
-        return npz
-    pos_tensor = remove_nans(torch.from_numpy(npz["pos"]))
-    neg_tensor = remove_nans(torch.from_numpy(npz["neg"]))
+        return torch.cat([pos_tensor, neg_tensor], 0)
 
-    # split the sample into half
     half = int(subsample / 2)
+    pos_len = len(pos_tensor)
+    neg_len = len(neg_tensor)
+    if pos_len < half:
+        neg_len = 2*half - pos_len
+    elif neg_len < half:
+        pos_len = 2*half - neg_len
+    else:
+        pos_len = neg_len = half
 
-    random_pos = (torch.rand(half) * pos_tensor.shape[0]).long()
-    random_neg = (torch.rand(half) * neg_tensor.shape[0]).long()
+    use_randperm = True
+    if use_randperm:
+        random_pos = torch.randperm(len(pos_tensor))[:pos_len]
+        random_neg = torch.randperm(len(neg_tensor))[:neg_len]
+    else:
+        # split the sample into half
+        random_pos = (torch.rand(half) * pos_tensor.shape[0]).long()
+        random_neg = (torch.rand(half) * neg_tensor.shape[0]).long()
 
     sample_pos = torch.index_select(pos_tensor, 0, random_pos)
     sample_neg = torch.index_select(neg_tensor, 0, random_neg)
 
     samples = torch.cat([sample_pos, sample_neg], 0)
 
+    if len(samples) < 50:
+        print("less than half")
+
     return samples
 
 
 def unpack_sdf_samples_from_ram(data, subsample=None):
     if subsample is None:
-        return data
+        return torch.cat(data, 0)
     pos_tensor = data[0]
     neg_tensor = data[1]
 
@@ -112,6 +132,8 @@ def unpack_sdf_samples_from_ram(data, subsample=None):
         neg_start_ind = random.randint(0, neg_size - half)
         sample_neg = neg_tensor[neg_start_ind : (neg_start_ind + half)]
 
+
+
     samples = torch.cat([sample_pos, sample_neg], 0)
 
     return samples
@@ -123,12 +145,13 @@ class SDFSamples(torch.utils.data.Dataset):
         data_source,
         split,
         subsample,
+        geom_dimension,
         load_ram=False,
         print_filename=False,
         num_files=1000000,
     ):
         self.subsample = subsample
-
+        self.geom_dimension = geom_dimension
         self.data_source = data_source
         self.npyfiles = get_instance_filenames(data_source, split)
 
@@ -146,8 +169,8 @@ class SDFSamples(torch.utils.data.Dataset):
             for f in self.npyfiles:
                 filename = os.path.join(self.data_source, ws.sdf_samples_subdir, f)
                 npz = np.load(filename)
-                pos_tensor = remove_nans(torch.from_numpy(npz["pos"]))
-                neg_tensor = remove_nans(torch.from_numpy(npz["neg"]))
+                pos_tensor = remove_nans(torch.from_numpy(npz["pos.npy"]), self.geom_dimension)
+                neg_tensor = remove_nans(torch.from_numpy(npz["neg.npy"]), self.geom_dimension)
                 self.loaded_data.append(
                     [
                         pos_tensor[torch.randperm(pos_tensor.shape[0])],
@@ -168,4 +191,4 @@ class SDFSamples(torch.utils.data.Dataset):
                 idx,
             )
         else:
-            return unpack_sdf_samples(filename, self.subsample), idx
+            return unpack_sdf_samples(filename, self.geom_dimension, self.subsample), idx

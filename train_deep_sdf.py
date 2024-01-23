@@ -249,7 +249,7 @@ def append_parameter_magnitudes(param_mag_log, model):
 
 
 def main_function(experiment_directory, continue_from, batch_split):
-
+    logging.basicConfig(level=logging.INFO)
     logging.debug("running " + experiment_directory)
 
     specs = ws.load_experiment_specifications(experiment_directory)
@@ -305,7 +305,10 @@ def main_function(experiment_directory, continue_from, batch_split):
             param_group["lr"] = lr_schedules[i].get_learning_rate(epoch)
 
     def empirical_stat(latent_vecs, indices):
-        lat_mat = torch.zeros(0).cuda()
+        if torch.cuda.is_available():
+            lat_mat = torch.zeros(0).cuda()
+        else:
+            lat_mat = torch.zeros(0)
         for ind in indices:
             lat_mat = torch.cat([lat_mat, latent_vecs[ind]], 0)
         mean = torch.mean(lat_mat, 0)
@@ -326,8 +329,11 @@ def main_function(experiment_directory, continue_from, batch_split):
 
     code_bound = get_spec_with_default(specs, "CodeBound", None)
 
-    decoder = arch.Decoder(latent_size, **specs["NetworkSpecs"]).cuda()
-
+    if torch.cuda.is_available():
+        decoder = arch.Decoder(latent_size, **specs["NetworkSpecs"]).cuda()
+    else:
+        decoder = arch.Decoder(latent_size, **specs["NetworkSpecs"])
+    geom_dimension = decoder.geom_dimension
     logging.info("training with {} GPU(s)".format(torch.cuda.device_count()))
 
     # if torch.cuda.device_count() > 1:
@@ -340,7 +346,8 @@ def main_function(experiment_directory, continue_from, batch_split):
         train_split = json.load(f)
 
     sdf_dataset = deep_sdf.data.SDFSamples(
-        data_source, train_split, num_samp_per_scene, load_ram=False
+        data_source, train_split, num_samp_per_scene, load_ram=False, 
+        geom_dimension=geom_dimension
     )
 
     num_data_loader_threads = get_spec_with_default(specs, "DataLoaderThreads", 1)
@@ -460,16 +467,15 @@ def main_function(experiment_directory, continue_from, batch_split):
         adjust_learning_rate(lr_schedules, optimizer_all, epoch)
 
         for sdf_data, indices in sdf_loader:
-
             # Process the input data
-            sdf_data = sdf_data.reshape(-1, 4)
+            sdf_data = sdf_data.reshape(-1, geom_dimension+1)
 
             num_sdf_samples = sdf_data.shape[0]
 
             sdf_data.requires_grad = False
 
-            xyz = sdf_data[:, 0:3]
-            sdf_gt = sdf_data[:, 3].unsqueeze(1)
+            xyz = sdf_data[:, 0:geom_dimension]
+            sdf_gt = sdf_data[:, geom_dimension].unsqueeze(1)
 
             if enforce_minmax:
                 sdf_gt = torch.clamp(sdf_gt, minT, maxT)
@@ -497,16 +503,20 @@ def main_function(experiment_directory, continue_from, batch_split):
 
                 if enforce_minmax:
                     pred_sdf = torch.clamp(pred_sdf, minT, maxT)
-
-                chunk_loss = loss_l1(pred_sdf, sdf_gt[i].cuda()) / num_sdf_samples
+                if torch.cuda.is_available():
+                    chunk_loss = loss_l1(pred_sdf, sdf_gt[i].cuda()) / num_sdf_samples
+                else:
+                    chunk_loss = loss_l1(pred_sdf, sdf_gt[i]) / num_sdf_samples
 
                 if do_code_regularization:
                     l2_size_loss = torch.sum(torch.norm(batch_vecs, dim=1))
                     reg_loss = (
                         code_reg_lambda * min(1, epoch / 100) * l2_size_loss
                     ) / num_sdf_samples
-
-                    chunk_loss = chunk_loss + reg_loss.cuda()
+                    if torch.cuda.is_available():
+                        chunk_loss = chunk_loss + reg_loss.cuda()
+                    else:
+                         chunk_loss = chunk_loss + reg_loss
 
                 chunk_loss.backward()
 
@@ -552,6 +562,8 @@ def main_function(experiment_directory, continue_from, batch_split):
 
 if __name__ == "__main__":
 
+    main_function("./test_experiment", None, 1)
+    
     import argparse
 
     arg_parser = argparse.ArgumentParser(description="Train a DeepSDF autodecoder")

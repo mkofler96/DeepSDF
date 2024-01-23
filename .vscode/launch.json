@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "-e test_experiment -d data -s data/splits/wang_test_reduced.json -c 10"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "justMyCode": true
+        }
+    ]
+}
