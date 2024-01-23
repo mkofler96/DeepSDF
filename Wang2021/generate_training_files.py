@@ -41,6 +41,7 @@ def write_npz_file(image, index, path):
     dist_in2out, ind = kdt_in2out.knn_search(inside, 1)
     pos = np.hstack([outside, dist_out2in])
     neg = np.hstack([inside, -dist_in2out])
+    print(f"Writing {pathlib.Path(path+str(index))}")
     np.savez(pathlib.Path(path+str(index)), pos=pos, neg=neg)
 
 for i in range(data.shape[0]):
