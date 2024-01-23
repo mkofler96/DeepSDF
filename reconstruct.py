@@ -184,10 +184,15 @@ if __name__ == "__main__":
 
     decoder = torch.nn.DataParallel(decoder)
 
+    if torch.cuda.is_available():
+        map_location=torch.device('cuda')
+    else:
+        map_location=torch.device('cpu')
+
     saved_model_state = torch.load(
         os.path.join(
             args.experiment_directory, ws.model_params_subdir, args.checkpoint + ".pth"
-        )
+        ), map_location=map_location
     )
     saved_model_epoch = saved_model_state["epoch"]
 
