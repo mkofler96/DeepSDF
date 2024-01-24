@@ -249,7 +249,7 @@ def append_parameter_magnitudes(param_mag_log, model):
 
 
 def main_function(experiment_directory, continue_from, batch_split):
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%H:%M:%S')
     logging.debug("running " + experiment_directory)
 
     specs = ws.load_experiment_specifications(experiment_directory)
@@ -561,9 +561,6 @@ def main_function(experiment_directory, continue_from, batch_split):
 
 
 if __name__ == "__main__":
-
-    main_function("./test_experiment", None, 1)
-    
     import argparse
 
     arg_parser = argparse.ArgumentParser(description="Train a DeepSDF autodecoder")
