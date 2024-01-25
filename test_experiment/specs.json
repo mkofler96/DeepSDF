@@ -17,7 +17,7 @@
       "geom_dimension": 2
       },
     "CodeLength" : 16,
-    "NumEpochs" : 100,
+    "NumEpochs" : 10000,
     "SnapshotFrequency" : 5,
     "AdditionalSnapshots" : [ 100, 500 ],
     "LearningRateSchedule" : [
