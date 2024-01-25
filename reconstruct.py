@@ -235,6 +235,11 @@ if __name__ == "__main__":
     )
     if not os.path.isdir(reconstruction_codes_dir):
         os.makedirs(reconstruction_codes_dir)
+
+    input_argument_text_file = os.path.join(reconstruction_dir, "input_arguments.txt")
+    with open(input_argument_text_file, 'w') as file:
+        content = file.write(str(args))
+
     start_tot = time.time()  
     for ii, npz in enumerate(npz_filenames):
 
