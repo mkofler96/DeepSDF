@@ -12,6 +12,7 @@ import torch
 import deep_sdf
 import deep_sdf.workspace as ws
 
+import datetime
 
 def reconstruct(
     decoder,
@@ -103,7 +104,6 @@ def reconstruct(
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
     arg_parser = argparse.ArgumentParser(
         description="Use a trained DeepSDF decoder to reconstruct a shape given SDF "
         + "samples."
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     )
     if not os.path.isdir(reconstruction_codes_dir):
         os.makedirs(reconstruction_codes_dir)
-
+    start_tot = time.time()  
     for ii, npz in enumerate(npz_filenames):
 
         if "npz" not in npz:
@@ -268,13 +268,17 @@ if __name__ == "__main__":
                 and os.path.isfile(latent_filename)
             ):
                 continue
-
-            logging.info("reconstructing {}".format(npz))
+            tot_time = time.time() - start_tot
+            avg_time_per_reconstruction = tot_time/(ii+1)
+            estimated_remaining_time = avg_time_per_reconstruction*(len(npz_filenames)-(ii+1))
+            time_string = str(datetime.timedelta(seconds=round(estimated_remaining_time)))
+            logging.info("reconstructing {} ({}/{}) [{:.2f}%] in {} ({:.2f}s/file)".format(
+                npz, ii, len(npz_filenames), ii/len(npz_filenames)*100, time_string, avg_time_per_reconstruction))
 
             data_sdf[0] = data_sdf[0][torch.randperm(data_sdf[0].shape[0])]
             data_sdf[1] = data_sdf[1][torch.randperm(data_sdf[1].shape[0])]
 
-            start = time.time()
+            start = time.time()  
             err, latent = reconstruct(
                 decoder,
                 int(args.iterations),
@@ -286,7 +290,7 @@ if __name__ == "__main__":
                 lr=5e-3,
                 l2reg=True,
             )
-            logging.debug("reconstruct time: {}".format(time.time() - start))
+            logging.debug("reconstruct time: {}".format(tot_time))
             err_sum += err
             logging.debug("current_error avg: {}".format((err_sum / (ii + 1))))
             logging.debug(ii)
