@@ -3,11 +3,6 @@ import numpy as np
 import scipy
 import pathlib
 
-# get the data into NumPy format
-mat_data = scipy.io.loadmat('Geometries.mat')
-data = mat_data['Geometries'].T.reshape(-1,1, 50, 50)
-data = data.astype('float32')
-
 
 def pixel_to_xy(image, normalized=True):
     image_width = image.shape[1]
@@ -26,13 +21,11 @@ def pixel_to_xy(image, normalized=True):
             filled.append(image[:,y_pixel, x_pixel])
     return np.array(coords), np.array(filled).astype(bool)
 
-
-def write_npz_file(image, index, path):
-    coords, filled =  pixel_to_xy(image)
+def get_SDF(image, normalized=True):
+    coords, filled =  pixel_to_xy(image, normalized=normalized)
 
     inside = coords[np.where(filled), :][0]
     outside = coords[np.where(np.logical_not(filled)), :][0]
-
 
     kdt_out2in = napf.KDT(inside, metric=1)
     dist_out2in, ind = kdt_out2in.knn_search(outside, 1)
@@ -41,9 +34,22 @@ def write_npz_file(image, index, path):
     dist_in2out, ind = kdt_in2out.knn_search(inside, 1)
     pos = np.hstack([outside, dist_out2in])
     neg = np.hstack([inside, -dist_in2out])
+    both = np.vstack([pos,neg])
+    return {"pos": pos, "neg": neg, "both": both}
+
+def write_npz_file(image, index, path):
+    SDF = get_SDF(image)
+    pos = SDF["pos"]
+    neg = SDF["neg"]
     print(f"Writing {pathlib.Path(path+str(index))}")
     np.savez(pathlib.Path(path+str(index)), pos=pos, neg=neg)
 
-for i in range(data.shape[0]):
-    path = "../data/SdfSamples/Wang2021/class1/"
-    write_npz_file(data[i], i, path)
+if __name__ == "__main__":
+    # get the data into NumPy format
+    mat_data = scipy.io.loadmat('Geometries.mat')
+    data = mat_data['Geometries'].T.reshape(-1,1, 50, 50)
+    data = data.astype('float32')
+
+    for i in range(data.shape[0]):
+        path = "../data/SdfSamples/Wang2021/class1/"
+        write_npz_file(data[i], i, path)
