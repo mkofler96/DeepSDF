@@ -2,7 +2,7 @@ import napf
 import numpy as np
 import scipy
 import pathlib
-
+import os
 
 def pixel_to_xy(image, normalized=True):
     image_width = image.shape[1]
@@ -37,19 +37,24 @@ def get_SDF(image, normalized=True):
     both = np.vstack([pos,neg])
     return {"pos": pos, "neg": neg, "both": both}
 
-def write_npz_file(image, index, path):
+def write_npz_file(image, prop, index, path):
     SDF = get_SDF(image)
     pos = SDF["pos"]
     neg = SDF["neg"]
     print(f"Writing {pathlib.Path(path+str(index))}")
-    np.savez(pathlib.Path(path+str(index)), pos=pos, neg=neg)
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    np.savez(pathlib.Path(path+str(index)), pos=pos, neg=neg, prop=prop)
 
 if __name__ == "__main__":
     # get the data into NumPy format
-    mat_data = scipy.io.loadmat('Geometries.mat')
+    mat_data = scipy.io.loadmat('./Wang2021/Geometries.mat')
     data = mat_data['Geometries'].T.reshape(-1,1, 50, 50)
     data = data.astype('float32')
+    mat_prop = scipy.io.loadmat('./Wang2021/Properties.mat')
+    prop = mat_prop['Properties']
+    prop = prop.astype('float32')
 
     for i in range(data.shape[0]):
-        path = "../data/SdfSamples/Wang2021/class1/"
-        write_npz_file(data[i], i, path)
+        path = "../data/SdfSamples/Wang2021/incl_properties/"
+        write_npz_file(data[i], prop[i], i, path)
