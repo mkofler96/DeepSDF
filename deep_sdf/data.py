@@ -104,8 +104,8 @@ def unpack_sdf_samples(filename, geom_dimension, subsample=None):
 
     samples = torch.cat([sample_pos, sample_neg], 0)
 
-    if len(samples) < 50:
-        print("less than half")
+    # if len(samples) < 50:
+        # print("less than half")
 
     return samples
 

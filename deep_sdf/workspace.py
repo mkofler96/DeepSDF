@@ -5,6 +5,7 @@ import json
 import os
 import torch
 
+screenshots_subdir = "Screenshots"
 model_params_subdir = "ModelParameters"
 optimizer_params_subdir = "OptimizerParameters"
 latent_codes_subdir = "LatentCodes"
@@ -165,6 +166,14 @@ def get_model_params_dir(experiment_dir, create_if_nonexistent=False):
 
     return dir
 
+def get_screenshots_dir(experiment_dir, create_if_nonexistent=True):
+
+    dir = os.path.join(experiment_dir, screenshots_subdir)
+
+    if create_if_nonexistent and not os.path.isdir(dir):
+        os.makedirs(dir)
+
+    return dir
 
 def get_optimizer_params_dir(experiment_dir, create_if_nonexistent=False):
 
@@ -196,3 +205,36 @@ def get_normalization_params_filename(
         class_name,
         instance_name + ".npz",
     )
+
+
+def load_trained_model(experiment_directory: str, checkpoint: str):
+    specs_filename = os.path.join(experiment_directory, "specs.json")
+    specs = json.load(open(specs_filename))
+
+    # arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
+
+    # latent_size = specs["CodeLength"]
+
+    # decoder = arch.Decoder(latent_size, **specs["NetworkSpecs"])
+
+    # decoder = torch.nn.DataParallel(decoder)
+    # decoder.eval()
+
+    decoder, epoch = load_decoder(experiment_directory, specs, checkpoint)
+
+    if torch.cuda.is_available():
+        map_location=torch.device('cuda')
+    else:
+        map_location=torch.device('cpu')
+
+    saved_model_state = torch.load(
+        os.path.join(experiment_directory, model_params_subdir, checkpoint + ".pth"
+        ), map_location=map_location
+    )
+
+    decoder.load_state_dict(saved_model_state["model_state_dict"])
+
+    if torch.cuda.is_available():
+        return decoder.module.cuda()
+    else:
+        return decoder.module

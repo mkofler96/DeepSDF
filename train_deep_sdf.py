@@ -14,6 +14,10 @@ import time
 import deep_sdf
 import deep_sdf.workspace as ws
 
+from reconstruct import reconstruct
+import matplotlib.pyplot as plt
+import scipy
+import numpy as np
 
 class LearningRateSchedule:
     def get_learning_rate(self, epoch):
@@ -137,7 +141,105 @@ def save_latent_vectors(experiment_directory, filename, latent_vec, epoch):
         os.path.join(latent_codes_dir, filename),
     )
 
+def save_screenshots(experiment_directory, epoch, decoder, latent_size, reconstruction_split):
+    data_source = "./data"
+    npz_filenames = deep_sdf.data.get_instance_filenames(data_source, reconstruction_split)
+    decoder.eval()
 
+    err_sum = 0.0
+    repeat = 1
+    iterations = 100
+
+    reconstruction_dir = os.path.join(
+        args.experiment_directory, ws.reconstructions_subdir, str(epoch)
+    )
+
+    reconstruction_codes_dir = os.path.join(
+        reconstruction_dir, ws.reconstruction_codes_subdir
+    )
+
+    fig, axs = plt.subplots(2, len(npz_filenames))
+    geometrie_mat = "./Wang2021/Geometries.mat"
+    property_mat = "./Wang2021/Properties.mat"
+    mat_geom = scipy.io.loadmat(geometrie_mat)
+    mat_prop = scipy.io.loadmat(property_mat)
+    geoms = mat_geom["Geometries"]
+    prop = mat_prop["Properties"]
+      
+
+    for ii, npz in enumerate(npz_filenames):
+
+        if "npz" not in npz:
+            continue
+
+        full_filename = os.path.join(data_source, ws.sdf_samples_subdir, npz)
+
+        logging.debug("loading {}".format(npz))
+
+        data_sdf = deep_sdf.data.read_sdf_samples_into_ram(full_filename)
+
+        latent_filename = os.path.join(
+                    reconstruction_codes_dir, npz[:-(3)] + ".pth"
+                )
+
+        
+        data_sdf[0] = data_sdf[0][torch.randperm(data_sdf[0].shape[0])]
+        data_sdf[1] = data_sdf[1][torch.randperm(data_sdf[1].shape[0])]
+        err, latent = reconstruct(
+            decoder,
+            int(iterations),
+            latent_size,
+            data_sdf,
+            0.01,  # [emp_mean,emp_var],
+            0.1,
+            num_samples=None,
+            lr=5e-3,
+            l2reg=True,
+        )
+
+        if not os.path.exists(os.path.dirname(latent_filename)):
+            os.makedirs(os.path.dirname(latent_filename))
+
+        torch.save(latent.unsqueeze(0), latent_filename)
+
+        index = int(npz.split("/")[-1][:-(4)])
+        axs[0, ii].imshow(geoms[:,:,index].T, cmap='binary')
+        axs[0, ii].axis("off")
+        axs[0, ii].set_title(index)
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        x = torch.linspace(-1,1,100).to(device)
+        y = torch.linspace(-1,1,100).to(device)
+        xv, yv = torch.meshgrid(x,y,indexing="ij")
+        
+        num_samples = xv.shape[0]*xv.shape[1]
+        latent_inputs = latent.expand(num_samples, -1)
+        xf, yf = xv.reshape((-1,1)).type(torch.float32), yv.reshape((-1,1)).type(torch.float32)
+        inputs = torch.cat([latent_inputs.type(torch.float32), xf, yf], 1)
+        
+        # torch.tensor(inputs).to(device).type(torch.float32)
+        zp_rec = decoder(inputs)
+
+        # Reshaping Z back to its original shape
+        zp_rec = zp_rec.reshape(xv.shape)       
+
+
+        if zp_rec.min() < 0:
+            axs[1, ii].contourf(xv.detach().cpu(), 
+                                  yv.detach().cpu(), 
+                                  -zp_rec.detach().cpu(), 
+                                  levels=[0, -zp_rec.min().detach().cpu()], cmap="binary", vmin=-0.01, vmax=0.01)
+        else:
+            logging.warn(f"No zero contour found for training set {ii} in epoch {epoch}")
+        axs[1, ii].set_aspect(1)
+        axs[1, ii].axis("off")
+    screenshot_dir = ws.get_screenshots_dir(experiment_directory)
+    filename = os.path.join(screenshot_dir, f"{epoch}.png")
+    plt.savefig(filename, bbox_inches='tight')
+    plt.close()
+
+    decoder.train()
+                
 # TODO: duplicated in workspace
 def load_latent_vectors(experiment_directory, filename, lat_vecs):
 
@@ -256,8 +358,15 @@ def main_function(experiment_directory, continue_from, batch_split):
 
     logging.info("Experiment description: \n" + specs["Description"])
 
+
+    code_length = specs["CodeLength"]
     data_source = specs["DataSource"]
     train_split_file = specs["TrainSplit"]
+
+    reconstruction_split_file = specs["ReconstructionSplit"]
+    
+    with open(reconstruction_split_file, "r") as f:
+        reconstruction_split = json.load(f)
 
     arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
 
@@ -294,6 +403,7 @@ def main_function(experiment_directory, continue_from, batch_split):
         save_model(experiment_directory, str(epoch) + ".pth", decoder, epoch)
         save_optimizer(experiment_directory, str(epoch) + ".pth", optimizer_all, epoch)
         save_latent_vectors(experiment_directory, str(epoch) + ".pth", lat_vecs, epoch)
+        save_screenshots(experiment_directory, str(epoch), decoder, code_length, reconstruction_split)
 
     def signal_handler(sig, frame):
         logging.info("Stopping early...")
@@ -562,6 +672,7 @@ def main_function(experiment_directory, continue_from, batch_split):
 
 if __name__ == "__main__":
     import argparse
+
 
     arg_parser = argparse.ArgumentParser(description="Train a DeepSDF autodecoder")
     arg_parser.add_argument(

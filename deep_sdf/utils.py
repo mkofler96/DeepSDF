@@ -3,7 +3,7 @@
 
 import logging
 import torch
-
+import numpy as np
 
 def add_common_args(arg_parser):
     arg_parser.add_argument(
@@ -48,7 +48,7 @@ def configure_logging(args):
         logger.addHandler(file_logger_handler)
 
 
-def decode_sdf(decoder, latent_vector, queries):
+def decode_sdf(decoder, latent_vector, queries):    
     num_samples = queries.shape[0]
 
     if latent_vector is None:
@@ -60,3 +60,24 @@ def decode_sdf(decoder, latent_vector, queries):
     sdf = decoder(inputs)
 
     return sdf
+
+def get_MS(decoder, latent_vector):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    if isinstance(latent_vector, np.ndarray):
+        latent_vector = torch.from_numpy(latent_vector).float().to(device)
+    
+    x = torch.linspace(-1,1,100).to(device)
+    y = torch.linspace(-1,1,100).to(device)
+    xv, yv = torch.meshgrid(x,y)
+    
+    num_samples = xv.shape[0]*xv.shape[1]
+    latent_inputs = latent_vector.expand(num_samples, -1)
+    xf, yf = xv.reshape((-1,1)).float(), yv.reshape((-1,1)).float()
+    inputs = torch.cat([latent_inputs.float(), xf, yf], 1)
+    if torch.cuda.is_available():
+        inputs = inputs.cuda()
+    pred_sdf = decoder(inputs)
+    z = pred_sdf.cpu().detach().numpy()
+    x = xf.cpu().detach().numpy()
+    y = yf.cpu().detach().numpy()
+    return x, y, z

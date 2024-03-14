@@ -1,7 +1,8 @@
 *data/SdfSamples*
 *__pycache__*
 *debug_experiment*
-test_experiment/LatentCodes/*
-test_experiment/Reconstructions/*
-test_experiment/ModelParameters/*
-test_experiment/OptimizerParameters/*
+*LatentCodes*
+*Reconstructions*
+*ModelParameters*
+*OptimizerParameters*
+*Screenshots*

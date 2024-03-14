@@ -64,7 +64,7 @@ def reconstruct(
             sdf_data = deep_sdf.data.unpack_sdf_samples_from_ram(
                 test_sdf, None
             )
-        
+        geom_dimension = 2
         xyz = sdf_data[:, 0:-1]
         sdf_gt = sdf_data[:, geom_dimension].unsqueeze(1)
 

@@ -7,7 +7,15 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "-e debug_experiment -d data -c 50"
+            "args": "-e debug_experiment"
+        },
+        {
+            "name": "Debug Reconstruction",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "python reconstruct.py -e test_experiment -d data -s data/splits/wang_test_reduced.json -c 45"
         },
         {
             "name": "Python: Current File",
