@@ -81,10 +81,10 @@ class SDFSampler:
                 vp_neg = neg.create_gus_plottable()
                 vp_pos.show_options["cmap"] = "coolwarm"
                 vp_neg.show_options["cmap"] = "coolwarm"
-                vp_pos.show_options["vmin"] = -1
-                vp_pos.show_options["vmax"] = 1
-                vp_neg.show_options["vmin"] = -1
-                vp_neg.show_options["vmax"] = 1
+                vp_pos.show_options["vmin"] = -0.1
+                vp_pos.show_options["vmax"] = 0.1
+                vp_neg.show_options["vmin"] = -0.1
+                vp_neg.show_options["vmax"] = 0.1
                 gus.show(vp_neg, vp_pos)
             np.savez(fname, neg=neg.stacked, pos=pos.stacked)
             tot_time = time.time() - start_tot
