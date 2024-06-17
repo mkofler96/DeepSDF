@@ -10,6 +10,7 @@ import logging
 import math
 import json
 import time
+import datetime
 
 import deep_sdf
 import deep_sdf.workspace as ws
@@ -364,9 +365,11 @@ def main_function(experiment_directory, continue_from, batch_split):
     train_split_file = specs["TrainSplit"]
 
     reconstruction_split_file = specs["ReconstructionSplit"]
-    
-    with open(reconstruction_split_file, "r") as f:
-        reconstruction_split = json.load(f)
+    if os.path.isfile(reconstruction_split_file):
+        with open(reconstruction_split_file, "r") as f:
+            reconstruction_split = json.load(f)
+    else:
+        reconstruction_split = None
 
     arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
 
@@ -403,7 +406,8 @@ def main_function(experiment_directory, continue_from, batch_split):
         save_model(experiment_directory, str(epoch) + ".pth", decoder, epoch)
         save_optimizer(experiment_directory, str(epoch) + ".pth", optimizer_all, epoch)
         save_latent_vectors(experiment_directory, str(epoch) + ".pth", lat_vecs, epoch)
-        save_screenshots(experiment_directory, str(epoch), decoder, code_length, reconstruction_split)
+        if reconstruction_split:
+            save_screenshots(experiment_directory, str(epoch), decoder, code_length, reconstruction_split)
 
     def signal_handler(sig, frame):
         logging.info("Stopping early...")
@@ -565,12 +569,11 @@ def main_function(experiment_directory, continue_from, batch_split):
             lat_vecs.embedding_dim,
         )
     )
-
+    start_train = time.time()
     for epoch in range(start_epoch, num_epochs + 1):
 
         start = time.time()
 
-        logging.info("epoch {}...".format(epoch))
 
         decoder.train()
 
@@ -643,7 +646,16 @@ def main_function(experiment_directory, continue_from, batch_split):
             optimizer_all.step()
 
         end = time.time()
-
+        # logging.info("epoch {}...".format(epoch))
+        tot_time = time.time() - start_train
+        avg_time_per_epoch = tot_time/(epoch)
+        estimated_remaining_time = avg_time_per_epoch*(num_epochs-(epoch))
+        time_string = str(datetime.timedelta(seconds=round(estimated_remaining_time)))
+        if epoch == num_epochs:
+            total_time = str(datetime.timedelta(seconds=round(tot_time)))
+            logging.info(f"Finished {epoch} ({epoch}/{num_epochs}) [{epoch/num_epochs*100:.2f}%] after {total_time}")
+        else:
+            logging.info(f"Finished {epoch} ({epoch}/{num_epochs}) [{epoch/num_epochs*100:.2f}%] in {time_string} ({avg_time_per_epoch:.2f}s/epoch)")
         seconds_elapsed = end - start
         timing_log.append(seconds_elapsed)
 
