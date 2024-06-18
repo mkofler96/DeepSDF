@@ -6,3 +6,5 @@
 *ModelParameters*
 *OptimizerParameters*
 *Screenshots*
+*.out
+*.ipynb_checkpoints

@@ -11,7 +11,7 @@ import datetime
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-experiment_directory = "./experiments/simple_geom"
+experiment_directory = "./experiments/corner_spheres_only"
 checkpoint = "1000"
 
 decoder = ws.load_trained_model(experiment_directory, checkpoint)
@@ -33,9 +33,9 @@ for i, latent_in in enumerate(latent):
         continue
     print(f"Reconstructing {fname} ({i}/{len(latent)})")
     
-    #deep_sdf.mesh.create_mesh(
-    #    decoder, latent_in, str(fname.with_suffix("")), N=256, max_batch=int(8**3)
-    #)
+    deep_sdf.mesh.create_mesh(
+       decoder, latent_in, str(fname.with_suffix("")), N=256, max_batch=int(8**3)
+    )
 
 
 indices = [10, 30]

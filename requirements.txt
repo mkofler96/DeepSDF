@@ -1,0 +1,7 @@
+plyfile
+scikit-image
+trimesh
+matplotlib
+gustaf
+splinepy
+vedo

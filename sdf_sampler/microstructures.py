@@ -21,11 +21,12 @@ class CrossMsSDF():
     
 
 class CornerSpheresSDF():
-    def __init__(self, radius):
+    def __init__(self, radius, limit=1):
         self.r = radius
+        self.limit = limit
         
     def SDF(self, xyz):
-        output = np.linalg.norm(xyz, axis=1, ord=np.inf) - 0.9
+        output = np.linalg.norm(xyz, axis=1, ord=np.inf) - self.limit
 
         #substract corners
         corners = np.array(np.meshgrid([-1, 1], [-1, 1], [-1, 1])).T.reshape(-1,3)

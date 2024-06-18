@@ -10,6 +10,7 @@ import torch
 
 import deep_sdf.utils
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def create_mesh(
     decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None
@@ -45,7 +46,7 @@ def create_mesh(
     head = 0
 
     while head < num_samples:
-        sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].cuda()
+        sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].to(device)
 
         samples[head : min(head + max_batch, num_samples), 3] = (
             deep_sdf.utils.decode_sdf(decoder, latent_vec, sample_subset)
