@@ -30,8 +30,8 @@ def create_mesh(
     # transform first 3 columns
     # to be the x, y, z index
     samples[:, 2] = overall_index % N
-    samples[:, 1] = (overall_index.long() / N) % N
-    samples[:, 0] = ((overall_index.long() / N) / N) % N
+    samples[:, 1] = (overall_index.long() // N) % N
+    samples[:, 0] = ((overall_index.long() // N) // N) % N
 
     # transform first 3 columns
     # to be the x, y, z coordinate
@@ -137,4 +137,79 @@ def convert_sdf_samples_to_ply(
         "converting to ply format and writing to file took {} s".format(
             time.time() - start_time
         )
+    )
+
+
+def create_mesh_microstructure(period, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False
+):
+    start = time.time()
+    ply_filename = filename
+
+    decoder.eval()
+
+    overall_index = torch.arange(0, N ** 3, 1, out=torch.LongTensor())
+    samples_orig = torch.zeros(N ** 3, 4)
+    samples = torch.zeros(N ** 3, 4)
+    # transform first 3 columns
+    # to be the x, y, z index
+    samples_orig[:, 2] = overall_index % N
+    samples_orig[:, 1] = (overall_index // N) % N
+    samples_orig[:, 0] = ((overall_index // N) // N) % N
+
+    # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
+    voxel_origin = [-1, -1, -1]
+    voxel_size = 2.0 / (N-1)
+
+    # transform first 3 columns
+    # to be the x, y, z coordinate
+    samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size) + voxel_origin[2]
+    samples_orig[:, 1] = (samples_orig[:, 1] * voxel_size) + voxel_origin[1]
+    samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size) + voxel_origin[0]
+
+    # samples = [-1, 1]
+    p = period
+    samples[:, 0] = -(4/p)*torch.abs((samples_orig[:, 0]) % (p) - p/2) + 1
+    samples[:, 1] = -(4/p)*torch.abs((samples_orig[:, 1]) % (p) - p/2) + 1
+    samples[:, 2] = -(4/p)*torch.abs((samples_orig[:, 2]) % (p) - p/2) + 1
+    num_samples = N ** 3
+
+    samples.requires_grad = False
+
+    head = 0
+    lat_vec_red = latent_vec_interpolation.evaluate(samples_orig[:, 0:3].numpy())
+    queries = torch.hstack([torch.tensor(lat_vec_red).to(torch.float32), samples[:, 0:3]])
+
+    while head < num_samples:
+        sample_subset = queries[head : min(head + max_batch, num_samples), :].to(device)
+
+        queries[head : min(head + max_batch, num_samples), -1] = (
+            deep_sdf.utils.decode_sdf(decoder, None, sample_subset)
+            .squeeze(1)
+            .detach()
+            .cpu()
+        )
+        head += max_batch
+    sample_time = time.time()
+    print("sampling takes: %f" % (sample_time - start))
+    sdf_values = samples[:, 3]
+    sdf_values = sdf_values.reshape(N, N, N)
+    sdf_values = queries[:, -1].data.cpu().numpy()
+    samples_orig = samples_orig.cpu().numpy()
+    if cap_borders:
+        for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
+            border_sdf = (samples_orig[:, dim] - measure*0.9)*-measure
+            sdf_values = np.maximum(sdf_values, -border_sdf)
+        end = time.time()
+        print("Capping takes: %f" % (end - sample_time))
+    
+    sdf_values = sdf_values.reshape(N, N, N)
+    sdf_values = torch.tensor(sdf_values)
+
+    convert_sdf_samples_to_ply(
+        sdf_values,
+        voxel_origin,
+        voxel_size,
+        ply_filename + ".ply",
+        offset,
+        scale,
     )
