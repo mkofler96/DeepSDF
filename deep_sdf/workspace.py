@@ -43,8 +43,8 @@ def load_model_parameters(experiment_directory, checkpoint, decoder):
 
     if not os.path.isfile(filename):
         raise Exception('model state dict "{}" does not exist'.format(filename))
-
-    data = torch.load(filename)
+    map_location = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    data = torch.load(filename, map_location=map_location)
 
     decoder.load_state_dict(data["model_state_dict"])
 
@@ -58,8 +58,10 @@ def build_decoder(experiment_directory, experiment_specs):
     )
 
     latent_size = experiment_specs["CodeLength"]
-
-    decoder = arch.Decoder(latent_size, **experiment_specs["NetworkSpecs"]).cuda()
+    if torch.cuda.is_available():
+        decoder = arch.Decoder(latent_size, **experiment_specs["NetworkSpecs"]).cuda()
+    else:
+        decoder = arch.Decoder(latent_size, **experiment_specs["NetworkSpecs"])
 
     return decoder
 
