@@ -8,6 +8,7 @@ import pathlib
 import time
 import datetime
 import splinepy as sp
+import gustaf as gus
 import numpy as np
 import skimage
 
@@ -45,6 +46,39 @@ microstructure.tiling = [2, 2, 2]
 ms = microstructure.create().patches
 # ms[0].evaluate()
 # ms[0].control_points[0] = [0.2,0.2,0.2]
-
-deep_sdf.mesh.create_mesh_microstructure(1, decoder, latent_vec_interpolation, "test_20_30_39_capped", cap_borders=True, N=256)
+tiling = [2, 2, 1]
+N = [64, 64, 32]
+verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "test_20_30_39_capped", cap_borders=True, N=N)
 # deep_sdf.mesh.create_mesh_microstructure(1, decoder, latent_vec_interpolation, "test_20_30_39")
+
+# Free Form Deformation
+# geometric parameters
+vert_deformation = 0.15
+width = 10
+length = 10
+scaling = 5
+depth = 0.2*scaling
+pts = []
+
+control_points=np.array([
+        [0, 0, 0],
+        [0, 1, 0],
+        [0.5, -vert_deformation, 0],
+        [0.5, (1-vert_deformation), 0],
+        [1, 0, 0],
+        [1, 1, 0]
+    ])
+
+deformation_surf = sp.BSpline(
+    degrees=[1,2],
+    control_points=control_points*scaling,
+    knot_vectors=[[0, 0, 1, 1],[0, 0, 0, 1, 1, 1]],
+)
+
+deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
+
+
+verts_FFD_transformed = deformation_volume.evaluate(verts)
+mesh = gus.faces.Faces(verts_FFD_transformed, faces)
+gus.io.meshio.export("my_mesh.inp", mesh)
+print(verts)

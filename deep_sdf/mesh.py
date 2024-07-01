@@ -142,7 +142,7 @@ def convert_sdf_samples_to_ply(
     )
 
 
-def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False, save_ply_file = False
 ):
     if isinstance(tiling, list):
         if len(tiling) != 3:
@@ -231,11 +231,25 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
 
     voxel_size = [voxel_size_x, voxel_size_y, voxel_size_z]
 
-    convert_sdf_samples_to_ply(
-        sdf_values,
-        voxel_origin,
-        voxel_size,
-        ply_filename + ".ply",
-        offset,
-        scale,
-    )
+    
+
+    if save_ply_file:
+        convert_sdf_samples_to_ply(
+            sdf_values,
+            voxel_origin,
+            voxel_size,
+            ply_filename + ".ply",
+            offset,
+            scale,
+        )
+    else:
+        if not isinstance(voxel_size, list):
+            voxel_size = [voxel_size]*3
+        verts, faces, normals, values = skimage.measure.marching_cubes(
+            sdf_values.numpy(), level=0.0, spacing=voxel_size
+        )
+        # sci-kit measure assumes origin at (0,0,0)
+        # input for SDF is -1 to 1
+        # scale factor 2 to get to 0 to 1
+        verts = verts/2
+        return verts, faces
