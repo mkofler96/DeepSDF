@@ -94,8 +94,10 @@ def convert_sdf_samples_to_ply(
 
     numpy_3d_sdf_tensor = pytorch_3d_sdf_tensor.numpy()
 
+    if not isinstance(voxel_size, list):
+        voxel_size = [voxel_size]*3
     verts, faces, normals, values = skimage.measure.marching_cubes(
-        numpy_3d_sdf_tensor, level=0.0, spacing=[voxel_size] * 3
+        numpy_3d_sdf_tensor, level=0.0, spacing=voxel_size
     )
 
     # transform from voxel coordinates to camera coordinates
@@ -140,38 +142,60 @@ def convert_sdf_samples_to_ply(
     )
 
 
-def create_mesh_microstructure(period, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False
 ):
+    if isinstance(tiling, list):
+        if len(tiling) != 3:
+            raise ValueError("Tiling must be a list of 3 integers")
+        tiling = np.array(tiling)
+    elif isinstance(tiling, int):
+        tiling = np.array([tiling, tiling, tiling])
+    else:
+        raise ValueError("Tiling must be a list or an integer")
+    
+    if isinstance(N, list):
+        if len(N) != 3:
+            raise ValueError("Tiling must be a list of 3 integers")
+        N = np.array(N)
+    elif isinstance(N, int):
+        N = np.array([N, N, N])
+    else:
+        raise ValueError("Tiling must be a list or an integer")
+
     start = time.time()
     ply_filename = filename
 
     decoder.eval()
-
-    overall_index = torch.arange(0, N ** 3, 1, out=torch.LongTensor())
-    samples_orig = torch.zeros(N ** 3, 4)
-    samples = torch.zeros(N ** 3, 4)
+    N_tot = N[0]*N[1]*N[2]
+    overall_index = torch.arange(0, N_tot, 1, out=torch.LongTensor())
+    samples_orig = torch.zeros(N_tot, 4)
+    samples = torch.zeros(N_tot, 4)
     # transform first 3 columns
     # to be the x, y, z index
-    samples_orig[:, 2] = overall_index % N
-    samples_orig[:, 1] = (overall_index // N) % N
-    samples_orig[:, 0] = ((overall_index // N) // N) % N
+    samples_orig[:, 2] = overall_index % N[2]
+    samples_orig[:, 1] = (overall_index // N[2]) % N[1]
+    samples_orig[:, 0] = ((overall_index // N[2]) // N[1]) % N[0]
 
     # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
     voxel_origin = [-1, -1, -1]
-    voxel_size = 2.0 / (N-1)
-
+    voxel_size_x = 2.0 / (N[0]-1)
+    voxel_size_y = 2.0 / (N[1]-1)
+    voxel_size_z = 2.0 / (N[2]-1)
     # transform first 3 columns
     # to be the x, y, z coordinate
-    samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size) + voxel_origin[2]
-    samples_orig[:, 1] = (samples_orig[:, 1] * voxel_size) + voxel_origin[1]
-    samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size) + voxel_origin[0]
+    samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size_x) + voxel_origin[0]
+    samples_orig[:, 1] = (samples_orig[:, 1] * voxel_size_y) + voxel_origin[1]
+    samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size_z) + voxel_origin[2]
 
     # samples = [-1, 1]
-    p = period*2
-    samples[:, 0] = -(4/p)*torch.abs((samples_orig[:, 0]) % (p) - p/2) + 1
-    samples[:, 1] = -(4/p)*torch.abs((samples_orig[:, 1]) % (p) - p/2) + 1
-    samples[:, 2] = -(4/p)*torch.abs((samples_orig[:, 2]) % (p) - p/2) + 1
-    num_samples = N ** 3
+    px, py, pz = tiling
+    px = 1/px
+    py = 1/py
+    pz = 1/pz
+    samples[:, 0] = -(2/px)*torch.abs((samples_orig[:, 0]) % (px*2) - px) + 1
+    samples[:, 1] = -(2/py)*torch.abs((samples_orig[:, 1]) % (py*2) - py) + 1
+    samples[:, 2] = -(2/pz)*torch.abs((samples_orig[:, 2]) % (pz*2) - pz) + 1
+    num_samples = N_tot
 
     samples.requires_grad = False
 
@@ -192,7 +216,7 @@ def create_mesh_microstructure(period, decoder, latent_vec_interpolation, filena
     sample_time = time.time()
     print("sampling takes: %f" % (sample_time - start))
     sdf_values = samples[:, 3]
-    sdf_values = sdf_values.reshape(N, N, N)
+    sdf_values = sdf_values.reshape(N[0], N[1], N[2])
     sdf_values = queries[:, -1].data.cpu().numpy()
     samples_orig = samples_orig.cpu().numpy()
     if cap_borders:
@@ -202,8 +226,10 @@ def create_mesh_microstructure(period, decoder, latent_vec_interpolation, filena
         end = time.time()
         print("Capping takes: %f" % (end - sample_time))
     
-    sdf_values = sdf_values.reshape(N, N, N)
+    sdf_values = sdf_values.reshape(N[0], N[1], N[2])
     sdf_values = torch.tensor(sdf_values)
+
+    voxel_size = [voxel_size_x, voxel_size_y, voxel_size_z]
 
     convert_sdf_samples_to_ply(
         sdf_values,
