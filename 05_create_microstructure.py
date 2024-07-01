@@ -46,8 +46,8 @@ microstructure.tiling = [2, 2, 2]
 ms = microstructure.create().patches
 # ms[0].evaluate()
 # ms[0].control_points[0] = [0.2,0.2,0.2]
-tiling = [2, 2, 1]
-N = [64, 64, 32]
+tiling = [4, 4, 1]
+N = [256, 256, 256]
 verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "test_20_30_39_capped", cap_borders=True, N=N)
 # deep_sdf.mesh.create_mesh_microstructure(1, decoder, latent_vec_interpolation, "test_20_30_39")
 

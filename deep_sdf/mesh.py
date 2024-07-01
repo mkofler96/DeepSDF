@@ -188,13 +188,17 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size_z) + voxel_origin[2]
 
     # samples = [-1, 1]
-    px, py, pz = tiling
-    px = 1/px
-    py = 1/py
-    pz = 1/pz
-    samples[:, 0] = -(2/px)*torch.abs((samples_orig[:, 0]) % (px*2) - px) + 1
-    samples[:, 1] = -(2/py)*torch.abs((samples_orig[:, 1]) % (py*2) - py) + 1
-    samples[:, 2] = -(2/pz)*torch.abs((samples_orig[:, 2]) % (pz*2) - pz) + 1
+    tx, ty, tz = tiling
+
+    def transform(x, t):
+        p = 2/t
+        return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+
+    samples[:, 0] = transform(samples_orig[:, 0], tx)
+    samples[:, 1] = transform(samples_orig[:, 1], ty)
+    samples[:, 2] = transform(samples_orig[:, 2], tz)
+
+     
     num_samples = N_tot
 
     samples.requires_grad = False
