@@ -167,7 +167,7 @@ def create_mesh_microstructure(period, decoder, latent_vec_interpolation, filena
     samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size) + voxel_origin[0]
 
     # samples = [-1, 1]
-    p = period
+    p = period*2
     samples[:, 0] = -(4/p)*torch.abs((samples_orig[:, 0]) % (p) - p/2) + 1
     samples[:, 1] = -(4/p)*torch.abs((samples_orig[:, 1]) % (p) - p/2) + 1
     samples[:, 2] = -(4/p)*torch.abs((samples_orig[:, 2]) % (p) - p/2) + 1
