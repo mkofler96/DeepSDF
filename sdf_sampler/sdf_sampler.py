@@ -10,6 +10,8 @@ import numpy.typing as npt
 import typing
 import gustaf as gus
 import skimage.measure as sc
+import igl
+import trimesh
 
 class DataSetInfo(typing.TypedDict):
     dataset_name: str
@@ -140,3 +142,46 @@ def random_sample_sdf(sdf, bounds, n_samples, type="uniform"):
         samples = np.random.uniform(bounds[0], bounds[1], (n_samples, 3))
     distances = sdf(samples)
     return RandomSampleSDF(samples=samples, distances=distances)
+
+class SDFfromMesh:
+    def __init__(self, mesh, dtype=np.float32, flip_sign=False):
+        """
+        Computes signed distance for 3D meshes.
+
+        Parameters
+        -----------
+        mesh: trimesh.Trimesh
+        queries: (n, 3) np.ndarray
+        dtype: type
+        (Optional) Default is "np.float32". Any numpy compatible dtypes.
+
+        Returns
+        --------
+        signed_distances: (n,) np.ndarray
+        """
+        self.mesh = mesh
+        self.dtype = dtype
+        self.flip_sign = flip_sign
+
+    def __call__(self, queries):
+        # Get squared distance
+        (
+            squared_distance,
+            hit_index,
+            hit_coordinates,
+        ) = igl.point_mesh_squared_distance(
+            np.array(queries),
+            self.mesh.vertices,
+            np.array(self.mesh.faces, np.int32),
+        )
+
+        distances = np.sqrt(squared_distance, dtype=self.dtype)
+
+        # Determine sign with unnecessarily long "one line"
+        distances[
+            trimesh.ray.ray_pyembree.RayMeshIntersector(
+                self.mesh, scale_to_box=False
+            ).contains_points(queries)
+        ] *= -1.00
+
+        return distances.reshape(-1,1)
