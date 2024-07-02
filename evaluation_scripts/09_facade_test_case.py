@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 import deep_sdf.mesh
 import deep_sdf.utils
 import os
@@ -11,7 +13,9 @@ import splinepy as sp
 import gustaf as gus
 import numpy as np
 import skimage
-import pygalmesh
+import meshio
+import tetgenpy
+import igl
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -94,17 +98,23 @@ mesh = gus.faces.Faces(verts_FFD_transformed, faces)
 fname_surf = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_surf.inp"
 gus.io.meshio.export(fname_surf, mesh)
 
-out_mesh = pygalmesh.generate_volume_mesh_from_surface_mesh(
-    fname_surf,
-    min_facet_angle=25.0,
-    max_radius_surface_delaunay_ball=0.15,
-    max_facet_distance=0.008,
-    max_circumradius_edge_ratio=3.0,
-    verbose=False,
-)
-fname_volume = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_volume.inp"
+r = igl.decimate(mesh.vertices, mesh.faces, int(1.5e5))
+dmesh = gus.Faces(r[1], r[2])
 
-out_mesh.cells.pop(0)
+t_in = tetgenpy.TetgenIO()
+t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
+t_out = tetgenpy.tetrahedralize("pqa", t_in)
+
+fname_volume = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_volume.inp"
+tets = np.vstack(t_out.tetrahedra())
+verts = t_out.points()
+
+cells = [
+    ("tetra", tets),
+]
+
+out_mesh = meshio.Mesh(verts, cells)
+
 
 node_sets = {
     "left": np.argwhere(out_mesh.points[:,0] < 0.5)[:,0],
