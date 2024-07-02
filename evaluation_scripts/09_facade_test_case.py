@@ -91,7 +91,7 @@ deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,dept
 
 verts_FFD_transformed = deformation_volume.evaluate(verts)
 mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-fname_surf = f"meshs/facade_snappy_{'_'.join([str(l) for l in N])}_surf.inp"
+fname_surf = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_surf.inp"
 gus.io.meshio.export(fname_surf, mesh)
 
 out_mesh = pygalmesh.generate_volume_mesh_from_surface_mesh(
@@ -102,7 +102,7 @@ out_mesh = pygalmesh.generate_volume_mesh_from_surface_mesh(
     max_circumradius_edge_ratio=3.0,
     verbose=False,
 )
-fname_volume = f"meshs/facade_snappy_{'_'.join([str(l) for l in N])}_volume.inp"
+fname_volume = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_volume.inp"
 
 out_mesh.cells.pop(0)
 
