@@ -46,40 +46,26 @@ microstructure.tiling = [2, 2, 2]
 ms = microstructure.create().patches
 # ms[0].evaluate()
 # ms[0].control_points[0] = [0.2,0.2,0.2]
-tiling = [6, 6, 1]
-N = [64, 64, 64]
+tiling = [4, 4, 8]
+N = [256, 256, 256]
 verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "test_20_30_39_capped", cap_borders=True, N=N)
 # deep_sdf.mesh.create_mesh_microstructure(1, decoder, latent_vec_interpolation, "test_20_30_39")
 
 # Free Form Deformation
 # geometric parameters
-vert_deformation = 0.15
 width = 10
-length = 10
-scaling = 5
-depth = 0.2*scaling
-pts = []
+length = 20
 
-control_points=np.array([
-        [0, 0, 0],
-        [0, 1, 0],
-        [0.5, -vert_deformation, 0],
-        [0.5, (1-vert_deformation), 0],
-        [1, 0, 0],
-        [1, 1, 0]
-    ])
+deformation_volume = sp.helpme.create.box(width, width, length).bspline
+deformation_volume.elevate_degrees([2,2])
 
-deformation_surf = sp.BSpline(
-    degrees=[1,2],
-    control_points=control_points*scaling,
-    knot_vectors=[[0, 0, 1, 1],[0, 0, 0, 1, 1, 1]],
-)
+deformation_volume.control_points[8,1] = 2
+deformation_volume.control_points[9,1] = 2
 
-deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
-
+deformation_volume.control_points[12,1] = 5
+deformation_volume.control_points[13,1] = 5
 
 verts_FFD_transformed = deformation_volume.evaluate(verts)
 mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-fname = "_".join([str(l) for l in N])
-gus.io.meshio.export(f"facade_{fname}.inp", mesh)
-print("done")
+gus.io.meshio.export("beam.inp", mesh)
+print(verts)
