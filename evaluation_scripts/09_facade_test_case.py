@@ -17,6 +17,9 @@ import meshio
 import tetgenpy
 import igl
 
+accuracy_deep_sdf_reconstruction = 32
+number_of_final_elements = 1e3
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 experiment_directory = "./experiments/snappy3D"
@@ -63,9 +66,17 @@ ms = microstructure.create().patches
 # ms[0].evaluate()
 # ms[0].control_points[0] = [0.2,0.2,0.2]
 tiling = [6, 6, 1]
-N_base = 32
+N_base = accuracy_deep_sdf_reconstruction
 N = [N_base * t for t in tiling]
-verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_borders=True, N=N)
+
+cap_border_dict = {
+    "x0": {"cap": 1, "measure": 0.1},
+    "x1": {"cap": 1, "measure": 0.1},
+    "y0": {"cap": 1, "measure": 0.1},
+    "y1": {"cap": 1, "measure": 0.1},
+}
+
+verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N)
 # Free Form Deformation
 # geometric parameters
 vert_deformation = 0.15
@@ -92,13 +103,16 @@ deformation_surf = sp.BSpline(
 
 deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
 
+# bring slightly outside vertices back 
+verts[verts>1] = 1
+verts[verts<0] = 0
 
 verts_FFD_transformed = deformation_volume.evaluate(verts)
 mesh = gus.faces.Faces(verts_FFD_transformed, faces)
 fname_surf = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_surf.inp"
 gus.io.meshio.export(fname_surf, mesh)
 
-r = igl.decimate(mesh.vertices, mesh.faces, int(1.5e5))
+r = igl.decimate(mesh.vertices, mesh.faces, int(3e5))
 dmesh = gus.Faces(r[1], r[2])
 
 t_in = tetgenpy.TetgenIO()
@@ -113,13 +127,20 @@ cells = [
     ("tetra", tets),
 ]
 
-out_mesh = meshio.Mesh(verts, cells)
+mesh = meshio.Mesh(verts, cells)
 
+faces = mesh.to_faces(False)
+boundary_faces = faces.single_faces()
 
-node_sets = {
-    "left": np.argwhere(out_mesh.points[:,0] < 0.5)[:,0],
-    "right": np.argwhere(out_mesh.points[:,0] > 4.5)[:,0],
-}
-out_mesh.point_sets = node_sets
-out_mesh.write(fname_volume)
-print("done")
+BC = {1: [], 2: [], 3: []} 
+for i in boundary_faces:
+    # mark boundaries at x = 0 with 1
+    if np.max(verts[faces.const_faces[i], 0]) < 0.5:
+        BC[1].append(i)
+    # mark boundaries at x = 1 with 2
+    elif np.min(verts[faces.const_faces[i], 0]) > 4.5:
+        BC[2].append(i)
+    # mark rest of the boundaries with 3
+    else:
+        BC[3].append(i)
+gus.io.mfem.export(fname_volume.replace(".inp", ".mesh"), mesh, BC)

@@ -8,6 +8,9 @@ import skimage.measure
 import time
 import torch
 
+from typing import TypedDict
+from enum import Enum
+
 import deep_sdf.utils
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -141,8 +144,27 @@ def convert_sdf_samples_to_ply(
         )
     )
 
+location_lookup = {
+    "x0": (0,1),
+    "x1": (0,-1),
+    "y0": (1,1),
+    "y1": (1,-1),
+    "z0": (2,1),
+    "z1": (2,-1),
+}
+class CapType(TypedDict):
+    cap: int
+    measure: float
 
-def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_borders=False, save_ply_file = False
+class CapBorderDict(TypedDict):
+    x0: CapType = {"cap": -1, "measure": 0}
+    x1: CapType = {"cap": -1, "measure": 0}
+    y0: CapType = {"cap": -1, "measure": 0}
+    y1: CapType = {"cap": -1, "measure": 0}
+    z0: CapType = {"cap": -1, "measure": 0}
+    z1: CapType = {"cap": -1, "measure": 0}
+
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False
 ):
     if isinstance(tiling, list):
         if len(tiling) != 3:
@@ -153,14 +175,15 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     else:
         raise ValueError("Tiling must be a list or an integer")
     
+    # add 1 on each side to slightly include the border
     if isinstance(N, list):
         if len(N) != 3:
-            raise ValueError("Tiling must be a list of 3 integers")
-        N = np.array(N)
+            raise ValueError("Number of grid points must be a list of 3 integers")
+        N = np.array(N) + 2
     elif isinstance(N, int):
-        N = np.array([N, N, N])
+        N = np.array([N, N, N]) + 2
     else:
-        raise ValueError("Tiling must be a list or an integer")
+        raise ValueError("Number of grid points must be a list or an integer")
 
     start = time.time()
     ply_filename = filename
@@ -177,10 +200,10 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     samples_orig[:, 0] = ((overall_index // N[2]) // N[1]) % N[0]
 
     # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
-    voxel_origin = [-1, -1, -1]
-    voxel_size_x = 2.0 / (N[0]-1)
-    voxel_size_y = 2.0 / (N[1]-1)
-    voxel_size_z = 2.0 / (N[2]-1)
+    voxel_size_x = 2.0 / (N[0]-1-2)
+    voxel_size_y = 2.0 / (N[1]-1-2)
+    voxel_size_z = 2.0 / (N[2]-1-2)
+    voxel_origin = [-1-voxel_size_x, -1-voxel_size_y, -1-voxel_size_z]
     # transform first 3 columns
     # to be the x, y, z coordinate
     samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size_x) + voxel_origin[0]
@@ -204,7 +227,9 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     samples.requires_grad = False
 
     head = 0
-    lat_vec_red = latent_vec_interpolation.evaluate(samples_orig[:, 0:3].numpy())
+    inside_domain = np.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
+    lat_vec_red = np.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]))
+    lat_vec_red[inside_domain] = latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].numpy())
     queries = torch.hstack([torch.tensor(lat_vec_red).to(torch.float32), samples[:, 0:3]])
 
     while head < num_samples:
@@ -223,13 +248,26 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     sdf_values = sdf_values.reshape(N[0], N[1], N[2])
     sdf_values = queries[:, -1].data.cpu().numpy()
     samples_orig = samples_orig.cpu().numpy()
-    if cap_borders:
-        for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
-            border_sdf = (samples_orig[:, dim] - measure*0.9)*-measure
+    for loc, cap_dict in cap_border_dict.items():
+        cap, measure = cap_dict["cap"], cap_dict["measure"]
+        dim, multiplier = location_lookup[loc]
+        border_sdf = (samples_orig[:, dim] - multiplier*(1-measure))*-multiplier
+        if cap == -1:
             sdf_values = np.maximum(sdf_values, -border_sdf)
+        elif cap == 1:
+            sdf_values = np.minimum(sdf_values, border_sdf)
+        else:
+            raise ValueError("Cap must be -1 or 1")
         end = time.time()
         print("Capping takes: %f" % (end - sample_time))
     
+    # cap everything outside the unit cube
+
+    for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
+        border_sdf = (samples_orig[:, dim] - measure)*-measure
+        sdf_values = np.maximum(sdf_values, -border_sdf)
+
+
     sdf_values = sdf_values.reshape(N[0], N[1], N[2])
     sdf_values = torch.tensor(sdf_values)
 
