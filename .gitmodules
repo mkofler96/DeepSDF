@@ -3,4 +3,4 @@
 	url = https://github.com/rogersce/cnpy.git
 [submodule "mfem"]
 	path = mfem
-	url = git@github.com:mfem/mfem.git
+	url = https://github.com/mfem/mfem.git
