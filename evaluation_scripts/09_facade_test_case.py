@@ -123,11 +123,7 @@ fname_volume = f"data/meshs/facade_snappy_{'_'.join([str(l) for l in N])}_volume
 tets = np.vstack(t_out.tetrahedra())
 verts = t_out.points()
 
-cells = [
-    ("tetra", tets),
-]
-
-mesh = meshio.Mesh(verts, cells)
+mesh = gus.Volumes(verts, tets)
 
 faces = mesh.to_faces(False)
 boundary_faces = faces.single_faces()
@@ -135,12 +131,13 @@ boundary_faces = faces.single_faces()
 BC = {1: [], 2: [], 3: []} 
 for i in boundary_faces:
     # mark boundaries at x = 0 with 1
-    if np.max(verts[faces.const_faces[i], 0]) < 0.5:
+    if np.max(verts[faces.const_faces[i], 0]) < 3e-2:
         BC[1].append(i)
     # mark boundaries at x = 1 with 2
-    elif np.min(verts[faces.const_faces[i], 0]) > 4.5:
+    elif np.min(verts[faces.const_faces[i], 0]) > 4.999:
         BC[2].append(i)
     # mark rest of the boundaries with 3
     else:
         BC[3].append(i)
 gus.io.mfem.export(fname_volume.replace(".inp", ".mesh"), mesh, BC)
+gus.io.meshio.export(fname_volume, mesh)
