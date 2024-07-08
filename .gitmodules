@@ -1,6 +1,6 @@
 [submodule "third-party/cnpy"]
 	path = third-party/cnpy
 	url = https://github.com/rogersce/cnpy.git
-[submodule "mfem"]
-	path = mfem
+[submodule "third-party/mfem"]
+	path = third-party/mfem
 	url = https://github.com/mfem/mfem.git
