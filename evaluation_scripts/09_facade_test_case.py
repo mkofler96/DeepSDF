@@ -26,7 +26,7 @@ experiment_directory = "./experiments/snappy3D"
 checkpoint = "1000"
 
 decoder = ws.load_trained_model(experiment_directory, checkpoint)
-latent = ws.load_latent_vectors(experiment_directory, checkpoint).to(device)
+latent = ws.load_latent_vectors(experiment_directory, checkpoint)
 
 box = sp.helpme.create.box(10,10,10).bspline
 small_box = sp.helpme.create.box(1,1,1).bspline
