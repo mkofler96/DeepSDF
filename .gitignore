@@ -10,3 +10,4 @@
 *.ipynb_checkpoints
 *data/geometry*
 *data/meshs*
+*simulations/*

@@ -2,8 +2,9 @@ plyfile
 scikit-image
 trimesh
 matplotlib
-gustaf
+gustaf @ git+https://github.com/mkofler96/gustaf.git@ft-mfem-3D-export
 splinepy
 vedo
 libigl
 embreex
+tetgenpy
