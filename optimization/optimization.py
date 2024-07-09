@@ -47,6 +47,8 @@ import pandas as pd
 from dataclasses import dataclass
 import dataclasses
 
+import logging
+
 @dataclass
 class OptimizationResults:
     compliance: list[float]
@@ -76,7 +78,13 @@ class struct_optimization():
             os.makedirs(sim_f)
         return sim_f
 
-    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike]):
+    @property
+    def log_filename(self):
+        return self.optimization_folder/"optimization_logs.log"
+
+    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike], experiment_directory, checkpoint):
+        self.experiment_directory = experiment_directory
+        self.checkpoint = checkpoint
         self.optimization_folder = pathlib.Path(optimization_folder)
         self.optimization_results = OptimizationResults([], [])
         if self.settings_filename.exists():
@@ -85,6 +93,12 @@ class struct_optimization():
             raise FileNotFoundError(f"No config.json in {self.optimization_folder}")
 
         self.cache = {}
+        self.logging = logging.getLogger("optimization")
+        self.logging.setLevel(logging.DEBUG)
+        fh = logging.FileHandler(self.log_filename, mode='w')
+        self.logging.addHandler(fh)
+        fh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        self.logging.log(logging.INFO, f"Starting optimization in {self.optimization_folder}")
 
     def _in_cache(self, x):
         # search for x as key in self.cache
@@ -114,17 +128,18 @@ class struct_optimization():
         for key in option_keys:
             if key not in self.options:
                 raise KeyError(f"Key {key} not found in config.json")
-        available_optimizer_methods = ["BFGS"]
+        available_optimizer_methods = ["BFGS", "COBYLA"]
         method = self.options["optimization"]["method"]
         if not (method in available_optimizer_methods):
             raise ValueError(f"Optimizer {method} method not available. Available methods are {available_optimizer_methods}")
         
 
     def run_optimization(self):
+        scipy_optimizers = ["BFGS", "COBYLA"]
         if self.options["optimization"]["method"] == "MOOP":
             self.run_PSO_optimization()
-        elif self.options["optimization"]["method"] == "BFGS":
-            self.run_BFGS_optimization()
+        elif self.options["optimization"]["method"] in scipy_optimizers:
+            self.run_scipy_optimization(options=self.options["optimization"])
         elif self.options["optimization"]["method"] == "NSGA":
             self.run_NSGA_optimization()
         else:
@@ -136,16 +151,16 @@ class struct_optimization():
 
 
     def _compute_solution(self, control_point_values):  
+        self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
         accuracy_deep_sdf_reconstruction = 64
-        number_of_final_elements = 1e3
+        number_of_final_elements = 3e5
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        experiment_directory = "./experiments/snappy3D"
-        checkpoint = "1000"
 
-        decoder = ws.load_trained_model(experiment_directory, checkpoint)
-        
+        decoder = ws.load_trained_model(self.experiment_directory, self.checkpoint)
+        decoder.eval()
+
         box = sp.helpme.create.box(10,10,10).bspline
         small_box = sp.helpme.create.box(1,1,1).bspline
         box.insert_knots(0, [0.5])
@@ -153,7 +168,7 @@ class struct_optimization():
         box.insert_knots(2, [0.5])
         #todo replace hard coded 18 and 16, 9 = number of control points, 16 = latent vector dimension
         # in total we have 18 control points, 9 in front and 9 in back, but z direction is constant
-        control_points = np.array(control_point_values).reshape((9, 16))
+        control_points = np.array(control_point_values).reshape((9, decoder.lin0.in_features-3))
 
         latent_vec_interpolation = sp.BSpline(
             degrees=[1, 1, 1],
@@ -181,8 +196,9 @@ class struct_optimization():
             "y0": {"cap": 1, "measure": 0.1},
             "y1": {"cap": 1, "measure": 0.1},
         }
-
+        self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
         verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N)
+        self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
         # Free Form Deformation
         # geometric parameters
         width = 5
@@ -211,11 +227,14 @@ class struct_optimization():
         verts_FFD_transformed = deformation_volume.evaluate(verts)
         surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
         fname_surf = self.current_simulation_folder/"surf.inp"
+        self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
         gus.io.meshio.export(fname_surf, surf_mesh)
 
-        r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(3e5))
+        self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
+        r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
         dmesh = gus.Faces(r[1], r[2])
 
+        self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
         t_in = tetgenpy.TetgenIO()
         t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
         t_out = tetgenpy.tetrahedralize("pqa", t_in)
@@ -246,11 +265,15 @@ class struct_optimization():
         output_dir = self.optimization_folder
         simulation_name = self.current_simulation_folder
         simulation_command = f"{solver_path} -m {fname_volume.with_suffix('.mesh')} -o {output_dir} -sn {simulation_name}"
-
+        self.logging.log(logging.INFO, f"Running simulation with command {simulation_command}")
         result = subprocess.run(simulation_command, shell=True, 
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 universal_newlines=True)
         
+        # write output to file
+        with open(self.current_simulation_folder/"mfem_output.log", "w") as f:
+            f.write(result.stdout)
+
         # regex pattern to get volume and compliance
         pattern = r"Volume:\s*([\d\.]+)\s*Compliance:\s*([\d\.]+)"
 
@@ -262,10 +285,11 @@ class struct_optimization():
         else:
             raise ValueError("No volume or compliance found in output")
 
-        self.cache[str(control_point_values)] = {"objective": compliance, "constraint": volume-6}  # f, g are scalars
+        self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
         self.iteration += 1
+        self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
 
-    def run_BFGS_optimization(self):
+    def run_scipy_optimization(self, options):
         # do all your calculations only once here
         # in the end fill the cache
         
@@ -276,12 +300,15 @@ class struct_optimization():
         def constraint(x):
             res = self.constraint(x)
             return res
-        
+        # Equality constraint means that the constraint function result is to 
+        # be zero whereas inequality means that it is to be non-negative. 
+        # Note that COBYLA only supports inequality constraints.
         cons = {'type': 'ineq', 'fun': constraint},
         result = scipy.optimize.minimize(obj_fun, self.start_values, 
                                 bounds=self.bounds,
+                                method=options["method"],
                                 constraints=cons,
-                                options={'disp': True})
+                                options=options.pop("method"))
         return result
 
 
@@ -322,7 +349,7 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    experiment_directory = "./experiments/snappy3D"
+    experiment_directory = "./experiments/snappy3D_latent_2D"
     checkpoint = "1000"
 
     latent = ws.load_latent_vectors(experiment_directory, checkpoint).to("cpu").numpy()
@@ -339,6 +366,6 @@ if __name__ == "__main__":
     control_points[index[1,2][0]] = lat_vec1
     control_points = np.array(control_points)
     x0 = control_points.reshape(-1)
-    optimization = struct_optimization("simulations/first_optimization")
+    optimization = struct_optimization("simulations/optimization_COBYLA", experiment_directory, checkpoint)
     optimization.set_x0(x0)
     optimization.run_optimization()
