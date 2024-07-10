@@ -164,8 +164,16 @@ class CapBorderDict(TypedDict):
     z0: CapType = {"cap": -1, "measure": 0}
     z1: CapType = {"cap": -1, "measure": 0}
 
-def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False, use_flexicubes=False
 ):
+
+    if use_flexicubes:
+        try:
+            from kaolin.non_commercial import FlexiCubes
+            from kaolin.ops.conversions import sdf_to_voxelgrids
+        except:
+            raise ModuleNotFoundError("The option use_flexicubes requires kaolin library")
+
     if isinstance(tiling, list):
         if len(tiling) != 3:
             raise ValueError("Tiling must be a list of 3 integers")
@@ -189,26 +197,38 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     ply_filename = filename
 
     decoder.eval()
-    N_tot = N[0]*N[1]*N[2]
-    overall_index = torch.arange(0, N_tot, 1, out=torch.LongTensor())
-    samples_orig = torch.zeros(N_tot, 4)
-    samples = torch.zeros(N_tot, 4)
-    # transform first 3 columns
-    # to be the x, y, z index
-    samples_orig[:, 2] = overall_index % N[2]
-    samples_orig[:, 1] = (overall_index // N[2]) % N[1]
-    samples_orig[:, 0] = ((overall_index // N[2]) // N[1]) % N[0]
 
-    # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
-    voxel_size_x = 2.0 / (N[0]-1-2)
-    voxel_size_y = 2.0 / (N[1]-1-2)
-    voxel_size_z = 2.0 / (N[2]-1-2)
-    voxel_origin = [-1-voxel_size_x, -1-voxel_size_y, -1-voxel_size_z]
-    # transform first 3 columns
-    # to be the x, y, z coordinate
-    samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size_x) + voxel_origin[0]
-    samples_orig[:, 1] = (samples_orig[:, 1] * voxel_size_y) + voxel_origin[1]
-    samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size_z) + voxel_origin[2]
+    if use_flexicubes:
+        reconstructor = FlexiCubes(device=device)
+        samples_orig, cube_idx = reconstructor.construct_voxel_grid(resolution=tuple(N))
+        samples_orig = samples_orig.to(device)
+        cube_idx = cube_idx.to(device)
+        # transform samples from [-0.5, 0.5] to [-1.05, 1.05]
+        samples_orig = samples_orig*2.1
+        N_tot = samples_orig.shape[0]
+        N = N + 1
+    else:
+        N_tot = N[0]*N[1]*N[2]
+        overall_index = torch.arange(0, N_tot, 1, out=torch.LongTensor())
+        samples_orig = torch.zeros(N_tot, 4)
+        
+        # transform first 3 columns
+        # to be the x, y, z index
+        samples_orig[:, 2] = overall_index % N[2]
+        samples_orig[:, 1] = (overall_index // N[2]) % N[1]
+        samples_orig[:, 0] = ((overall_index // N[2]) // N[1]) % N[0]
+
+        # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
+        voxel_size_x = 2.0 / (N[0]-1-2)
+        voxel_size_y = 2.0 / (N[1]-1-2)
+        voxel_size_z = 2.0 / (N[2]-1-2)
+        voxel_size = [voxel_size_x, voxel_size_y, voxel_size_z]
+        voxel_origin = [-1-voxel_size_x, -1-voxel_size_y, -1-voxel_size_z]
+        # transform first 3 columns
+        # to be the x, y, z coordinate
+        samples_orig[:, 0] = (samples_orig[:, 0] * voxel_size_x) + voxel_origin[0]
+        samples_orig[:, 1] = (samples_orig[:, 1] * voxel_size_y) + voxel_origin[1]
+        samples_orig[:, 2] = (samples_orig[:, 2] * voxel_size_z) + voxel_origin[2]
 
     # samples = [-1, 1]
     tx, ty, tz = tiling
@@ -216,7 +236,8 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     def transform(x, t):
         p = 2/t
         return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
-
+    
+    samples = torch.zeros(N_tot, 4)
     samples[:, 0] = transform(samples_orig[:, 0], tx)
     samples[:, 1] = transform(samples_orig[:, 1], ty)
     samples[:, 2] = transform(samples_orig[:, 2], tz)
@@ -227,9 +248,9 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     samples.requires_grad = False
 
     head = 0
-    inside_domain = np.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
-    lat_vec_red = np.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]))
-    lat_vec_red[inside_domain] = latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].numpy())
+    inside_domain = torch.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
+    lat_vec_red = torch.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]))
+    lat_vec_red[inside_domain] = torch.tensor(latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].cpu().numpy()), dtype=torch.float32)
     queries = torch.hstack([torch.tensor(lat_vec_red).to(torch.float32), samples[:, 0:3]])
 
     while head < num_samples:
@@ -269,15 +290,14 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
 
 
     sdf_values = sdf_values.reshape(N[0], N[1], N[2])
-    sdf_values = torch.tensor(sdf_values)
-
-    voxel_size = [voxel_size_x, voxel_size_y, voxel_size_z]
+    sdf_values = torch.tensor(sdf_values).to(device)
 
     
 
+
     if save_ply_file:
         convert_sdf_samples_to_ply(
-            sdf_values,
+            sdf_values.cpu(),
             voxel_origin,
             voxel_size,
             ply_filename + ".ply",
@@ -285,11 +305,19 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
             scale,
         )
     else:
-        if not isinstance(voxel_size, list):
-            voxel_size = [voxel_size]*3
-        verts, faces, normals, values = skimage.measure.marching_cubes(
-            sdf_values.numpy(), level=0.0, spacing=voxel_size
-        )
+        if use_flexicubes:
+            scalar_field = samples[:, 3].detach().to(device)
+            verts, faces, loss = reconstructor(voxelgrid_vertices=samples[:, :3].to(device),
+                                        scalar_field=sdf_values.view(-1), 
+                                        cube_idx=cube_idx,
+                                        resolution=tuple(N-1),
+                                        output_tetmesh=True)
+        else:
+            if not isinstance(voxel_size, list):
+                voxel_size = [voxel_size]*3
+            verts, faces, normals, values = skimage.measure.marching_cubes(
+                sdf_values.numpy(), level=0.0, spacing=voxel_size
+            )
         # sci-kit measure assumes origin at (0,0,0)
         # input for SDF is -1 to 1
         # scale factor 2 to get to 0 to 1

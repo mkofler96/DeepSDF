@@ -124,7 +124,7 @@ class struct_optimization():
 
         # with open(self.settings_filename, 'r') as file:
         #     self.options = json.load(file)
-        option_keys = ["geometry", "abaqus", "optimization"]
+        option_keys = ["mesh", "optimization"]
         for key in option_keys:
             if key not in self.options:
                 raise KeyError(f"Key {key} not found in config.json")
@@ -197,7 +197,8 @@ class struct_optimization():
             "y1": {"cap": 1, "measure": 0.1},
         }
         self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
-        verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N)
+        use_flexicubes = self.options["mesh"]["use_flexicubes"]
+        verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=use_flexicubes)
         self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
         # Free Form Deformation
         # geometric parameters
@@ -225,23 +226,28 @@ class struct_optimization():
         verts[verts<0] = 0
 
         verts_FFD_transformed = deformation_volume.evaluate(verts)
-        surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-        fname_surf = self.current_simulation_folder/"surf.inp"
-        self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
-        gus.io.meshio.export(fname_surf, surf_mesh)
 
-        self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
-        r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
-        dmesh = gus.Faces(r[1], r[2])
 
-        self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
-        t_in = tetgenpy.TetgenIO()
-        t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
-        t_out = tetgenpy.tetrahedralize("pqa", t_in)
+        if use_flexicubes:
+            tets = faces
+        else:
+            surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
+            fname_surf = self.current_simulation_folder/"surf.inp"
+            self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
+            gus.io.meshio.export(fname_surf, surf_mesh)
 
-        fname_volume = self.current_simulation_folder/"volume.inp"
-        tets = np.vstack(t_out.tetrahedra())
-        verts = t_out.points()
+            self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
+            r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
+            dmesh = gus.Faces(r[1], r[2])
+
+            self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
+            t_in = tetgenpy.TetgenIO()
+            t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
+            t_out = tetgenpy.tetrahedralize("pqa", t_in)
+
+            fname_volume = self.current_simulation_folder/"volume.inp"
+            tets = np.vstack(t_out.tetrahedra())
+            verts = t_out.points()
 
         mesh = gus.Volumes(verts, tets)
 
@@ -303,12 +309,14 @@ class struct_optimization():
         # Equality constraint means that the constraint function result is to 
         # be zero whereas inequality means that it is to be non-negative. 
         # Note that COBYLA only supports inequality constraints.
+        opti_options_without_method = options.copy()
+        opti_options_without_method.pop("method")
         cons = {'type': 'ineq', 'fun': constraint},
         result = scipy.optimize.minimize(obj_fun, self.start_values, 
                                 bounds=self.bounds,
                                 method=options["method"],
                                 constraints=cons,
-                                options=options.pop("method"))
+                                options=opti_options_without_method)
         return result
 
 
@@ -366,6 +374,6 @@ if __name__ == "__main__":
     control_points[index[1,2][0]] = lat_vec1
     control_points = np.array(control_points)
     x0 = control_points.reshape(-1)
-    optimization = struct_optimization("simulations/optimization_COBYLA", experiment_directory, checkpoint)
+    optimization = struct_optimization("simulations/optimization_flexicubes", experiment_directory, checkpoint)
     optimization.set_x0(x0)
     optimization.run_optimization()

@@ -8,3 +8,4 @@ vedo
 libigl
 embreex
 tetgenpy
+meshio
