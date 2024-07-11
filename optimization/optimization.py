@@ -16,6 +16,8 @@ import skimage
 import meshio
 import tetgenpy
 import igl
+import mimi
+import gustaf as gus
 
 import subprocess
 
@@ -152,8 +154,8 @@ class struct_optimization():
 
     def _compute_solution(self, control_point_values):  
         self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
-        accuracy_deep_sdf_reconstruction = 64
-        number_of_final_elements = 3e5
+        accuracy_deep_sdf_reconstruction = 32
+        number_of_final_elements = 1e5
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -186,7 +188,7 @@ class struct_optimization():
         microstructure.tiling = [2, 2, 2]
         ms = microstructure.create().patches
 
-        tiling = [2, 5, 1]
+        tiling = self.options["mesh"]["tiling"]
         N_base = accuracy_deep_sdf_reconstruction
         N = [N_base * t for t in tiling]
 
@@ -197,8 +199,10 @@ class struct_optimization():
             "y1": {"cap": 1, "measure": 0.1},
         }
         self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
-        use_flexicubes = self.options["mesh"]["use_flexicubes"]
-        verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=use_flexicubes)
+
+        verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"])
+        
+
         self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
         # Free Form Deformation
         # geometric parameters
@@ -225,32 +229,33 @@ class struct_optimization():
         verts[verts>1] = 1
         verts[verts<0] = 0
 
-        verts_FFD_transformed = deformation_volume.evaluate(verts)
+        verts_FFD_transformed = deformation_volume.evaluate(verts.cpu().numpy())
 
+        if self.options["mesh"]["use_flexicubes"]:
+            faces = faces.cpu().numpy()
 
-        if use_flexicubes:
-            tets = faces
-        else:
-            surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-            fname_surf = self.current_simulation_folder/"surf.inp"
-            self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
-            gus.io.meshio.export(fname_surf, surf_mesh)
+        surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
+        fname_surf = self.current_simulation_folder/"surf.inp"
+        self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
+        gus.io.meshio.export(fname_surf, surf_mesh)
 
+        if self.options["mesh"]["decimate_mesh"]:
             self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
             r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
             dmesh = gus.Faces(r[1], r[2])
+        else:
+            dmesh = surf_mesh
 
-            self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
-            t_in = tetgenpy.TetgenIO()
-            t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
-            t_out = tetgenpy.tetrahedralize("pqa", t_in)
+        self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
+        t_in = tetgenpy.TetgenIO()
+        t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
+        t_out = tetgenpy.tetrahedralize("pqa", t_in)
 
-            fname_volume = self.current_simulation_folder/"volume.inp"
-            tets = np.vstack(t_out.tetrahedra())
-            verts = t_out.points()
+        tets = np.vstack(t_out.tetrahedra())
+        verts = t_out.points()
 
         mesh = gus.Volumes(verts, tets)
-
+        gus.show(mesh)
         faces = mesh.to_faces(False)
         boundary_faces = faces.single_faces()
 
@@ -265,6 +270,7 @@ class struct_optimization():
             # mark rest of the boundaries with 3
             else:
                 BC[3].append(i)
+        fname_volume = self.current_simulation_folder/"volume.inp"
         gus.io.mfem.export(fname_volume.with_suffix(".mesh"), mesh, BC)
         gus.io.meshio.export(fname_volume, mesh)
         solver_path = "/usr2/mkofler/MFEM/mfem-4.7/examples/ex2"
@@ -272,24 +278,28 @@ class struct_optimization():
         simulation_name = self.current_simulation_folder
         simulation_command = f"{solver_path} -m {fname_volume.with_suffix('.mesh')} -o {output_dir} -sn {simulation_name}"
         self.logging.log(logging.INFO, f"Running simulation with command {simulation_command}")
-        result = subprocess.run(simulation_command, shell=True, 
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                universal_newlines=True)
-        
-        # write output to file
-        with open(self.current_simulation_folder/"mfem_output.log", "w") as f:
-            f.write(result.stdout)
+        result = mimi.calculate_volume_and_compliance(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name))
+        compliance = result[1]
+        volume = result[0]
+        use_old_mfem = False
+        if use_old_mfem:
+            # result = subprocess.run(simulation_command, shell=True, 
+            #                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            #                         universal_newlines=True)
+            # write output to file
+            with open(self.current_simulation_folder/"mfem_output.log", "w") as f:
+                f.write(result.stdout)
 
-        # regex pattern to get volume and compliance
-        pattern = r"Volume:\s*([\d\.]+)\s*Compliance:\s*([\d\.]+)"
+            # regex pattern to get volume and compliance
+            pattern = r"Volume:\s*([\d\.]+)\s*Compliance:\s*([\d\.]+)"
 
-        # Search for the pattern in the text
-        match = re.search(pattern, result.stdout)
-        if match:
-            volume = float(match.group(1))
-            compliance = float(match.group(2))
-        else:
-            raise ValueError("No volume or compliance found in output")
+            # Search for the pattern in the text
+            match = re.search(pattern, result.stdout)
+            if match:
+                volume = float(match.group(1))
+                compliance = float(match.group(2))
+            else:
+                raise ValueError("No volume or compliance found in output")
 
         self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
         self.iteration += 1

@@ -170,7 +170,6 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     if use_flexicubes:
         try:
             from kaolin.non_commercial import FlexiCubes
-            from kaolin.ops.conversions import sdf_to_voxelgrids
         except:
             raise ModuleNotFoundError("The option use_flexicubes requires kaolin library")
 
@@ -279,10 +278,9 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
             sdf_values = np.minimum(sdf_values, border_sdf)
         else:
             raise ValueError("Cap must be -1 or 1")
-        end = time.time()
-        print("Capping takes: %f" % (end - sample_time))
+    end = time.time()
     
-    # cap everything outside the unit cube
+    #cap everything outside the unit cube
 
     for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
         border_sdf = (samples_orig[:, dim] - measure)*-measure
@@ -306,17 +304,19 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
         )
     else:
         if use_flexicubes:
-            scalar_field = samples[:, 3].detach().to(device)
-            verts, faces, loss = reconstructor(voxelgrid_vertices=samples[:, :3].to(device),
+            # flexicubes has the possibility to output tetmesh, but it's extremely slow
+            # and often fails
+            verts, faces, loss = reconstructor(voxelgrid_vertices=torch.tensor(samples_orig[:, :3]).to(device),
                                         scalar_field=sdf_values.view(-1), 
                                         cube_idx=cube_idx,
                                         resolution=tuple(N-1),
-                                        output_tetmesh=True)
+                                        output_tetmesh=False)
+            verts = verts + 1
         else:
             if not isinstance(voxel_size, list):
                 voxel_size = [voxel_size]*3
             verts, faces, normals, values = skimage.measure.marching_cubes(
-                sdf_values.numpy(), level=0.0, spacing=voxel_size
+                sdf_values.cpu().numpy(), level=0.0, spacing=voxel_size
             )
         # sci-kit measure assumes origin at (0,0,0)
         # input for SDF is -1 to 1
