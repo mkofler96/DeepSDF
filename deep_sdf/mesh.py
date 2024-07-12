@@ -318,8 +318,8 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
             verts, faces, normals, values = skimage.measure.marching_cubes(
                 sdf_values.cpu().numpy(), level=0.0, spacing=voxel_size
             )
-        # sci-kit measure assumes origin at (0,0,0)
-        # input for SDF is -1 to 1
-        # scale factor 2 to get to 0 to 1
-        verts = verts/2
+            # sci-kit measure assumes origin at (0,0,0)
+            # input for SDF is -1-voxel_size_{x,y,z} to 1+voxel_size_{x,y,z}
+            # scale factor 2 to get to 0 to 1
+            verts = (verts - voxel_size)/2
         return verts, faces

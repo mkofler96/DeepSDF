@@ -18,6 +18,7 @@ import tetgenpy
 import igl
 import mimi
 import gustaf as gus
+import trimesh
 
 import subprocess
 
@@ -153,8 +154,9 @@ class struct_optimization():
 
 
     def _compute_solution(self, control_point_values):  
+        self.iteration += 1
         self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
-        accuracy_deep_sdf_reconstruction = 32
+        accuracy_deep_sdf_reconstruction = 50
         number_of_final_elements = 1e5
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -170,12 +172,12 @@ class struct_optimization():
         box.insert_knots(2, [0.5])
         #todo replace hard coded 18 and 16, 9 = number of control points, 16 = latent vector dimension
         # in total we have 18 control points, 9 in front and 9 in back, but z direction is constant
-        control_points = np.array(control_point_values).reshape((9, decoder.lin0.in_features-3))
+        control_points = np.array(control_point_values).reshape((-1, decoder.lin0.in_features-3))
 
         latent_vec_interpolation = sp.BSpline(
             degrees=[1, 1, 1],
             knot_vectors=[[-1, -1, 0, 1, 1], 
-                        [-1, -1, 0, 1, 1], 
+                        [-1, -1, 1, 1], 
                         [-1, -1, 1, 1]],
             control_points=np.vstack([control_points, control_points]),
         )
@@ -190,7 +192,7 @@ class struct_optimization():
 
         tiling = self.options["mesh"]["tiling"]
         N_base = accuracy_deep_sdf_reconstruction
-        N = [N_base * t for t in tiling]
+        N = [N_base * t+1 for t in tiling]
 
         cap_border_dict = {
             "x0": {"cap": 1, "measure": 0.1},
@@ -229,20 +231,23 @@ class struct_optimization():
         verts[verts>1] = 1
         verts[verts<0] = 0
 
-        verts_FFD_transformed = deformation_volume.evaluate(verts.cpu().numpy())
 
         if self.options["mesh"]["use_flexicubes"]:
             faces = faces.cpu().numpy()
+            verts = verts.cpu().numpy()
+        self.logging.log(logging.INFO, f"Applying Free Form Deformation to {len(verts)} vertices")
+        verts_FFD_transformed = deformation_volume.evaluate(verts)
 
         surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-        fname_surf = self.current_simulation_folder/"surf.inp"
+        fname_surf = self.current_simulation_folder/f"surf{self.iteration}.inp"
         self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
         gus.io.meshio.export(fname_surf, surf_mesh)
-
+        # gus.show(surf_mesh)
         if self.options["mesh"]["decimate_mesh"]:
             self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
             r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
             dmesh = gus.Faces(r[1], r[2])
+            # gus.show(dmesh)
         else:
             dmesh = surf_mesh
 
@@ -255,7 +260,7 @@ class struct_optimization():
         verts = t_out.points()
 
         mesh = gus.Volumes(verts, tets)
-        gus.show(mesh)
+        # gus.show(mesh, interactive=False)
         faces = mesh.to_faces(False)
         boundary_faces = faces.single_faces()
 
@@ -270,22 +275,31 @@ class struct_optimization():
             # mark rest of the boundaries with 3
             else:
                 BC[3].append(i)
-        fname_volume = self.current_simulation_folder/"volume.inp"
+        fname_volume = self.current_simulation_folder/f"volume{self.iteration}.inp"
         gus.io.mfem.export(fname_volume.with_suffix(".mesh"), mesh, BC)
         gus.io.meshio.export(fname_volume, mesh)
-        solver_path = "/usr2/mkofler/MFEM/mfem-4.7/examples/ex2"
         output_dir = self.optimization_folder
         simulation_name = self.current_simulation_folder
-        simulation_command = f"{solver_path} -m {fname_volume.with_suffix('.mesh')} -o {output_dir} -sn {simulation_name}"
-        self.logging.log(logging.INFO, f"Running simulation with command {simulation_command}")
-        result = mimi.calculate_volume_and_compliance(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name))
-        compliance = result[1]
-        volume = result[0]
+        self.logging.log(logging.INFO, f"Running simulation with mesh {fname_volume}")
+        cl_beam = mimi.LECantileverBeam(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name))
+        cl_beam.solve()
+        compliance = cl_beam.compliance
+
+        use_trimesh_for_volume_calculation = True
+
+        if use_trimesh_for_volume_calculation:
+            mesh = trimesh.Trimesh(vertices=verts, faces=faces.const_faces)
+            volume = mesh.volume
+            self.logging.log(logging.INFO, f"Volume calculated with trimesh: {volume} | with MFEM: {cl_beam.volume}")
+        else:
+            volume = cl_beam.volume
         use_old_mfem = False
         if use_old_mfem:
-            # result = subprocess.run(simulation_command, shell=True, 
-            #                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            #                         universal_newlines=True)
+            solver_path = "/usr2/mkofler/MFEM/mfem-4.7/examples/ex2"
+            simulation_command = f"{solver_path} -m {fname_volume.with_suffix('.mesh')} -o {output_dir} -sn {simulation_name}"
+            result = subprocess.run(simulation_command, shell=True, 
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                    universal_newlines=True)
             # write output to file
             with open(self.current_simulation_folder/"mfem_output.log", "w") as f:
                 f.write(result.stdout)
@@ -302,7 +316,6 @@ class struct_optimization():
                 raise ValueError("No volume or compliance found in output")
 
         self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
-        self.iteration += 1
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
 
     def run_scipy_optimization(self, options):
@@ -375,15 +388,15 @@ if __name__ == "__main__":
     lat_vec1 = latent[1]
     lat_vec2 = latent[15]
     lat_vec3 = latent[39]
-    control_points = [lat_vec2]*9
+    control_points = [lat_vec2]*6
     index = sp.helpme.multi_index.MultiIndex((3,3))
-    # center thicker
-    control_points[index[1,1][0]] = lat_vec3
-    # sides smaller (I don't know why it is not [0,1,0] instead of [1,0,0])
-    control_points[index[1,0][0]] = lat_vec1
-    control_points[index[1,2][0]] = lat_vec1
+    # # center thicker
+    # control_points[index[1,1][0]] = lat_vec3
+    # # sides smaller (I don't know why it is not [0,1,0] instead of [1,0,0])
+    # control_points[index[1,0][0]] = lat_vec1
+    # control_points[index[1,2][0]] = lat_vec1
     control_points = np.array(control_points)
     x0 = control_points.reshape(-1)
-    optimization = struct_optimization("simulations/optimization_flexicubes", experiment_directory, checkpoint)
+    optimization = struct_optimization("simulations/optimization_mimi", experiment_directory, checkpoint)
     optimization.set_x0(x0)
     optimization.run_optimization()
