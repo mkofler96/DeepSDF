@@ -118,6 +118,10 @@ class struct_optimization():
         return self.cache[str(x)]["constraint"]
 
     def set_x0(self, x0):
+            
+        control_points = [x0]*6
+
+        x0 = control_points.reshape(-1)
         self.start_values = x0
         self.dv_names = [f"x{i}" for i in range(len(x0))]
         self.bounds = [(-1,1)]*len(x0)
@@ -385,18 +389,6 @@ if __name__ == "__main__":
 
     latent = ws.load_latent_vectors(experiment_directory, checkpoint).to("cpu").numpy()
 
-    lat_vec1 = latent[1]
-    lat_vec2 = latent[15]
-    lat_vec3 = latent[39]
-    control_points = [lat_vec2]*6
-    index = sp.helpme.multi_index.MultiIndex((3,3))
-    # # center thicker
-    # control_points[index[1,1][0]] = lat_vec3
-    # # sides smaller (I don't know why it is not [0,1,0] instead of [1,0,0])
-    # control_points[index[1,0][0]] = lat_vec1
-    # control_points[index[1,2][0]] = lat_vec1
-    control_points = np.array(control_points)
-    x0 = control_points.reshape(-1)
     optimization = struct_optimization("simulations/optimization_mimi", experiment_directory, checkpoint)
-    optimization.set_x0(x0)
+    optimization.set_x0(latent[1])
     optimization.run_optimization()

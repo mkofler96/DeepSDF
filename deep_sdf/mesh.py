@@ -14,6 +14,7 @@ from enum import Enum
 import deep_sdf.utils
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 
 def create_mesh(
     decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None

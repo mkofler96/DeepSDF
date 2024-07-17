@@ -13,6 +13,61 @@ import skimage.measure as sc
 import igl
 import trimesh
 
+from abc import ABC, abstractmethod
+import numpy.typing as npt
+
+
+
+class SDFBase(ABC):
+    @abstractmethod
+    def __call__(self, queries: npt.ArrayLike) -> npt.ArrayLike:
+        """
+        This method must be implemented by subclasses.
+        
+        Args:
+            input_param1: Description of the first input parameter.
+            input_param2: Description of the second input parameter.
+        
+        Returns:
+            The return type and description of what this method should return.
+        """
+        pass
+
+    def __add__(self, other):
+        return SummedSDF(self, other)
+
+    def __neg__(self):
+        return NegatedCallable(self)
+
+class SummedSDF(ABC):
+    def __init__(self, obj1, obj2):
+        self.obj1 = obj1
+        self.obj2 = obj2
+    
+    def __call__(self, input_param):
+        result1 = self.obj1(input_param)
+        result2 = self.obj2(input_param)
+        return -np.maximum(-result1, -result2)
+
+class NegatedCallable(SDFBase):
+    def __init__(self, obj):
+        self.obj = obj
+
+    def __call__(self, input_param):
+        result = self.obj(input_param)
+        return -result
+
+class BoxSDF(SDFBase):
+    def __init__(self, box_size: float = 1,
+                  center: npt.ArrayLike= np.array([0,0,0])):
+        self.box_size = box_size
+        self.center = center
+
+    def __call__(self, queries: npt.ArrayLike) -> npt.ArrayLike:
+        output = np.linalg.norm(queries - self.center, axis=1, ord=np.inf) - self.box_size
+        return output.reshape(-1,1)
+
+
 class DataSetInfo(typing.TypedDict):
     dataset_name: str
     class_name: str
@@ -143,7 +198,7 @@ def random_sample_sdf(sdf, bounds, n_samples, type="uniform"):
     distances = sdf(samples)
     return RandomSampleSDF(samples=samples, distances=distances)
 
-class SDFfromMesh:
+class SDFfromMesh(SDFBase):
     def __init__(self, mesh, dtype=np.float32, flip_sign=False):
         """
         Computes signed distance for 3D meshes.

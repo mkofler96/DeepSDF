@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: sdf-sampler
+Version: 1.0
+Summary: creates SDF samples
+Author: Michael Kofler
+Author-email: michael.kofler@tuwien.ac.at
+License-File: LICENSE
