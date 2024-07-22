@@ -19,6 +19,7 @@ import igl
 import mimi
 import gustaf as gus
 import trimesh
+import tempfile
 
 import subprocess
 
@@ -77,17 +78,38 @@ class struct_optimization():
     @property
     def current_simulation_folder(self) -> pathlib.Path:
         sim_f = self.optimization_folder / f"simulation_{self.iteration}"
-        if not os.path.exists(sim_f):
-            os.makedirs(sim_f)
+
         return sim_f
+
+    def create_temp_current_simulation_folder(self) -> pathlib.Path:
+        temp_dir = pathlib.Path(self.options["general"]["temp_dir"])
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
+        dirpath =pathlib.Path(tempfile.mkdtemp(dir=temp_dir))/f"simulation_{self.iteration}"
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath)
+        return dirpath
+    
+    def move_older_sims_to_temp_dir(self):
+        old_sim_dir = self.optimization_folder/"old_sims"
+        i_old_sim = 0
+        while os.path.exists(old_sim_dir):
+            i_old_sim += 1
+            old_sim_dir = self.optimization_folder/f"old_sims_{i_old_sim}"
+        os.makedirs(old_sim_dir)
+        for folder in os.listdir(self.optimization_folder):
+            if "simulation" in folder:
+                shutil.move(self.optimization_folder/folder, old_sim_dir/folder)
+                self.logging.log(logging.INFO, "Older simulation files detected.")
+                self.logging.log(logging.INFO, f"Moving {folder} to {old_sim_dir}")
+        print("done")
 
     @property
     def log_filename(self):
         return self.optimization_folder/"optimization_logs.log"
 
-    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike], experiment_directory, checkpoint):
-        self.experiment_directory = experiment_directory
-        self.checkpoint = checkpoint
+    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike]):
+
         self.optimization_folder = pathlib.Path(optimization_folder)
         self.optimization_results = OptimizationResults([], [])
         if self.settings_filename.exists():
@@ -102,6 +124,7 @@ class struct_optimization():
         self.logging.addHandler(fh)
         fh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
         self.logging.log(logging.INFO, f"Starting optimization in {self.optimization_folder}")
+        self.move_older_sims_to_temp_dir()
 
     def _in_cache(self, x):
         # search for x as key in self.cache
@@ -119,7 +142,7 @@ class struct_optimization():
 
     def set_x0(self, x0):
             
-        control_points = [x0]*6
+        control_points = np.array([x0]*6)
 
         x0 = control_points.reshape(-1)
         self.start_values = x0
@@ -131,7 +154,7 @@ class struct_optimization():
 
         # with open(self.settings_filename, 'r') as file:
         #     self.options = json.load(file)
-        option_keys = ["mesh", "optimization"]
+        option_keys = ["mesh", "optimization", "general"]
         for key in option_keys:
             if key not in self.options:
                 raise KeyError(f"Key {key} not found in config.json")
@@ -139,6 +162,19 @@ class struct_optimization():
         method = self.options["optimization"]["method"]
         if not (method in available_optimizer_methods):
             raise ValueError(f"Optimizer {method} method not available. Available methods are {available_optimizer_methods}")
+        
+        if not ("experiment_directory" in self.options["general"]):
+            raise KeyError("Key experiment_directory not found in general settings")
+        if not ("checkpoint" in self.options["general"]):
+            raise KeyError("Key checkpoint not found in general settings")
+
+        if not os.path.exists(self.options["general"]["experiment_directory"]):
+            raise FileNotFoundError(f"Experiment directory {self.options['general']['experiment_directory']} not found")
+        
+        experiment_directory = self.options["general"]["experiment_directory"]
+        checkpoint = str(self.options["general"]["checkpoint"])
+        self.experiment_directory = experiment_directory
+        self.checkpoint = checkpoint
         
 
     def run_optimization(self):
@@ -159,12 +195,10 @@ class struct_optimization():
 
     def _compute_solution(self, control_point_values):  
         self.iteration += 1
+        temp_current_simulation_folder = self.create_temp_current_simulation_folder()
         self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
         accuracy_deep_sdf_reconstruction = 50
         number_of_final_elements = 1e5
-
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
         decoder = ws.load_trained_model(self.experiment_directory, self.checkpoint)
         decoder.eval()
@@ -243,7 +277,7 @@ class struct_optimization():
         verts_FFD_transformed = deformation_volume.evaluate(verts)
 
         surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-        fname_surf = self.current_simulation_folder/f"surf{self.iteration}.inp"
+        fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
         self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
         gus.io.meshio.export(fname_surf, surf_mesh)
         # gus.show(surf_mesh)
@@ -279,11 +313,12 @@ class struct_optimization():
             # mark rest of the boundaries with 3
             else:
                 BC[3].append(i)
-        fname_volume = self.current_simulation_folder/f"volume{self.iteration}.inp"
-        gus.io.mfem.export(fname_volume.with_suffix(".mesh"), mesh, BC)
+        fname_volume = temp_current_simulation_folder/f"volume{self.iteration}.inp"
+        mesh.BC = BC
+        gus.io.mfem.export(fname_volume.with_suffix(".mesh"), mesh)
         gus.io.meshio.export(fname_volume, mesh)
-        output_dir = self.optimization_folder
-        simulation_name = self.current_simulation_folder
+        simulation_name = temp_current_simulation_folder
+        output_dir = temp_current_simulation_folder.parent
         self.logging.log(logging.INFO, f"Running simulation with mesh {fname_volume}")
         cl_beam = mimi.LECantileverBeam(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name))
         cl_beam.solve()
@@ -297,30 +332,24 @@ class struct_optimization():
             self.logging.log(logging.INFO, f"Volume calculated with trimesh: {volume} | with MFEM: {cl_beam.volume}")
         else:
             volume = cl_beam.volume
-        use_old_mfem = False
-        if use_old_mfem:
-            solver_path = "/usr2/mkofler/MFEM/mfem-4.7/examples/ex2"
-            simulation_command = f"{solver_path} -m {fname_volume.with_suffix('.mesh')} -o {output_dir} -sn {simulation_name}"
-            result = subprocess.run(simulation_command, shell=True, 
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                    universal_newlines=True)
-            # write output to file
-            with open(self.current_simulation_folder/"mfem_output.log", "w") as f:
-                f.write(result.stdout)
-
-            # regex pattern to get volume and compliance
-            pattern = r"Volume:\s*([\d\.]+)\s*Compliance:\s*([\d\.]+)"
-
-            # Search for the pattern in the text
-            match = re.search(pattern, result.stdout)
-            if match:
-                volume = float(match.group(1))
-                compliance = float(match.group(2))
-            else:
-                raise ValueError("No volume or compliance found in output")
 
         self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
+        
+        self.save_and_clear(temp_current_simulation_folder)
+
+    def save_and_clear(self, temp_current_simulation_folder):
+        with open(self.optimization_folder/"results.json", "w") as f:
+            json.dump(dataclasses.asdict(self.optimization_results), f)
+        save_every = self.iteration % self.options["general"]["save_every"] == 0
+        first_iteration = self.iteration == 1
+        if save_every or first_iteration:
+            self.logging.log(logging.INFO, f"Saving simulation results to {self.current_simulation_folder}")
+            shutil.copytree(temp_current_simulation_folder, self.current_simulation_folder)
+            
+        shutil.rmtree(temp_current_simulation_folder)
+        shutil.rmtree(temp_current_simulation_folder.parent)
+
 
     def run_scipy_optimization(self, options):
         # do all your calculations only once here
@@ -384,11 +413,8 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    experiment_directory = "./experiments/snappy3D_latent_2D"
-    checkpoint = "1000"
-
-    latent = ws.load_latent_vectors(experiment_directory, checkpoint).to("cpu").numpy()
-
-    optimization = struct_optimization("simulations/optimization_mimi", experiment_directory, checkpoint)
+    optimization = struct_optimization("simulations/optimization_double_lattice")
+    latent = ws.load_latent_vectors(optimization.experiment_directory, 
+                                    optimization.checkpoint).to("cpu").numpy()
     optimization.set_x0(latent[1])
     optimization.run_optimization()
