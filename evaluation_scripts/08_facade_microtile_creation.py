@@ -17,7 +17,7 @@ SDF_sampler = sdf_sampler.SDFSampler(outdir, splitdir)
 
 sdfs = []
 
-for i, t in enumerate(np.linspace(0, 0.7, 40)):
+for i, t in enumerate(np.linspace(0, 0.2, 40)):
     tile_creator = Snappy3D()
     tile = tile_creator.create_tile(parameters=np.array([[t]]))
     mesh = sp.helpme.extract.faces(sp.multipatch.Multipatch(tile[0]), 20)

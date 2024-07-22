@@ -13,11 +13,12 @@ from enum import Enum
 
 import deep_sdf.utils
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def create_mesh(
-    decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None
+    decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, device=None
 ):
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     start = time.time()
     ply_filename = filename
 
@@ -164,8 +165,10 @@ class CapBorderDict(TypedDict):
     z0: CapType = {"cap": -1, "measure": 0}
     z1: CapType = {"cap": -1, "measure": 0}
 
-def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False, use_flexicubes=False
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False, use_flexicubes=False, device=None, output_tetmesh=False
 ):
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     if use_flexicubes:
         try:
@@ -310,8 +313,8 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
                                         scalar_field=sdf_values.view(-1), 
                                         cube_idx=cube_idx,
                                         resolution=tuple(N-1),
-                                        output_tetmesh=False)
-            verts = verts + 1
+                                        output_tetmesh=output_tetmesh)
+            verts = (verts+1)/2
         else:
             if not isinstance(voxel_size, list):
                 voxel_size = [voxel_size]*3

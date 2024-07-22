@@ -57,16 +57,18 @@ import logging
 class OptimizationResults:
     compliance: list[float]
     volume: list[float]
+    design_vector: list[np.ndarray]
 
-    def append_result(self, design_vector, result):
-        self.volume.append(result[0])
-        self.compliance.append(result[1])
+    def append_result(self, design_vector, volume, compliance):
+        self.volume.append(volume)
+        self.compliance.append(compliance)
+        self.design_vector.append(design_vector.tolist())
 
 
 
 class struct_optimization():
     optimization_folder: pathlib.Path
-    optimization_results = OptimizationResults([], [])
+    optimization_results = OptimizationResults([], [], [])
     iteration = 0
 
     design_vectors = []
@@ -96,13 +98,13 @@ class struct_optimization():
         while os.path.exists(old_sim_dir):
             i_old_sim += 1
             old_sim_dir = self.optimization_folder/f"old_sims_{i_old_sim}"
-        os.makedirs(old_sim_dir)
+        if any (["simulation" in folder for folder in os.listdir(self.optimization_folder)]):
+            os.makedirs(old_sim_dir)
         for folder in os.listdir(self.optimization_folder):
             if "simulation" in folder:
                 shutil.move(self.optimization_folder/folder, old_sim_dir/folder)
                 self.logging.log(logging.INFO, "Older simulation files detected.")
                 self.logging.log(logging.INFO, f"Moving {folder} to {old_sim_dir}")
-        print("done")
 
     @property
     def log_filename(self):
@@ -111,7 +113,7 @@ class struct_optimization():
     def __init__(self, optimization_folder: Union[str, bytes, os.PathLike]):
 
         self.optimization_folder = pathlib.Path(optimization_folder)
-        self.optimization_results = OptimizationResults([], [])
+        self.optimization_results = OptimizationResults([], [], [])
         if self.settings_filename.exists():
             self.load_settings()
         else:
@@ -197,36 +199,36 @@ class struct_optimization():
         self.iteration += 1
         temp_current_simulation_folder = self.create_temp_current_simulation_folder()
         self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
-        accuracy_deep_sdf_reconstruction = 50
-        number_of_final_elements = 1e5
+        accuracy_deep_sdf_reconstruction = self.options["mesh"]["accuracy_deep_sdf_reconstruction"]
+        number_of_final_elements = self.options["mesh"]["number_of_final_elements"]
 
         decoder = ws.load_trained_model(self.experiment_directory, self.checkpoint)
         decoder.eval()
 
-        box = sp.helpme.create.box(10,10,10).bspline
-        small_box = sp.helpme.create.box(1,1,1).bspline
-        box.insert_knots(0, [0.5])
-        box.insert_knots(1, [0.5])
-        box.insert_knots(2, [0.5])
+        # box = sp.helpme.create.box(10,10,10).bspline
+        # small_box = sp.helpme.create.box(1,1,1).bspline
+        # box.insert_knots(0, [0.5])
+        # box.insert_knots(1, [0.5])
+        # box.insert_knots(2, [0.5])
         #todo replace hard coded 18 and 16, 9 = number of control points, 16 = latent vector dimension
         # in total we have 18 control points, 9 in front and 9 in back, but z direction is constant
         control_points = np.array(control_point_values).reshape((-1, decoder.lin0.in_features-3))
 
         latent_vec_interpolation = sp.BSpline(
-            degrees=[1, 1, 1],
-            knot_vectors=[[-1, -1, 0, 1, 1], 
-                        [-1, -1, 1, 1], 
+            degrees=[1, 2, 1],
+            knot_vectors=[[-1, -1, 1, 1], 
+                        [-1, -1, -1, 1, 1, 1], 
                         [-1, -1, 1, 1]],
             control_points=np.vstack([control_points, control_points]),
         )
 
-        microstructure = sp.Microstructure()
-        # set outer spline and a (micro) tile
-        microstructure.deformation_function = box
-        microstructure.microtile = small_box
-        # tiling determines tile resolutions within each bezier patch
-        microstructure.tiling = [2, 2, 2]
-        ms = microstructure.create().patches
+        # microstructure = sp.Microstructure()
+        # # set outer spline and a (micro) tile
+        # microstructure.deformation_function = box
+        # microstructure.microtile = small_box
+        # # tiling determines tile resolutions within each bezier patch
+        # microstructure.tiling = [2, 2, 2]
+        # ms = microstructure.create().patches
 
         tiling = self.options["mesh"]["tiling"]
         N_base = accuracy_deep_sdf_reconstruction
@@ -240,65 +242,88 @@ class struct_optimization():
         }
         self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
 
-        verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"])
-        
-
-        self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
-        # Free Form Deformation
-        # geometric parameters
-        width = 5
-        height = 2
-        depth = 1
-
-        control_points=np.array([
-                [0, 0, 0],
-                [0, height, 0],
-                [width, 0, 0],
-                [width, height, 0]
-            ])
-
-        deformation_surf = sp.BSpline(
-            degrees=[1,1],
-            control_points=control_points,
-            knot_vectors=[[0, 0, 1, 1],[0, 0, 1, 1]],
-        )
-
-        deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
-
-        # bring slightly outside vertices back 
-        verts[verts>1] = 1
-        verts[verts<0] = 0
-
-
-        if self.options["mesh"]["use_flexicubes"]:
-            faces = faces.cpu().numpy()
-            verts = verts.cpu().numpy()
-        self.logging.log(logging.INFO, f"Applying Free Form Deformation to {len(verts)} vertices")
-        verts_FFD_transformed = deformation_volume.evaluate(verts)
-
-        surf_mesh = gus.faces.Faces(verts_FFD_transformed, faces)
-        fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
-        self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
-        gus.io.meshio.export(fname_surf, surf_mesh)
-        # gus.show(surf_mesh)
-        if self.options["mesh"]["decimate_mesh"]:
-            self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
-            r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
-            dmesh = gus.Faces(r[1], r[2])
-            # gus.show(dmesh)
+        if self.options["mesh"]["tetmesh_from_flexicubes"]:
+            verts, volumes = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"], output_tetmesh=True)
+            mesh = gus.Volumes(verts.cpu().numpy(), volumes.cpu().numpy())
+            gus.show(mesh)
         else:
-            dmesh = surf_mesh
+            verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"])
+            
+            # if flexicubes is used, mesh is exported as torch tensor, therefore we need to convert it to numpy
+            if self.options["mesh"]["use_flexicubes"]:
+                faces = faces.cpu().numpy()
+                verts = verts.cpu().numpy()
 
-        self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
-        t_in = tetgenpy.TetgenIO()
-        t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
-        t_out = tetgenpy.tetrahedralize("pqa", t_in)
+            self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
 
-        tets = np.vstack(t_out.tetrahedra())
-        verts = t_out.points()
+            # step 1: apply Free Form Deformation
+            # bring slightly outside vertices back
+            n_verts_outside = np.sum(verts > 1) + np.sum(verts < 0)
+            self.logging.log(logging.INFO, f"Maximum deviation is {np.max(verts)}")
+            self.logging.log(logging.INFO, f"Minimum deviation is {np.min(verts)}")
+            self.logging.log(logging.INFO, f"Moving {n_verts_outside} vertices to [0,1]")
+            verts[verts>1] = 1
+            verts[verts<0] = 0
+            
+            # Free Form Deformation
+            # geometric parameters
+            width = 5
+            height = 2
+            depth = 1
 
-        mesh = gus.Volumes(verts, tets)
-        # gus.show(mesh, interactive=False)
+            control_points=np.array([
+                    [0, 0, 0],
+                    [0, height, 0],
+                    [width, 0, 0],
+                    [width, height, 0]
+                ])
+
+            deformation_surf = sp.BSpline(
+                degrees=[1,1],
+                control_points=control_points,
+                knot_vectors=[[0, 0, 1, 1],[0, 0, 1, 1]],
+            )
+
+            deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
+            self.logging.log(logging.INFO, f"Applying Free Form Deformation to {len(verts)} vertices")
+            verts = deformation_volume.evaluate(verts)
+
+            # step 2: generate surface mesh
+            surf_mesh = gus.faces.Faces(verts, faces)
+            # step 3: decimate the surface mesh
+            
+            if self.options["mesh"]["decimate_mesh"]:
+                self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
+                r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
+                dmesh = gus.Faces(r[1], r[2])
+                # gus.show(dmesh)
+            else:
+                dmesh = surf_mesh
+
+            fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
+            self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
+            gus.io.meshio.export(fname_surf, dmesh)
+
+            self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
+            use_pygalmesh = False
+            if use_pygalmesh:
+                import pygalmesh
+                mesh_pg = pygalmesh.generate_volume_mesh_from_surface_mesh(
+                    fname_surf,
+
+                )
+                mesh = gus.Volumes(mesh_pg.points, mesh_pg.cells[1].data)
+            else:
+                t_in = tetgenpy.TetgenIO()
+                t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
+                t_out = tetgenpy.tetrahedralize("p", t_in) #pqa
+
+                tets = np.vstack(t_out.tetrahedra())
+                verts = t_out.points()
+
+                mesh = gus.Volumes(verts, tets)
+                # gus.show(mesh, interactive=False)
+
         faces = mesh.to_faces(False)
         boundary_faces = faces.single_faces()
 
@@ -335,7 +360,7 @@ class struct_optimization():
 
         self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
-        
+        self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)
 
     def save_and_clear(self, temp_current_simulation_folder):
@@ -376,13 +401,13 @@ class struct_optimization():
         return result
 
 
-    def load_results(self, as_np_array=False):
-        with open(self.optimization_folder/"results.json", "r") as f:
-            self.optimization_results = json.load(f)
-        if as_np_array:
-            return np.array([self.optimization_results["moment"],
-                             self.optimization_results["force"],
-                             self.optimization_results["objective"]]).T
+    # def load_results(self, as_np_array=False):
+    #     with open(self.optimization_folder/"results.json", "r") as f:
+    #         self.optimization_results = json.load(f)
+    #     if as_np_array:
+    #         return np.array([self.optimization_results["moment"],
+    #                          self.optimization_results["force"],
+    #                          self.optimization_results["objective"]]).T
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
@@ -413,8 +438,8 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    optimization = struct_optimization("simulations/optimization_double_lattice")
+    optimization = struct_optimization("simulations/optimization_double_lattice_flexicubes")
     latent = ws.load_latent_vectors(optimization.experiment_directory, 
                                     optimization.checkpoint).to("cpu").numpy()
-    optimization.set_x0(latent[1])
+    optimization.set_x0(np.zeros_like(latent[0]))
     optimization.run_optimization()

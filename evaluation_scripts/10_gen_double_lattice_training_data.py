@@ -16,7 +16,7 @@ splitdir = "data/splits"
 SDF_sampler = sdf_sampler.SDFSampler(outdir, splitdir)
 
 sdfs = []
-
+index = 0
 for i, t1 in enumerate(np.linspace(0.01, 0.2, 20)):
     for j, t2 in enumerate(np.linspace(0.01, 0.2, 20)):
         tile_creator = DoubleLatticeExtruded()
@@ -25,8 +25,9 @@ for i, t1 in enumerate(np.linspace(0.01, 0.2, 20)):
         # scale from [0,1] to [-1,1]
         mesh.vertices = mesh.vertices*2 - np.array([1, 1, 1])
         t_mesh = trimesh.Trimesh(vertices=mesh.vertices, faces=mesh.faces)
-        t_mesh.export(geometry_dir + f"/double_lattice_{t1:.2f}_{t2:.2f}.ply")
+        t_mesh.export(geometry_dir + f"/{index}_double_lattice_{t1:.2f}_{t2:.2f}.ply")
         sdfs.append(sdf_sampler.SDFfromMesh(t_mesh))
+        index = index + 1
 
 dataset_info = {
     "dataset_name": "microstructure",
