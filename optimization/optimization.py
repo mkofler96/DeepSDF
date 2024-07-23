@@ -33,7 +33,7 @@ import numpy as np
 import splinepy as sp
 import os
 import gustaf as gus
-from optimization import config
+from . import config
 import socket
 import os
 import vedo
@@ -135,12 +135,12 @@ class struct_optimization():
     def objective(self, x):
         if not self._in_cache(x):
              self._compute_solution(x) # this fills the cache with objective and constraint values for x
-        return self.cache[str(x)]["objective"]
+        return self.cache[str(x.round(8))]["objective"]
 
     def constraint(self, x):
         if not self._in_cache(x):
              self._compute_solution(x) # same idea
-        return self.cache[str(x)]["constraint"]
+        return self.cache[str(x.round(8))]["constraint"]
 
     def set_x0(self, x0):
             
@@ -333,7 +333,8 @@ class struct_optimization():
             if np.max(verts[faces.const_faces[i], 0]) < 3e-2:
                 BC[1].append(i)
             # mark boundaries at x = 1 with 2
-            elif np.min(verts[faces.const_faces[i], 0]) > 4.999:
+            elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 4.5,
+                                np.min(verts[faces.const_faces[i], 1]) > 1.999):
                 BC[2].append(i)
             # mark rest of the boundaries with 3
             else:
@@ -358,7 +359,7 @@ class struct_optimization():
         else:
             volume = cl_beam.volume
 
-        self.cache[str(control_point_values)] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
+        self.cache[str(control_point_values.round(8))] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
         self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)
@@ -401,22 +402,6 @@ class struct_optimization():
         return result
 
 
-    def load_results(self, as_np_array=False):
-        with open(self.optimization_folder/"results.json", "r") as f:
-            self.optimization_results = json.load(f)
-        if as_np_array:
-            return np.array([self.optimization_results["compliance"],
-                             self.optimization_results["volume"],
-                             self.optimization_results["design_vector"]]).T
-        
-    def plot_convergence(self):
-        self.load_results(as_np_array=False)
-        plt.plot(np.array(self.optimization_results["compliance"])/self.optimization_results["compliance"][0], label="Objective")
-        # todo: hardcoded constraint 6
-        plt.plot(np.array(self.optimization_results["volume"])/6, label="Constraint")
-        plt.legend()
-        plt.show()
-
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
     if not os.path.exists(sim_path):
@@ -440,14 +425,3 @@ def copy_all_simulations(source_dir, destination_dir):
                 print(f"Copying {file} to {destination_dir/folder/file.name}")
     # for pathlib.Path(source_dir).glob("*/"):
     #     shutil.copytree(source_dir, destination_dir)
-
-
-if __name__ == "__main__":
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    optimization = struct_optimization("simulations/optimization_double_lattice_flexicubes")
-    latent = ws.load_latent_vectors(optimization.experiment_directory, 
-                                    optimization.checkpoint).to("cpu").numpy()
-    optimization.set_x0(np.zeros_like(latent[0]))
-    optimization.run_optimization()
