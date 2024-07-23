@@ -20,7 +20,7 @@ import mimi
 import gustaf as gus
 import trimesh
 import tempfile
-
+import matplotlib.pyplot as plt
 import subprocess
 
 import pathlib
@@ -33,7 +33,7 @@ import numpy as np
 import splinepy as sp
 import os
 import gustaf as gus
-import config
+from optimization import config
 import socket
 import os
 import vedo
@@ -401,13 +401,21 @@ class struct_optimization():
         return result
 
 
-    # def load_results(self, as_np_array=False):
-    #     with open(self.optimization_folder/"results.json", "r") as f:
-    #         self.optimization_results = json.load(f)
-    #     if as_np_array:
-    #         return np.array([self.optimization_results["moment"],
-    #                          self.optimization_results["force"],
-    #                          self.optimization_results["objective"]]).T
+    def load_results(self, as_np_array=False):
+        with open(self.optimization_folder/"results.json", "r") as f:
+            self.optimization_results = json.load(f)
+        if as_np_array:
+            return np.array([self.optimization_results["compliance"],
+                             self.optimization_results["volume"],
+                             self.optimization_results["design_vector"]]).T
+        
+    def plot_convergence(self):
+        self.load_results(as_np_array=False)
+        plt.plot(np.array(self.optimization_results["compliance"])/self.optimization_results["compliance"][0], label="Objective")
+        # todo: hardcoded constraint 6
+        plt.plot(np.array(self.optimization_results["volume"])/6, label="Constraint")
+        plt.legend()
+        plt.show()
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)

@@ -6,5 +6,5 @@ setup(
    description='creates SDF samples',
    author='Michael Kofler',
    author_email='michael.kofler@tuwien.ac.at',
-   packages=['sdf_sampler', 'deep_sdf'],  #same as name
+   packages=['sdf_sampler', 'deep_sdf', 'optimization'],  #same as name
 )
