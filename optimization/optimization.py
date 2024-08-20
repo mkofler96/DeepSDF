@@ -314,13 +314,13 @@ class struct_optimization():
             else:
                 t_in = tetgenpy.TetgenIO()
                 t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
+                # gus.show(dmesh)
                 t_out = tetgenpy.tetrahedralize("p", t_in) #pqa
 
                 tets = np.vstack(t_out.tetrahedra())
                 verts = t_out.points()
 
                 mesh = gus.Volumes(verts, tets)
-                # gus.show(mesh, interactive=False)
 
         faces = mesh.to_faces(False)
         boundary_faces = faces.single_faces()
@@ -344,7 +344,8 @@ class struct_optimization():
         simulation_name = temp_current_simulation_folder
         output_dir = temp_current_simulation_folder.parent
         self.logging.log(logging.INFO, f"Running simulation with mesh {fname_volume}")
-        cl_beam = mimi.LECantileverBeam(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name))
+        use_direct_solver = False
+        cl_beam = mimi.LECantileverBeam(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name),use_direct_solver)
         cl_beam.solve()
         compliance = cl_beam.compliance
 
