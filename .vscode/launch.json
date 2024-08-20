@@ -2,6 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: Plot Convergence",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "-o simulations/optimization_double_lattice_flexicubes"
+        },
+        {
             "name": "Debug Training from 50",
             "type": "debugpy",
             "request": "launch",
@@ -10,12 +18,13 @@
             "args": "-e experiments/simple_geom --batch_split 5"
         },
         {
-            "name": "Debug Reconstruction",
+            "name": "Create Libtorch Executable",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "python reconstruct.py -e test_experiment -d data -s data/splits/wang_test_reduced.json -c 45"
+            "args": "-e experiments/corner_spheres_only_small_network -c 1000",
+            "justMyCode": false
         },
         {
             "name": "Python: Current File",

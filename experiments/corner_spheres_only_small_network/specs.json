@@ -1,0 +1,46 @@
+{
+    "Description" : "This experiment learns a shape representation for a simple microstructure using a very small network.",
+    "DataSource" : "data",
+    "NetworkArch" : "deep_sdf_decoder",
+    "TrainSplit": "data/splits/corner_spheres.json",
+    "TestSplit": "data/splits/corner_spheres.json",
+    "ReconstructionSplit": "",
+    "NetworkSpecs" : {
+      "dims" : [64, 64, 64, 64],
+      "dropout" : [0, 1, 2, 3, 4, 5, 6, 7],
+      "dropout_prob" : 0.2,
+      "norm_layers" : [0, 1, 2, 3, 4, 5, 6, 7],
+      "latent_in" : [1],
+      "xyz_in_all" : false,
+      "use_tanh" : true,
+      "latent_dropout" : false,
+      "weight_norm" : true,
+      "geom_dimension": 3
+      },
+    "CodeLength" : 2,
+    "NumEpochs" : 1000,
+    "SnapshotFrequency" : 200,
+    "AdditionalSnapshots" : [],
+    "LearningRateSchedule" : [
+      {
+        "Type" : "Step",
+        "Initial" : 0.0005,
+        "Interval" : 500,
+        "Factor" : 0.5
+      },
+      {
+        "Type" : "Step",
+        "Initial" : 0.001,
+        "Interval" : 500,
+        "Factor" : 0.5
+      }],
+    "SamplesPerScene" : 16000,
+    "ScenesPerBatch" : 10,
+    "DataLoaderThreads" : 2,
+    "ClampingDistance" : 0.1,
+    "CodeRegularization" : true,
+    "CodeRegularizationLambda" : 1e-4,
+    "CodeBound" : 1.0
+  }
+  
+  

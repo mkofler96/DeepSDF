@@ -235,9 +235,9 @@ class struct_optimization():
         N = [N_base * t+1 for t in tiling]
 
         cap_border_dict = {
-            "x0": {"cap": 1, "measure": 0.1},
-            "x1": {"cap": 1, "measure": 0.1},
-            "y0": {"cap": 1, "measure": 0.1},
+            "x0": {"cap": 1, "measure": 0.05},
+            # "x1": {"cap": 1, "measure": 0.1},
+            # "y0": {"cap": 1, "measure": 0.1},
             "y1": {"cap": 1, "measure": 0.1},
         }
         self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
@@ -267,9 +267,7 @@ class struct_optimization():
             
             # Free Form Deformation
             # geometric parameters
-            width = 5
-            height = 2
-            depth = 1
+            width, height, depth = self.options["mesh"]["macro_dimensions"]
 
             control_points=np.array([
                     [0, 0, 0],
@@ -330,11 +328,11 @@ class struct_optimization():
         BC = {1: [], 2: [], 3: []} 
         for i in boundary_faces:
             # mark boundaries at x = 0 with 1
-            if np.max(verts[faces.const_faces[i], 0]) < 3e-2:
+            if np.max(verts[faces.const_faces[i], 0]) < 3e-2*height:
                 BC[1].append(i)
             # mark boundaries at x = 1 with 2
-            elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 4.5,
-                                np.min(verts[faces.const_faces[i], 1]) > 1.999):
+            elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.9*width,
+                                np.min(verts[faces.const_faces[i], 1]) > 0.999*height):
                 BC[2].append(i)
             # mark rest of the boundaries with 3
             else:

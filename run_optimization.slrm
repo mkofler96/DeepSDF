@@ -1,0 +1,7 @@
+#!/bin/bash
+#SBATCH --partition=pro
+#SBATCH --nodelist=neptune
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=100G
+
+/usr2/mkofler/.conda/envs/kaolin/bin/python/bin/python optimization/optimization.py
