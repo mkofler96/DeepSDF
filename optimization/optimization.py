@@ -357,8 +357,8 @@ class struct_optimization():
             self.logging.log(logging.INFO, f"Volume calculated with trimesh: {volume} | with MFEM: {cl_beam.volume}")
         else:
             volume = cl_beam.volume
-
-        self.cache[str(control_point_values.round(8))] = {"objective": compliance, "constraint": 6-volume}  # f, g are scalars
+        vol_constraint = self.options["general"]["volume_constraint"]
+        self.cache[str(control_point_values.round(8))] = {"objective": compliance, "constraint": vol_constraint-volume}  # f, g are scalars
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
         self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)

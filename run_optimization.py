@@ -11,5 +11,5 @@ if __name__ == "__main__":
     latent = ws.load_latent_vectors(optimization.experiment_directory, 
                                     optimization.checkpoint).to("cpu").numpy()
     # optimization.set_x0(np.zeros_like(latent[290]))
-    optimization.set_x0(np.array([0.5, 0.5]))
+    optimization.set_x0(np.array([0.25, 0.25]))
     optimization.run_optimization()
