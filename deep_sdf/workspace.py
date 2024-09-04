@@ -240,3 +240,10 @@ def load_trained_model(experiment_directory: str, checkpoint: str):
         return decoder.module.cuda()
     else:
         return decoder.module
+
+def print_model_specifications(experiment_directory: str):
+    specs = load_experiment_specifications(experiment_directory)
+    print("Model Specifications:")
+    for key in specs:
+        print(f"  {key}: {specs[key]}")
+    print("\n")
