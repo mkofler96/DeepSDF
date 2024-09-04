@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --partition=GPU-a6000
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --time=02:00:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=10G
+#SBATCH --gres=gpu:a6000:1
+#SBATCH --output=logs/process_all_notebooks_%j.out
+/home/michael.kofler/miniforge3/envs/pytorch/bin/jupyter nbconvert --to html 00_schematic_level_sets.ipynb --execute --output-dir notebook_outputs
+/home/michael.kofler/miniforge3/envs/pytorch/bin/jupyter nbconvert --to html 01_generate_training_screenshots.ipynb --execute --output-dir notebook_outputs
+/home/michael.kofler/miniforge3/envs/pytorch/bin/jupyter nbconvert --to html 02_generate_single_interpolation.ipynb --execute --output-dir notebook_outputs
+/home/michael.kofler/miniforge3/envs/pytorch/bin/jupyter nbconvert --to html 03_generate_structure_screenshots.ipynb --execute --output-dir notebook_outputs
+/home/michael.kofler/miniforge3/envs/pytorch/bin/jupyter nbconvert --to html 04_plot_derivatives.ipynb --execute --output-dir notebook_outputs
+/home/michael.kofler/miniforge3/envs/pytorch/bin/python generate_main_html.py
