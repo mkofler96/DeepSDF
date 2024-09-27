@@ -81,3 +81,32 @@ def get_MS(decoder, latent_vector):
     x = xf.cpu().detach().numpy()
     y = yf.cpu().detach().numpy()
     return x, y, z
+
+
+import torch
+import logging
+
+def format_memory_size(size_in_bytes):
+    units = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
+    size = size_in_bytes
+    unit_index = 0
+    
+    while size >= 1024 and unit_index < len(units) - 1:
+        size /= 1024
+        unit_index += 1
+    
+    return f"{size:6.2f}{units[unit_index]}"
+
+def log_memory_usage():
+    memory_allocated = torch.cuda.memory_allocated(0)
+    memory_reserved = torch.cuda.memory_reserved(0)
+    
+    # Format memory values
+    memory_allocated_str = format_memory_size(memory_allocated)
+    memory_reserved_str = format_memory_size(memory_reserved)
+    
+    # Single line output with aligned values
+    output = (f"torch.cuda.memory_allocated: {memory_allocated_str} | "
+              f"torch.cuda.memory_reserved: {memory_reserved_str}")
+    
+    logging.debug(output)

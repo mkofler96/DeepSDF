@@ -6,6 +6,10 @@ deep_sdf/data.py
 deep_sdf/mesh.py
 deep_sdf/utils.py
 deep_sdf/workspace.py
+deep_sdf/metrics/__init__.py
+deep_sdf/metrics/chamfer.py
+deep_sdf/networks/__init__.py
+deep_sdf/networks/deep_sdf_decoder.py
 optimization/__init__.py
 optimization/config.py
 optimization/optimization.py
@@ -18,4 +22,5 @@ sdf_sampler/snappy_3d.py
 sdf_sampler.egg-info/PKG-INFO
 sdf_sampler.egg-info/SOURCES.txt
 sdf_sampler.egg-info/dependency_links.txt
+sdf_sampler.egg-info/requires.txt
 sdf_sampler.egg-info/top_level.txt

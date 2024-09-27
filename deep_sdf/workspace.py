@@ -54,7 +54,7 @@ def load_model_parameters(experiment_directory, checkpoint, decoder):
 def build_decoder(experiment_directory, experiment_specs):
 
     arch = __import__(
-        "networks." + experiment_specs["NetworkArch"], fromlist=["Decoder"]
+        "deep_sdf.networks." + experiment_specs["NetworkArch"], fromlist=["Decoder"]
     )
 
     latent_size = experiment_specs["CodeLength"]
@@ -88,8 +88,8 @@ def load_latent_vectors(experiment_directory, checkpoint):
 
     if not os.path.isfile(filename):
         raise Exception(
-            "The experiment directory ({}) does not include a latent code file"
-            + " for checkpoint '{}'".format(experiment_directory, checkpoint)
+            f"The experiment directory ({experiment_directory}) does not include a latent code file"
+            + " for checkpoint '{checkpoint}'"
         )
 
     data = torch.load(filename)

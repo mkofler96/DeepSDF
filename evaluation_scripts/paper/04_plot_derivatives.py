@@ -10,7 +10,6 @@ import numpy as np
 import gustaf as gus
 import splinepy as sp
 
-from sdf_sampler.plotting import scatter_contour_at_z_level
 import matplotlib.pyplot as plt
 
 import torch

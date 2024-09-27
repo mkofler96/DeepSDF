@@ -165,7 +165,7 @@ class CapBorderDict(TypedDict):
     z0: CapType = {"cap": -1, "measure": 0}
     z1: CapType = {"cap": -1, "measure": 0}
 
-def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False, use_flexicubes=False, device=None, output_tetmesh=False
+def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, save_ply_file = False, use_flexicubes=False, device=None, output_tetmesh=False, compute_derivatives=False
 ):
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -309,12 +309,22 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
         if use_flexicubes:
             # flexicubes has the possibility to output tetmesh, but it's extremely slow
             # and often fails
-            verts, faces, loss = reconstructor(voxelgrid_vertices=torch.tensor(samples_orig[:, :3]).to(device),
-                                        scalar_field=sdf_values.view(-1), 
+            recon_from_latent = lambda l: reconstructor(voxelgrid_vertices=torch.tensor(samples_orig[:, :3]).to(device),
+                                        scalar_field=l, 
                                         cube_idx=cube_idx,
                                         resolution=tuple(N-1),
                                         output_tetmesh=output_tetmesh)
+            verts, faces, loss = recon_from_latent(sdf_values.view(-1))
+            if compute_derivatives:
+                # this is wrong: this computes the jacobian with respect to the sdf values, not the latent vector
+                # todo: refactor this whole function and compute the jacobian with respect to the latent vector
+                jac = torch.autograd.functional.jacobian(lambda l: recon_from_latent(l)[0], sdf_values.view(-1), strict=False, vectorize=True)
+                tot_jac = []
+                basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3], -1, 1))
+                tot_jac = np.matmul(jac.detach().cpu().numpy(), basis_eval)
             verts = (verts+1)/2
+            
+            return verts, faces, tot_jac
         else:
             if not isinstance(voxel_size, list):
                 voxel_size = [voxel_size]*3
@@ -326,3 +336,127 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
             # scale factor 2 to get to 0 to 1
             verts = (verts - voxel_size)/2
         return verts, faces
+    
+
+
+def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N=256, max_batch=32 ** 3, offset=None, scale=None, cap_border_dict=CapBorderDict, device=None, output_tetmesh=False, compute_derivatives=False
+):
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    try:
+        from kaolin.non_commercial import FlexiCubes
+    except:
+        raise ModuleNotFoundError("This functionality requires kaolin library")
+
+    if isinstance(tiling, list):
+        if len(tiling) != 3:
+            raise ValueError("Tiling must be a list of 3 integers")
+        tiling = np.array(tiling)
+    elif isinstance(tiling, int):
+        tiling = np.array([tiling, tiling, tiling])
+    else:
+        raise ValueError("Tiling must be a list or an integer")
+    
+    # add 1 on each side to slightly include the border
+    if isinstance(N, list):
+        if len(N) != 3:
+            raise ValueError("Number of grid points must be a list of 3 integers")
+        N = np.array(N) + 2
+    elif isinstance(N, int):
+        N = np.array([N, N, N]) + 2
+    else:
+        raise ValueError("Number of grid points must be a list or an integer")
+
+    start = time.time()
+
+    decoder.eval()
+
+    # prepare mesh
+    reconstructor = FlexiCubes(device=device)
+    samples_orig, cube_idx = reconstructor.construct_voxel_grid(resolution=tuple(N))
+    samples_orig = samples_orig.to(device)
+    cube_idx = cube_idx.to(device)
+    # transform samples from [-0.5, 0.5] to [-1.05, 1.05]
+    samples_orig = samples_orig*2.1
+    N_tot = samples_orig.shape[0]
+    N = N + 1
+
+    tx, ty, tz = tiling
+
+    def transform(x, t):
+        p = 2/t
+        return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+    
+    samples = torch.zeros(N_tot, 4)
+    samples[:, 0] = transform(samples_orig[:, 0], tx)
+    samples[:, 1] = transform(samples_orig[:, 1], ty)
+    samples[:, 2] = transform(samples_orig[:, 2], tz)
+
+     
+    num_samples = N_tot
+
+    samples.requires_grad = False
+
+    inside_domain = torch.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
+    lat_vec_red = torch.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]), dtype=torch.float32)
+    lat_vec_red[inside_domain] = torch.tensor(latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].cpu().numpy()), dtype=torch.float32)
+    lat_vec_red = lat_vec_red.to(device)
+    samples = samples.to(device)
+    def evaluate_network(lat_vec_red):
+        queries = torch.hstack([lat_vec_red, samples[:, 0:3]])
+        sdf_values = (
+                deep_sdf.utils.decode_sdf(decoder, None, queries)
+                .squeeze(1)
+            )
+        sample_time = time.time()
+        print("sampling takes: %f" % (sample_time - start))
+        for loc, cap_dict in cap_border_dict.items():
+            cap, measure = cap_dict["cap"], cap_dict["measure"]
+            dim, multiplier = location_lookup[loc]
+            border_sdf = (samples_orig[:, dim] - multiplier*(1-measure))*-multiplier
+            if cap == -1:
+                sdf_values = torch.maximum(sdf_values, -border_sdf)
+            elif cap == 1:
+                sdf_values = torch.minimum(sdf_values, border_sdf)
+            else:
+                raise ValueError("Cap must be -1 or 1")
+        end = time.time()
+    
+        #cap everything outside the unit cube
+
+        for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
+            border_sdf = (samples_orig[:, dim] - measure)*-measure
+            sdf_values = torch.maximum(sdf_values, -border_sdf)
+
+
+        sdf_values = sdf_values.reshape(N[0], N[1], N[2])
+        # sdf_values = torch.tensor(sdf_values).to(device)
+
+        
+        # flexicubes has the possibility to output tetmesh, but it's extremely slow
+        # and often fails
+        verts, faces, loss = reconstructor(voxelgrid_vertices=samples_orig[:, :3],
+                                    scalar_field=sdf_values.view(-1), 
+                                    cube_idx=cube_idx,
+                                    resolution=tuple(N-1),
+                                    output_tetmesh=output_tetmesh)
+        return verts, faces
+    verts, faces = evaluate_network(lat_vec_red)
+    tot_jac = []
+    deep_sdf.utils.log_memory_usage()
+    if compute_derivatives:
+
+        jac = torch.autograd.functional.jacobian(lambda l: evaluate_network(l)[0], lat_vec_red)
+        torch.cuda.empty_cache()
+        deep_sdf.utils.log_memory_usage()
+        basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
+        # slow version
+        # for i in range(jac.shape[3]):
+        #     tot_jac.append(np.matmul(jac.detach().cpu().numpy()[:,:,:,i], basis_eval))
+        # tot_jac = np.dstack(tot_jac)
+        jac_cpu = jac.detach().cpu().numpy()
+        tot_jac = np.einsum('ijkl,km->ijml', jac_cpu, basis_eval)
+    verts = (verts+1)/2
+    
+    return verts, faces, tot_jac
