@@ -272,7 +272,7 @@ def main_function(experiment_directory, continue_from, batch_split):
     else:
         reconstruction_split = None
 
-    arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
+    arch = __import__("deep_sdf.networks." + specs["NetworkArch"], fromlist=["Decoder"])
 
     logging.debug(specs["NetworkSpecs"])
 
