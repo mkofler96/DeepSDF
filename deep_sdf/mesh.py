@@ -445,18 +445,75 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     verts, faces = evaluate_network(lat_vec_red)
     tot_jac = []
     deep_sdf.utils.log_memory_usage()
+    save_memory = True
+    tstart = time.time()
     if compute_derivatives:
+        # shape of SDF jacobian = dVerts/dLatent: (n_verts, dim_phys, N_eval_points, dim_latent)
+        # shape of Spline Jacobian = dLatent/dControl: (N_eval_points, n_control_points)
+        # shape of Total Jacobian = dVerts/dControl: (n_verts, dim_phys, n_control_points, dim_latent)
 
-        jac = torch.autograd.functional.jacobian(lambda l: evaluate_network(l)[0], lat_vec_red)
-        torch.cuda.empty_cache()
-        deep_sdf.utils.log_memory_usage()
-        basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
-        # slow version
-        # for i in range(jac.shape[3]):
-        #     tot_jac.append(np.matmul(jac.detach().cpu().numpy()[:,:,:,i], basis_eval))
-        # tot_jac = np.dstack(tot_jac)
-        jac_cpu = jac.detach().cpu().numpy()
-        tot_jac = np.einsum('ijkl,km->ijml', jac_cpu, basis_eval)
+        if save_memory:
+            basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
+            # slow version
+            # for i in range(jac.shape[3]):
+            #     tot_jac.append(np.matmul(jac.detach().cpu().numpy()[:,:,:,i], basis_eval))
+            # tot_jac = np.dstack(tot_jac)
+
+            # small loop to loop over latent dimensions
+            physical_dim = samples.shape[1]-1
+            latent_dim = lat_vec_red.shape[1]
+            n_samples = samples.shape[0]
+            n_verts = verts.shape[0]
+            n_control_points = basis_eval.shape[1]
+
+            basis_eval_torch = torch.from_numpy(basis_eval).to(device, dtype=torch.float32)
+
+            tot_jac = []
+            for i_lat in range(latent_dim):
+                cpt_jac = []
+                for i_cpt in range(n_control_points):
+                    # dLatent / dControl is the same for each latent dimension
+                    dLatent_dControl = basis_eval_torch[:, i_cpt]
+                    # function = lambda l: evaluate_network(l.reshape(-1,latent_dim))[0].reshape(-1)
+                    def function(l):
+                        net_in = lat_vec_red
+                        net_in[:, i_lat] = l
+                        return evaluate_network(net_in)[0]
+                    # shape of jacobian: [n_verts*physical_dim, n_samples*latent_dim]
+                    # shape of dLatent_dControl: [n_samples*latent_dim]
+                    # the commented code should output the same
+                    # dVerts_dLatent = torch.autograd.functional.jacobian(function, lat_vec_red.reshape(-1))
+                    # dVerts_dControl_matmul = torch.matmul(dVerts_dLatent, dLatent_dControl)
+                    _, dVerts_dControl_i = torch.autograd.functional.jvp(function, lat_vec_red[:,i_lat], v=dLatent_dControl)
+                    cpt_jac.append(dVerts_dControl_i.reshape(-1, physical_dim))
+                tot_jac.append(cpt_jac)
+                #                 # dLatent / dControl is the same for each latent dimension
+                # dLatent_dControl = basis_eval_torch[:,:, i_cpt].reshape(-1)
+                # function = lambda l: evaluate_network(l.reshape(-1,latent_dim))[0].reshape(-1)
+                # # shape of jacobian: [n_verts*physical_dim, n_samples*latent_dim]
+                # # shape of dLatent_dControl: [n_samples*latent_dim]
+                # # the commented code should output the same
+                # # dVerts_dLatent = torch.autograd.functional.jacobian(function, lat_vec_red.reshape(-1))
+                # # dVerts_dControl_matmul = torch.matmul(dVerts_dLatent, dLatent_dControl)
+                # _, dVerts_dControl_i = torch.autograd.functional.jvp(function, lat_vec_red.reshape(-1), v=dLatent_dControl)
+                # tot_jac.append(dVerts_dControl_i.reshape(-1, physical_dim))
+            torch.cuda.empty_cache()
+            deep_sdf.utils.log_memory_usage()
+            tot_jac = torch.stack([torch.stack(inner_jac, dim=2) for inner_jac in tot_jac], dim=3)
+            tot_jac_cpu = tot_jac.detach().cpu().numpy()
+        else:
+            jac = torch.autograd.functional.jacobian(lambda l: evaluate_network(l)[0], lat_vec_red)
+            torch.cuda.empty_cache()
+            deep_sdf.utils.log_memory_usage()
+            basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
+            # slow version
+            # for i in range(jac.shape[3]):
+            #     tot_jac.append(np.matmul(jac.detach().cpu().numpy()[:,:,:,i], basis_eval))
+            # tot_jac = np.dstack(tot_jac)
+            jac_cpu = jac.detach().cpu().numpy()
+            tot_jac_cpu = np.einsum('ijkl,km->ijml', jac_cpu, basis_eval)
+    t_finish = time.time() - tstart
+    logging.log(logging.INFO, f"Time for computing derivatives: {t_finish}")
     verts = (verts+1)/2
     
-    return verts, faces, tot_jac
+    return verts, faces, tot_jac_cpu
