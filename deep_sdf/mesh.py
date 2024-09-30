@@ -13,6 +13,10 @@ from enum import Enum
 
 import deep_sdf.utils
 
+try:
+    from kaolin.non_commercial import FlexiCubes
+except(ModuleNotFoundError):
+    logging.debug("This functionality requires kaolin library")
 
 def create_mesh(
     decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, device=None
@@ -170,11 +174,6 @@ def create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, filena
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    if use_flexicubes:
-        try:
-            from kaolin.non_commercial import FlexiCubes
-        except:
-            raise ModuleNotFoundError("The option use_flexicubes requires kaolin library")
 
     if isinstance(tiling, list):
         if len(tiling) != 3:
@@ -344,11 +343,6 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    try:
-        from kaolin.non_commercial import FlexiCubes
-    except:
-        raise ModuleNotFoundError("This functionality requires kaolin library")
-
     if isinstance(tiling, list):
         if len(tiling) != 3:
             raise ValueError("Tiling must be a list of 3 integers")
@@ -362,87 +356,27 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     if isinstance(N, list):
         if len(N) != 3:
             raise ValueError("Number of grid points must be a list of 3 integers")
-        N = np.array(N) + 2
+        N = np.array(N)
     elif isinstance(N, int):
-        N = np.array([N, N, N]) + 2
+        N = np.array([N, N, N])
     else:
         raise ValueError("Number of grid points must be a list or an integer")
 
-    start = time.time()
 
     decoder.eval()
+    flexi_cubes_constructor = FlexiCubes(device=device)
+    samples, samples_orig, lat_vec_red, cube_idx = prepare_samples(flexi_cubes_constructor, 
+                                                                    device, N, tiling, latent_vec_interpolation)
 
-    # prepare mesh
-    reconstructor = FlexiCubes(device=device)
-    samples_orig, cube_idx = reconstructor.construct_voxel_grid(resolution=tuple(N))
-    samples_orig = samples_orig.to(device)
-    cube_idx = cube_idx.to(device)
-    # transform samples from [-0.5, 0.5] to [-1.05, 1.05]
-    samples_orig = samples_orig*2.1
-    N_tot = samples_orig.shape[0]
-    N = N + 1
-
-    tx, ty, tz = tiling
-
-    def transform(x, t):
-        p = 2/t
-        return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
-    
-    samples = torch.zeros(N_tot, 4)
-    samples[:, 0] = transform(samples_orig[:, 0], tx)
-    samples[:, 1] = transform(samples_orig[:, 1], ty)
-    samples[:, 2] = transform(samples_orig[:, 2], tz)
-
-     
-    num_samples = N_tot
-
-    samples.requires_grad = False
-
-    inside_domain = torch.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
-    lat_vec_red = torch.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]), dtype=torch.float32)
-    lat_vec_red[inside_domain] = torch.tensor(latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].cpu().numpy()), dtype=torch.float32)
-    lat_vec_red = lat_vec_red.to(device)
-    samples = samples.to(device)
-    def evaluate_network(lat_vec_red):
-        queries = torch.hstack([lat_vec_red, samples[:, 0:3]])
-        sdf_values = (
-                deep_sdf.utils.decode_sdf(decoder, None, queries)
-                .squeeze(1)
-            )
-        sample_time = time.time()
-        print("sampling takes: %f" % (sample_time - start))
-        for loc, cap_dict in cap_border_dict.items():
-            cap, measure = cap_dict["cap"], cap_dict["measure"]
-            dim, multiplier = location_lookup[loc]
-            border_sdf = (samples_orig[:, dim] - multiplier*(1-measure))*-multiplier
-            if cap == -1:
-                sdf_values = torch.maximum(sdf_values, -border_sdf)
-            elif cap == 1:
-                sdf_values = torch.minimum(sdf_values, border_sdf)
-            else:
-                raise ValueError("Cap must be -1 or 1")
-        end = time.time()
-    
-        #cap everything outside the unit cube
-
-        for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
-            border_sdf = (samples_orig[:, dim] - measure)*-measure
-            sdf_values = torch.maximum(sdf_values, -border_sdf)
+    print(f"Samples Shape: {samples.shape}")
+    print(f"Samples Orig Shape: {samples_orig.shape}")
+    print(f"Latent Vector Shape: {lat_vec_red.shape}")
+    print(f"Cube Index Shape: {cube_idx.shape}")
+    print(f"Requested Shape: {torch.prod(torch.tensor(N))}")
 
 
-        sdf_values = sdf_values.reshape(N[0], N[1], N[2])
-        # sdf_values = torch.tensor(sdf_values).to(device)
-
-        
-        # flexicubes has the possibility to output tetmesh, but it's extremely slow
-        # and often fails
-        verts, faces, loss = reconstructor(voxelgrid_vertices=samples_orig[:, :3],
-                                    scalar_field=sdf_values.view(-1), 
-                                    cube_idx=cube_idx,
-                                    resolution=tuple(N-1),
-                                    output_tetmesh=output_tetmesh)
-        return verts, faces
-    verts, faces = evaluate_network(lat_vec_red)
+    verts, faces = evaluate_network(lat_vec_red,
+                                    samples, samples_orig, decoder, N, cap_border_dict, cube_idx, output_tetmesh, flexi_cubes_constructor)
     tot_jac = []
     deep_sdf.utils.log_memory_usage()
     save_memory = True
@@ -462,8 +396,6 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
             # small loop to loop over latent dimensions
             physical_dim = samples.shape[1]-1
             latent_dim = lat_vec_red.shape[1]
-            n_samples = samples.shape[0]
-            n_verts = verts.shape[0]
             n_control_points = basis_eval.shape[1]
 
             basis_eval_torch = torch.from_numpy(basis_eval).to(device, dtype=torch.float32)
@@ -475,16 +407,16 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
                     # dLatent / dControl is the same for each latent dimension
                     dLatent_dControl = basis_eval_torch[:, i_cpt]
                     # function = lambda l: evaluate_network(l.reshape(-1,latent_dim))[0].reshape(-1)
-                    def function(l):
-                        net_in = lat_vec_red
-                        net_in[:, i_lat] = l
-                        return evaluate_network(net_in)[0]
+                    def verts_from_latent(single_latent_entry):
+                        modified_latent_vector = lat_vec_red
+                        modified_latent_vector[:, i_lat] = single_latent_entry
+                        return evaluate_network(modified_latent_vector, samples, samples_orig, decoder, N, cap_border_dict, cube_idx, output_tetmesh, flexi_cubes_constructor)[0]
                     # shape of jacobian: [n_verts*physical_dim, n_samples*latent_dim]
                     # shape of dLatent_dControl: [n_samples*latent_dim]
                     # the commented code should output the same
                     # dVerts_dLatent = torch.autograd.functional.jacobian(function, lat_vec_red.reshape(-1))
                     # dVerts_dControl_matmul = torch.matmul(dVerts_dLatent, dLatent_dControl)
-                    _, dVerts_dControl_i = torch.autograd.functional.jvp(function, lat_vec_red[:,i_lat], v=dLatent_dControl)
+                    _, dVerts_dControl_i = torch.autograd.functional.jvp(verts_from_latent, lat_vec_red[:,i_lat], v=dLatent_dControl)
                     cpt_jac.append(dVerts_dControl_i.reshape(-1, physical_dim))
                 tot_jac.append(cpt_jac)
                 #                 # dLatent / dControl is the same for each latent dimension
@@ -517,3 +449,77 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     verts = (verts+1)/2
     
     return verts, faces, tot_jac_cpu
+
+
+def prepare_samples(flexi_cubes_constructor, device, N, tiling, latent_vec_interpolation):
+        # prepare samples
+    
+    samples_orig, cube_idx = flexi_cubes_constructor.construct_voxel_grid(resolution=tuple(N))
+    samples_orig = samples_orig.to(device)
+    cube_idx = cube_idx.to(device)
+    # transform samples from [-0.5, 0.5] to [-1.05, 1.05]
+    samples_orig = samples_orig*2.1
+    N_tot = samples_orig.shape[0]
+    N = N + 1
+
+    tx, ty, tz = tiling
+
+    def transform(x, t):
+        p = 2/t
+        return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+    
+    samples = torch.zeros(N_tot, 4)
+    samples[:, 0] = transform(samples_orig[:, 0], tx)
+    samples[:, 1] = transform(samples_orig[:, 1], ty)
+    samples[:, 2] = transform(samples_orig[:, 2], tz)
+
+
+    samples.requires_grad = False
+
+    inside_domain = torch.where((samples_orig[:, 0] >= -1) & (samples_orig[:, 0] <= 1) & (samples_orig[:, 1] >= -1) & (samples_orig[:, 1] <= 1) & (samples_orig[:, 2] >= -1) & (samples_orig[:, 2] <= 1))
+    lat_vec_red = torch.zeros((samples_orig.shape[0], latent_vec_interpolation.control_points[0].shape[0]), dtype=torch.float32)
+    lat_vec_red[inside_domain] = torch.tensor(latent_vec_interpolation.evaluate(samples_orig[:, 0:3][inside_domain].cpu().numpy()), dtype=torch.float32)
+    lat_vec_red = lat_vec_red.to(device)
+    samples = samples.to(device)
+    return samples, samples_orig, lat_vec_red, cube_idx
+
+
+def evaluate_network(lat_vec_red, samples, samples_orig, decoder, N, cap_border_dict, cube_idx, output_tetmesh, flexicubes_reconstructor):
+    queries = torch.hstack([lat_vec_red, samples[:, 0:3]])
+    start_time = time.time()
+    sdf_values = (
+            deep_sdf.utils.decode_sdf(decoder, None, queries)
+            .squeeze(1)
+        )
+    sample_time = time.time()
+    logging.debug("sampling takes: %f" % (sample_time - start_time))
+    for loc, cap_dict in cap_border_dict.items():
+        cap, measure = cap_dict["cap"], cap_dict["measure"]
+        dim, multiplier = location_lookup[loc]
+        border_sdf = (samples_orig[:, dim] - multiplier*(1-measure))*-multiplier
+        if cap == -1:
+            sdf_values = torch.maximum(sdf_values, -border_sdf)
+        elif cap == 1:
+            sdf_values = torch.minimum(sdf_values, border_sdf)
+        else:
+            raise ValueError("Cap must be -1 or 1")
+
+    #cap everything outside the unit cube
+
+    for (dim, measure) in zip([0, 0, 1, 1, 2, 2], [-1, 1, -1, 1, -1, 1]):
+        border_sdf = (samples_orig[:, dim] - measure)*-measure
+        sdf_values = torch.maximum(sdf_values, -border_sdf)
+
+
+    sdf_values = sdf_values.reshape(N[0]+1, N[1]+1, N[2]+1)
+    # sdf_values = torch.tensor(sdf_values).to(device)
+
+    
+    # flexicubes has the possibility to output tetmesh, but it's extremely slow
+    # and often fails
+    verts, faces, loss = flexicubes_reconstructor(voxelgrid_vertices=samples_orig[:, :3],
+                                scalar_field=sdf_values.view(-1), 
+                                cube_idx=cube_idx,
+                                resolution=tuple(N),
+                                output_tetmesh=output_tetmesh)
+    return verts, faces
