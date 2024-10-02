@@ -37,4 +37,5 @@ le_problem = le.LinearElasticityProblem()
 le_problem.read_mesh("test_mesh.mesh")
 
 
-le_problem.get_volume_and_compliance()
+le_problem.solve()
+le_problem.compute_compliance()

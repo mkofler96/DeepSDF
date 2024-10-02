@@ -368,11 +368,11 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     samples, samples_orig, lat_vec_red, cube_idx = prepare_samples(flexi_cubes_constructor, 
                                                                     device, N, tiling, latent_vec_interpolation)
 
-    print(f"Samples Shape: {samples.shape}")
-    print(f"Samples Orig Shape: {samples_orig.shape}")
-    print(f"Latent Vector Shape: {lat_vec_red.shape}")
-    print(f"Cube Index Shape: {cube_idx.shape}")
-    print(f"Requested Shape: {torch.prod(torch.tensor(N))}")
+    # print(f"Samples Shape: {samples.shape}")
+    # print(f"Samples Orig Shape: {samples_orig.shape}")
+    # print(f"Latent Vector Shape: {lat_vec_red.shape}")
+    # print(f"Cube Index Shape: {cube_idx.shape}")
+    # print(f"Requested Shape: {torch.prod(torch.tensor(N))}")
 
 
     verts, faces = evaluate_network(lat_vec_red,

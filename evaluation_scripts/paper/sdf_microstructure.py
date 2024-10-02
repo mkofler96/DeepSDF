@@ -47,10 +47,10 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1
     cap_border_dict = {
         "x0": {"cap": 1, "measure": 0.1},
         "x1": {"cap": 1, "measure": 0.1},
-        "y0": {"cap": 1, "measure": 0.1},
-        "y1": {"cap": 1, "measure": 0.1},
-        "z0": {"cap": -1, "measure": 0.1},
-        "z1": {"cap": -1, "measure": 0.1},
+        "y0": {"cap": -1, "measure": 0.1},
+        "y1": {"cap": -1, "measure": 0.1},
+        "z0": {"cap": 1, "measure": 0.1},
+        "z1": {"cap": 1, "measure": 0.1},
     }
 
     N = [N_base * t+1 for t in tiling]
@@ -59,8 +59,6 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1
     jac = jac.reshape((jac.shape[0], jac.shape[1], -1))
     verts_np = verts.detach().cpu().numpy()
     faces_np = faces.detach().cpu().numpy()
-
-    print(jac.shape)
 
 
     # "freeform deformation" of the mesh
@@ -138,13 +136,15 @@ def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False):
         if np.max(verts[faces.const_faces[i], 0]) < 3e-2:
             BC[1].append(i)
         # mark boundaries at x = 1 with 2
-        elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.49*width,
-                            np.min(verts[faces.const_faces[i], 1]) > 0.999*height):
-            BC[2].append(i)
+        # elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.49*width,
+        #                     np.min(verts[faces.const_faces[i], 1]) > 0.999*height):
+        #     BC[2].append(i)
         # mark rest of the boundaries with 3
         else:
             BC[3].append(i)
     volumes.BC = BC
+    print(f"Created Mesh with {len(volumes.volumes)} elements and {len(volumes.vertices)} vertices.")
+    print(f"{len(BC[1])} faces marked 1, {len(BC[2])} faces marked 2 and {len(BC[3])} faces marked 3")
     if show_mesh:
         gus.show(volumes)
     gus.io.mfem.export(filename, volumes)
