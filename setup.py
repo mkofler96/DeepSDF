@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
    name='sdf_sampler',
-   version='1.0',
+   version='1.1',
    description='creates SDF samples',
    author='Michael Kofler',
    author_email='michael.kofler@tuwien.ac.at',
@@ -18,6 +18,13 @@ setup(
       "embreex",
       "tetgenpy",
       "meshio",
+      "mfem",
+      "numba",
    ],
-   packages=['sdf_sampler', 'deep_sdf', 'deep_sdf.metrics', 'deep_sdf.networks', 'optimization'],  #same as name
+   packages=['sdf_sampler', 
+             'deep_sdf', 
+             'deep_sdf.metrics', 
+             'deep_sdf.networks',
+             'deep_sdf.analysis',
+             'optimization'],  #same as name
 )

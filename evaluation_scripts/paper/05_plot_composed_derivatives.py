@@ -3,9 +3,7 @@ import numpy as np
 import gustaf as gus
 import splinepy as sp
 import vedo
-vedo.settings.default_backend = 'k3d'
 
-from sdf_sampler.plotting import scatter_contour_at_z_level
 import matplotlib.pyplot as plt
 
 import torch
@@ -16,6 +14,7 @@ import argparse
 
 import igl
 
+vedo.settings.default_backend = 'k3d'
 params = {'text.usetex': False, 'mathtext.fontset': 'cm', 'axes.labelsize': 12}
 plt.rcParams.update(params)
 
@@ -29,7 +28,7 @@ args.debug = True
 deep_sdf.configure_logging(args)
 
 this_file_path = pathlib.Path(__file__).parent
-experiment_directory = "experiments/double_lattice_3D"
+experiment_directory = "experiments/round_cross_big_network"
 checkpoint = "1000"
 
 graded = True
@@ -37,16 +36,16 @@ graded = True
 latent = ws.load_latent_vectors(experiment_directory, checkpoint).to("cpu").numpy()
 decoder = ws.load_trained_model(experiment_directory, checkpoint).to(device)
 decoder.eval()
-latent_base = np.array([0, -0.4])
+latent_base = np.array([0])
+latent_base = latent[8]
 
 
-control_points_ungraded = np.array([latent_base]*4)
+control_points_ungraded = np.array([latent_base]*6)
 control_points_graded = control_points_ungraded
-control_points_graded[3] += 0.2
+# control_points_graded[3] += 0.2
 
-tiling = [1, 1, 1]
-N_base = 10
-
+tiling = [6, 3, 3]
+N_base = 30
 
 control_points_for_min_max = np.vstack([control_points_graded, control_points_ungraded])
 
@@ -58,8 +57,8 @@ else:
     control_points = np.vstack([control_points_ungraded, control_points_ungraded])
 
 latent_vec_interpolation = sp.BSpline(
-    degrees=[1, 1, 1],
-    knot_vectors=[[-1, -1, 1, 1], 
+    degrees=[2, 1, 1],
+    knot_vectors=[[-1,-1, -1, 1, 1, 1], 
                 [-1, -1, 1, 1], 
                 [-1, -1, 1, 1]],
     control_points=control_points,
