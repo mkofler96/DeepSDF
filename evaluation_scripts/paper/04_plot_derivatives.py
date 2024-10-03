@@ -1,26 +1,16 @@
-import kaolin
-import torch
-import vedo.mesh
-import gustaf as gus
-import numpy as np
-import vedo
-import matplotlib.pyplot as plt
-
-import numpy as np
-import gustaf as gus
-import splinepy as sp
-
-import matplotlib.pyplot as plt
-
-import torch
-from deep_sdf import workspace as ws
-import deep_sdf.utils
-from deep_sdf.mesh import CapBorderDict, location_lookup
 import pathlib
+
+import gustaf as gus
+import kaolin
+import matplotlib.pyplot as plt
+import torch
+
+import deep_sdf.utils
+from deep_sdf import workspace as ws
+from deep_sdf.mesh import location_lookup
 
 this_folder = pathlib.Path(__file__).parent
 
-import igl
 params = {'text.usetex': False, 'mathtext.fontset': 'cm', 'axes.labelsize': 12}
 plt.rcParams.update(params)
 
@@ -78,7 +68,7 @@ sdf_values = deep_sdf_function(samples, parameter)
 output_tetmesh = False
 
 verts, faces, loss = reconstructor(voxelgrid_vertices=samples,
-                            scalar_field=sdf_values.view(-1), 
+                            scalar_field=sdf_values.view(-1),
                             cube_idx=cube_idx,
                             resolution=N,
                             output_tetmesh=output_tetmesh)
@@ -91,7 +81,7 @@ mesh = gus.Faces(verts_np, faces_np)
 def verts_from_param(param):
     sdf_values = deep_sdf_function(samples, param)
     verts, faces, loss = reconstructor(voxelgrid_vertices=samples,
-                            scalar_field=sdf_values.view(-1), 
+                            scalar_field=sdf_values.view(-1),
                             cube_idx=cube_idx,
                             resolution=N,
                             output_tetmesh=output_tetmesh)
@@ -101,7 +91,6 @@ faces = gus.Faces(verts_np, faces_np)
 
 
 jac = torch.autograd.functional.jacobian(verts_from_param, parameter, strict=True)
-print(jac)
 directions = jac.detach().cpu().numpy()
 positions = verts.cpu().detach().numpy()
 faces.vertex_data["directions"] = directions[:,:,1]
@@ -114,7 +103,7 @@ gus.show(faces, axes=1)
 
 # fig, ax = plt.subplots()
 # for pt, grad in zip(positions, directions):
-#         # if np.abs(pt[2]) < 0.001: 
+#         # if np.abs(pt[2]) < 0.001:
 #         arrs.append(vedo.Arrow(pt, pt+grad[:,0]*0.1, s=0.0005))
 
 # vedo.show(arrs)

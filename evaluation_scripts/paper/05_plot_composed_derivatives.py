@@ -1,18 +1,17 @@
 
-import numpy as np
+import argparse
+import pathlib
+
 import gustaf as gus
+import igl
+import matplotlib.pyplot as plt
+import numpy as np
 import splinepy as sp
+import torch
 import vedo
 
-import matplotlib.pyplot as plt
-
-import torch
-from deep_sdf import workspace as ws
 import deep_sdf.utils
-import pathlib
-import argparse
-
-import igl
+from deep_sdf import workspace as ws
 
 vedo.settings.default_backend = 'k3d'
 params = {'text.usetex': False, 'mathtext.fontset': 'cm', 'axes.labelsize': 12}
@@ -58,8 +57,8 @@ else:
 
 latent_vec_interpolation = sp.BSpline(
     degrees=[2, 1, 1],
-    knot_vectors=[[-1,-1, -1, 1, 1, 1], 
-                [-1, -1, 1, 1], 
+    knot_vectors=[[-1,-1, -1, 1, 1, 1],
+                [-1, -1, 1, 1],
                 [-1, -1, 1, 1]],
     control_points=control_points,
 )
@@ -68,7 +67,7 @@ latent_vec_interpolation = sp.BSpline(
 
 def transform(x, t):
     p = 2/t
-    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1
 
 def sdf_struct(queries):
     queries = torch.tensor(queries, dtype=torch.float32).to(device)
@@ -118,7 +117,7 @@ deformation_surf = sp.BSpline(
 
 deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
 
-# bring slightly outside vertices back 
+# bring slightly outside vertices back
 verts[verts>1] = 1
 verts[verts<0] = 0
 

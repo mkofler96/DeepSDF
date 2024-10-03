@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sdf_sampler
-Version: 1.0
+Version: 1.1
 Summary: creates SDF samples
 Author: Michael Kofler
 Author-email: michael.kofler@tuwien.ac.at
@@ -16,3 +16,5 @@ Requires-Dist: libigl
 Requires-Dist: embreex
 Requires-Dist: tetgenpy
 Requires-Dist: meshio
+Requires-Dist: mfem
+Requires-Dist: numba

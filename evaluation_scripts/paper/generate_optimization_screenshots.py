@@ -1,8 +1,7 @@
 
-import numpy as np
 import gustaf as gus
-import splinepy as sp
 import matplotlib.pyplot as plt
+import numpy as np
 
 init_mesh = gus.io.meshio.load("simulations/optimization_mimi/simulation_0/volume.inp")
 vedo_showable = gus.show(init_mesh, interactive=False, c="#EDEDED", lw=1)
@@ -22,7 +21,7 @@ compliance_values = []
 volume_values = []
 
 # Open the file and process each line
-with open('simulations/optimization_mimi/optimization_logs.log', 'r') as file:
+with open('simulations/optimization_mimi/optimization_logs.log') as file:
     for line in file:
         # Find matches
         matches = re.search(pattern, line)

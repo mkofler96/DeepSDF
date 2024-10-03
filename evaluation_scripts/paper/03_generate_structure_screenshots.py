@@ -1,19 +1,20 @@
 
-import numpy as np
-import gustaf as gus
-import splinepy as sp
-
-from sdf_sampler.plotting import scatter_contour_at_z_level
-import matplotlib.pyplot as plt
-
-import torch
-from deep_sdf import workspace as ws
-import deep_sdf.utils
 import pathlib
+
+import gustaf as gus
+import matplotlib.pyplot as plt
+import numpy as np
+import splinepy as sp
+import torch
+
+import deep_sdf.utils
+from deep_sdf import workspace as ws
+from sdf_sampler.plotting import scatter_contour_at_z_level
 
 this_folder = pathlib.Path(__file__).parent
 
 import igl
+
 params = {'text.usetex': False, 'mathtext.fontset': 'cm', 'axes.labelsize': 12}
 plt.rcParams.update(params)
 
@@ -62,12 +63,11 @@ else:
 
 latent_vec_interpolation = sp.BSpline(
     degrees=[1, 1, 1],
-    knot_vectors=[[-1, -1, 1, 1], 
-                [-1, -1, 1, 1], 
+    knot_vectors=[[-1, -1, 1, 1],
+                [-1, -1, 1, 1],
                 [-1, -1, 1, 1]],
     control_points=control_points,
 )
-print(control_points)
 fig, axs = plt.subplots(1, 2, figsize=(9/2.54, 5/2.54))
 x = np.linspace(-1, 1, 1000)
 y = np.linspace(-1, 1, 1000)
@@ -84,18 +84,18 @@ axs[1].contourf(Y, X, Z[:,1].reshape(X.shape), cmap="plasma")
 r = Z[:,0].reshape(X.shape)
 g = Z[:,1].reshape(X.shape)
 
-r_norm = (r-r_min)/(r_max-r_min) 
+r_norm = (r-r_min)/(r_max-r_min)
 g_norm = (g-g_min)/(g_max-g_min)
 for ax in axs:
-    ax.set_xticks([]) 
-    ax.set_yticks([]) 
+    ax.set_xticks([])
+    ax.set_yticks([])
     ax.set_xlabel(r"$x$")
     ax.set_ylabel(r"$y$")
 plt.savefig(f"{this_folder}/structure_latent{graded_string}.png", dpi=600, bbox_inches="tight")
 
 def transform(x, t):
     p = 2/t
-    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1
 
 def sdf_struct(queries):
     queries = torch.tensor(queries, dtype=torch.float32).to(device)
@@ -120,23 +120,23 @@ y = transform((x-0.5)*2, 5)
 ax.plot(x.cpu().numpy(), y.cpu().numpy())
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\^x$")
-ax.set_xticks([]) 
-ax.set_yticks([]) 
+ax.set_xticks([])
+ax.set_yticks([])
 
 plt.savefig(f"{this_folder}/structure_parameter_transform{graded_string}.png", dpi=600, bbox_inches="tight")
 fig, ax = plt.subplots(1, 1, figsize=(5/2.54, 5/2.54))
 scatter_contour_at_z_level(sdf_struct, custom_axis=ax, res=1000, flip_axes=True, eval_area=(-1,1), scale=(1,1))
 ax.set_xlabel(r"$x (\lambda_1)$")
 ax.set_ylabel(r"$y (\lambda_2)$")
-ax.set_xticks([]) 
-ax.set_yticks([]) 
+ax.set_xticks([])
+ax.set_yticks([])
 plt.savefig(f"{this_folder}/structure_sdf{graded_string}.png", dpi=600, bbox_inches="tight")
 fig, ax = plt.subplots(1, 1, figsize=(5/2.54*10/4, 5/2.54))
 scatter_contour_at_z_level(sdf_struct, custom_axis=ax, res=1000, flip_axes=True, eval_area=(-1,1), scale=(5,2))
 ax.set_xlabel(r"$\bar{x}$")
 ax.set_ylabel(r"$\bar{y}$")
-ax.set_xticks([]) 
-ax.set_yticks([]) 
+ax.set_xticks([])
+ax.set_yticks([])
 plt.savefig(f"{this_folder}/structure_sdf_scaled{graded_string}.png", dpi=600, bbox_inches="tight")
 
 # mesh reconstruction
@@ -174,7 +174,7 @@ deformation_surf = sp.BSpline(
 
 deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
 
-# bring slightly outside vertices back 
+# bring slightly outside vertices back
 verts[verts>1] = 1
 verts[verts<0] = 0
 
@@ -229,7 +229,7 @@ spline_3d.control_points[z_slice_ids] = gus.utils.arr.rotate(
 
 
 
-# bring slightly outside vertices back 
+# bring slightly outside vertices back
 verts[verts>1] = 1
 verts[verts<0] = 0
 

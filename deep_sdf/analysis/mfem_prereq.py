@@ -247,7 +247,8 @@ class StrainEnergyDensityCoefficient():
         fec = fes.FEColl()
         fes = mfem.FiniteElementSpace(mesh, fec)
         size = len(u.GetDataArray())
-        u_data = u.GetDataArray().reshape(-1, 3, order="F")
+        u_data_single_vec = u.GetDataArray().copy()
+        u_data = u_data_single_vec.reshape(-1, 3, order="F")
         u1 = mfem.GridFunction(fes, mfem.Vector(
             u_data[:,0]))   # first component
         u2 = mfem.GridFunction(fes, mfem.Vector(
@@ -357,6 +358,60 @@ class LinearElasticitySolver():
         self.SE.ProjectCoefficient(self.StrainEnergyDensity.coeff)
         return self.SE
 
+    def clcShapeDerivative(self, theta):
+        """
+        calculates the shape derivative according to section 6.3 in 
+        Allaire, G., Dapogny, C. & Jouve, F. Shape and topology optimization. 
+        in Geometric partial differential equations, part II (eds. Bonito, A. & Nochetto, R. H.) vol. 22 (2021).
+        """
+        if self.StrainEnergyDensity is None:
+            self.clcStrainEnergyDensity()
+        
+        b = mfem.LinearForm(self.fes)
+        sed_integrator = mfem.BoundaryLFIntegrator(self.StrainEnergyDensity.coeff)
+        # oder: sed_integrator = mfem.BoundaryNormalLFIntegrator(self.StrainEnergyDensity.coeff, theta)
+        b.AddBoundaryIntegrator(sed_integrator)
+        b.Assemble()
+        return b.Sum()
+
+    def clcVolume(self):
+        b = mfem.LinearForm(self.fes)
+        # print mesh stats
+        mesh = self.fes.mesh
+
+        # coeff_one = mfem.ConstantCoefficient(1.0)
+        # vol_integrator = mfem.DomainLFIntegrator(coeff_one)
+        # # oder: sed_integrator = mfem.BoundaryNormalLFIntegrator(self.StrainEnergyDensity.coeff, theta)
+        # b.AddDomainIntegrator(vol_integrator)
+        # b.Assemble()
+        # vol = b.Sum()
+        # del b
+        # for i in range(len(mesh.Get))
+        vol = 0
+        for i in range(mesh.GetNE()):
+            vol += mesh.GetElementVolume(i)
+        return vol
+
+    def clcVolumeShapeDerivative(self, theta_discrete):
+        fec = mfem.H1_FECollection(self.order, 3)
+        fe_scalar_space = mfem.FiniteElementSpace(self.mesh, fec, 1)
+        fe_physical_space = mfem.FiniteElementSpace(self.mesh, fec, 3)
+        
+        # coeff_one = mfem.ConstantCoefficient(1.0)
+        # vol_integrator = mfem.DomainLFIntegrator(coeff_one)
+        # theta_gf = mfem.GridFunction(fe_physical_space)
+        theta_gf = mfem.GridFunction(fe_physical_space, mfem.Vector(
+            theta_discrete.reshape(-1, order="F")))
+        print(theta_gf.GetDataArray())
+        theta = mfem.VectorGridFunctionCoefficient(theta_gf)
+        
+        sed_integrator = mfem.BoundaryNormalLFIntegrator(theta)
+
+        b = mfem.LinearForm(fe_scalar_space)
+        b.AddBoundaryIntegrator(sed_integrator)
+        b.Assemble()
+        print(b.GetDataArray())
+        return b.Sum()
 
 class Proj():
     '''

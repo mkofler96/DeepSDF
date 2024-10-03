@@ -27,31 +27,14 @@ class LinearElasticityProblem:
         face_elements.show_options["lw"] = 3
         gus.show(face_elements)
 
-    def solve(self, ref_levels=1, order=1):
-        # u, llambda, mu, force, center, r
+    def set_up(self, ref_levels=0, order=1):
+                # u, llambda, mu, force, center, r
         mesh = self.mesh
-        dim = mesh.Dimension()
+        
 
         # 3. Refine the mesh.
         for lev in range(ref_levels):
             mesh.UniformRefinement()
-
-        # 4. Define the necessary finite element spaces on the mesh.
-        state_fec = mfem.H1_FECollection(order, dim)    # space for u
-        filter_fec = mfem.H1_FECollection(order, dim)   # space for ρ̃
-        control_fec = mfem.L2_FECollection(order-1, dim,
-                                        mfem.BasisType.GaussLobatto)  # space for ψ
-        state_fes = mfem.FiniteElementSpace(mesh, state_fec, dim)
-        filter_fes = mfem.FiniteElementSpace(mesh, filter_fec)
-        control_fes = mfem.FiniteElementSpace(mesh, control_fec)
-
-        state_size = state_fes.GetTrueVSize()
-        control_size = control_fes.GetTrueVSize()
-        filter_size = filter_fes.GetTrueVSize()
-
-        print("Number of state unknowns: " + str(state_size))
-        print("Number of filter unknowns: " + str(filter_size))
-        print("Number of control unknowns: " + str(control_size))
 
         # define the linear elasticity solver
             # 6. Set-up the physics solver.
@@ -67,8 +50,9 @@ class LinearElasticityProblem:
 
         self.ElasticitySolver = LinearElasticitySolver(lambda_cf, mu_cf)
         self.ElasticitySolver.mesh = mesh
-        self.ElasticitySolver.order = state_fec.GetOrder()
+        self.ElasticitySolver.order = order
         self.ElasticitySolver.SetupFEM()
+        dim = self.mesh.Dimension()
 
         center = np.array((2.0, 0.5, 0.5))
         force = np.array((0.0, 0.0, -100.0))
@@ -76,13 +60,13 @@ class LinearElasticityProblem:
         vforce_cf = VolumeForceCoefficient3D(r, center, force)
         self.ElasticitySolver.rhs_cf = vforce_cf
         self.ElasticitySolver.ess_bdr = ess_bdr
-        self.ElasticitySolver.SolveState()
 
+    def solve(self):
+        self.ElasticitySolver.SolveState()
         # 7. Save the solution in a grid function.
         u = self.ElasticitySolver.u
-        u = mfem.GridFunction(state_fes)
-        u.Assign(self.ElasticitySolver.u)
-        self.u_data = u.GetDataArray().copy()
+        # self.u_data = u.GetDataArray().copy()
+        self.u_data = u.GetDataArray()
         max_u = self.u_data.max()
         print(f"Finished Solution. Max deflection: {max_u}")
 
@@ -141,3 +125,19 @@ class LinearElasticityProblem:
             raise ValueError("No solution found. Compute solution first to get Compliance.")
         compliance = self.ElasticitySolver.clcStrainEnergyDensity() 
         self.strain_energy_density_data = compliance.GetDataArray()
+
+    def compute_shape_derivative(self):
+        # 8. Compute the compliance.
+        if self.u_data is None:
+            raise ValueError("No solution found. Compute solution first to get Compliance.")
+        compliance = self.ElasticitySolver.clcStrainEnergyDensity()
+        derivative = self.ElasticitySolver.clcShapeDerivative(None)
+        return derivative
+    
+    def compute_volume(self, dTheta=None):
+        vol = self.ElasticitySolver.clcVolume()
+        if dTheta is None:
+            vol_der = None
+        else:
+            vol_der = self.ElasticitySolver.clcVolumeShapeDerivative(dTheta)
+        return vol, vol_der

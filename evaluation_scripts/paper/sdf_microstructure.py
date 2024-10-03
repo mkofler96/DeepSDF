@@ -1,20 +1,24 @@
-import numpy as np
 import gustaf as gus
+import numpy as np
+import pathlib
 import splinepy as sp
-import torch
 import tetgenpy
-from deep_sdf import workspace as ws
-import deep_sdf.utils
+import torch
 
+
+import deep_sdf.utils
+from deep_sdf import workspace as ws
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1,1], N_base=30):
+def create_microstructure_from_experiment(experiment_directory: str, tiling=None, N_base=30):
     """
     generates microstructure from DeepSDF experiment
     """
     # experiment_directory = "experiments/round_cross_big_network"
+    if tiling is None:
+        tiling = [2, 1, 1]
     checkpoint = "1000"
 
     latent = ws.load_latent_vectors(experiment_directory, checkpoint).to("cpu").numpy()
@@ -34,8 +38,8 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1
 
     latent_vec_interpolation = sp.BSpline(
         degrees=[2, 1, 1],
-        knot_vectors=[[-1, -1, -1, 1, 1, 1], 
-                    [-1, -1, 1, 1], 
+        knot_vectors=[[-1, -1, -1, 1, 1, 1],
+                    [-1, -1, 1, 1],
                     [-1, -1, 1, 1]],
         control_points=control_points,
     )
@@ -72,7 +76,7 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1
         C = dot_ai_bi / dot_bi_bi * B
         return C
 
-    
+
     faces = []
     jac[np.where(jac>1)] = 0
     jac[np.where(jac<-1)] = 0
@@ -96,7 +100,7 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=[2,1
 
 def transform(x, t):
     p = 2/t
-    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1 
+    return (2/p)*torch.abs((x-t%2) % (p*2) - p) -1
 
 def sdf_struct(decoder, queries, tiling, latent_vec_interpolation):
     queries = torch.tensor(queries, dtype=torch.float32).to(device)
@@ -123,17 +127,19 @@ def tetrahedralize_surface(surface_mesh):
 
     return gus.Volumes(verts, tets)
 
-def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False):
+def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False, export_abaqus=False):
+    filepath = pathlib.Path(filename)
     faces = volumes.to_faces(False)
     boundary_faces = faces.single_faces()
     verts = volumes.vertices
 
     BC = {1: [], 2: [], 3: []}
-    width = volumes.vertices[:,0].max()
-    height = volumes.vertices[:,1].max()
+    volumes.vertices[:,0].max()
+    volumes.vertices[:,1].max()
+    tolerance = 3e-2
     for i in boundary_faces:
         # mark boundaries at x = 0 with 1
-        if np.max(verts[faces.const_faces[i], 0]) < 3e-2:
+        if np.max(verts[faces.const_faces[i], 0]) < tolerance:
             BC[1].append(i)
         # mark boundaries at x = 1 with 2
         # elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.49*width,
@@ -143,8 +149,8 @@ def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False):
         else:
             BC[3].append(i)
     volumes.BC = BC
-    print(f"Created Mesh with {len(volumes.volumes)} elements and {len(volumes.vertices)} vertices.")
-    print(f"{len(BC[1])} faces marked 1, {len(BC[2])} faces marked 2 and {len(BC[3])} faces marked 3")
     if show_mesh:
         gus.show(volumes)
-    gus.io.mfem.export(filename, volumes)
+    gus.io.mfem.export(str(filepath), volumes)
+    if export_abaqus:
+        gus.io.meshio.export(str(filepath.with_suffix(".inp")))

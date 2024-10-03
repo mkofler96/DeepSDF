@@ -76,4 +76,3 @@ links = '\n'.join([f'<a href="{f}">{f}</a>' for f in html_files])
 with open(os.path.join(folder_path, 'index.html'), 'w') as index_file:
     index_file.write(index_html_content.format(links=links))
 
-print("index.html has been created successfully!")
