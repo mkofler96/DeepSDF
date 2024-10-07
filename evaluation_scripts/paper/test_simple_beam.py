@@ -90,89 +90,9 @@ a.RecoverFEMSolution(X, b, x)
 u = x
 
 # calculate strain density
-class StrainEnergyDensityCoefficient():
-    def __init__(self, llambda, mu, u):
-
-        fes = u.FESpace()
-        assert fes.GetOrdering() == mfem.Ordering.byNODES, "u has to use byNODES ordering"
-
-        mesh = fes.GetMesh()
-        
-        fec = fes.FEColl()
-        fes = mfem.FiniteElementSpace(mesh, fec)
-        size = len(u.GetDataArray())
-        u_data_single_vec = u.GetDataArray().copy()
-        u_data = u_data_single_vec.reshape(-1, 3, order="F")
-        u1 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,0]))   # first component
-        u2 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,1]))   # second component
-        u3 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,2]))   # third component
-
-
-        c_gradu1 = mfem.GradientGridFunctionCoefficient(u1)
-        c_gradu2 = mfem.GradientGridFunctionCoefficient(u2)
-        c_gradu3 = mfem.GradientGridFunctionCoefficient(u3)
-
-        @mfem.jit.scalar(dependency=(llambda, mu, c_gradu1, c_gradu2, c_gradu3))
-        def coeff(ptx, L, M, grad1, grad2, grad3):
-            div_u = grad1[0] + grad2[1] + grad3[2]
-            density = L*div_u*div_u
-
-            grad = np.zeros(shape=(3, 3), dtype=np.float64)
-            grad[0, 0] = grad1[0]
-            grad[0, 1] = grad1[1]
-            grad[0, 2] = grad1[2]
-            grad[1, 0] = grad2[0]
-            grad[1, 1] = grad2[1]
-            grad[1, 2] = grad2[2]
-            grad[2, 0] = grad3[0]
-            grad[2, 1] = grad3[1]
-            grad[2, 2] = grad3[2]
-
-            for i in range(3):
-                for j in range(3):
-                    density += M*grad[i, j]*(grad[i, j] + grad[j, i])
-            return density
-
-        self.fes = fes
-        self.size = size
-        self.u1u2u3 = (u1, u2, u3)
-        self.dependency = (c_gradu1, c_gradu2, c_gradu3)
-        self.coeff = coeff
-
-class StressCoefficient(mfem.PyCoefficientBase):
-    def __init__(self, lambda_, mu_, si=0, sj=0):
-        super(StressCoefficient, self).__init__(0)
-        self.lam = lambda_   # coefficient
-        self.mu = mu_       # coefficient
-        self.si = si
-        self.sj = sj     # component
-        self.u = None   # displacement GridFunction
-        self.grad = mfem.DenseMatrix()
-
-    def SetComponent(self, i, j):
-        self.si = i
-        self.sj = j
-
-    def SetDisplacement(self, u):
-        self.u = u
-
-    def Eval(self, T, ip):
-        si, sj = self.si, self.sj
-        L = self.lam.Eval(T, ip)
-        M = self.mu.Eval(T, ip)
-        self.u.GetVectorGradient(T, self.grad)
-        if (self.si == self.sj):
-            div_u = self.grad.Trace()
-            return L * div_u + 2 * M * self.grad[si, si]
-        else:
-            return M * (self.grad[si, sj] + self.grad[sj, si])
-
-class StrainEnergyDensityCoefficientCustom(mfem.PyCoefficientBase):
+class StrainEnergyDensityCoefficient(mfem.PyCoefficientBase):
     def __init__(self, lambda_, mu_, u):
-        super(StrainEnergyDensityCoefficientCustom, self).__init__(0)
+        super(StrainEnergyDensityCoefficient, self).__init__(0)
         self.lam = lambda_   # coefficient
         self.mu = mu_       # coefficient
         self.u = u   # displacement GridFunction
@@ -203,10 +123,10 @@ class StrainEnergyDensityCoefficientCustom(mfem.PyCoefficientBase):
 # strain_energy = mfem.GridFunction(fespace1)
 # strain_energy.ProjectCoefficient(SE_coeff.coeff)
 # print(strain_energy.GetDataArray())
-SE_coeff_custom = StrainEnergyDensityCoefficientCustom(lambda_cf, mu_cf, u)
-strain_energy_custom = mfem.GridFunction(fespace1)
-strain_energy_custom.ProjectCoefficient(SE_coeff_custom)
-print(strain_energy_custom.GetDataArray())
+SE_coeff = StrainEnergyDensityCoefficient(lambda_cf, mu_cf, u)
+strain_energy = mfem.GridFunction(fespace1)
+strain_energy.ProjectCoefficient(SE_coeff)
+print(strain_energy.GetDataArray())
 # print(strain_energy.Get)
 
 # raise NotImplementedError("stop it")
@@ -221,7 +141,7 @@ paraview_dc.SetCycle(0)
 paraview_dc.SetTime(0.0)
 paraview_dc.RegisterField("displacement", u)
 # paraview_dc.RegisterField("strain_energey", strain_energy)
-paraview_dc.RegisterField("strain_energy_custom", strain_energy_custom)
+paraview_dc.RegisterField("strain_energy", strain_energy)
 paraview_dc.Save()
 
 # print(x.GetDataArray())
