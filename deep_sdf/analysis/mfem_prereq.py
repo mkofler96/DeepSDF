@@ -169,6 +169,16 @@ def VolumeForceCoefficient3D(r, center, force):
             return np.array((0.0, 0.0, 0.0))
     return coeff
 
+def SurfaceForceCoefficient3D(xmin, xmax, zmin, force):
+
+    @mfem.jit.vector(shape=(3,))
+    def coeff(ptx):
+        if (ptx[0] > xmin) and (ptx[0] < xmax) and (ptx[2] > zmin):
+            return np.array((force[0], force[1], force[2]))
+        else:
+            return np.array((0.0, 0.0, 0.0))
+    return coeff
+
 class StrainEnergyDensityCoefficient2D():
     '''
     Python Note: 
@@ -293,7 +303,10 @@ class LinearElasticitySolver():
         self.lambda_cf = lambda_cf
         self.mu_cf = mu_cf
         self.rhs_cf = None
+        self.surface_load = None
         self.essbdr_cf = None
+        self.nm_bdr = None
+        self.ess_bdr = None
 
     def SetupFEM(self):
         dim = self.mesh.Dimension()
@@ -321,6 +334,8 @@ class LinearElasticitySolver():
 
         if self.rhs_cf is not None:
             b.AddDomainIntegrator(mfem.VectorDomainLFIntegrator(self.rhs_cf))
+        if self.surface_load is not None:
+            b.AddBoundaryIntegrator(mfem.VectorBoundaryLFIntegrator(self.surface_load), self.nm_bdr)
         b.Assemble()
 
         a = mfem.BilinearForm(self.fes)
@@ -358,7 +373,7 @@ class LinearElasticitySolver():
         self.SE.ProjectCoefficient(self.StrainEnergyDensity.coeff)
         return self.SE
 
-    def clcShapeDerivative(self, theta):
+    def clcComplianceShapeDerivative(self, theta_discrete):
         """
         calculates the shape derivative according to section 6.3 in 
         Allaire, G., Dapogny, C. & Jouve, F. Shape and topology optimization. 
@@ -366,12 +381,24 @@ class LinearElasticitySolver():
         """
         if self.StrainEnergyDensity is None:
             self.clcStrainEnergyDensity()
+        fec = mfem.H1_FECollection(self.order, 3)
+        fe_scalar_space = mfem.FiniteElementSpace(self.mesh, fec, 1)
+        fe_physical_space = mfem.FiniteElementSpace(self.mesh, fec, 3)
         
-        b = mfem.LinearForm(self.fes)
-        sed_integrator = mfem.BoundaryLFIntegrator(self.StrainEnergyDensity.coeff)
-        # oder: sed_integrator = mfem.BoundaryNormalLFIntegrator(self.StrainEnergyDensity.coeff, theta)
+        # coeff_one = mfem.ConstantCoefficient(1.0)
+        # vol_integrator = mfem.DomainLFIntegrator(coeff_one)
+        # theta_gf = mfem.GridFunction(fe_physical_space)
+        SE_theta_discrete = -self.SE.GetDataArray().reshape(-1,1)*theta_discrete
+        SE_theta_gf = mfem.GridFunction(fe_physical_space, mfem.Vector(
+            SE_theta_discrete.reshape(-1, order="F")))
+        # print(theta_gf.GetDataArray())
+        SE_theta = mfem.VectorGridFunctionCoefficient(SE_theta_gf)
+        sed_integrator = mfem.BoundaryNormalLFIntegrator(SE_theta)
+        
+        b = mfem.LinearForm(fe_scalar_space)
         b.AddBoundaryIntegrator(sed_integrator)
         b.Assemble()
+        # print(b.GetDataArray())
         return b.Sum()
 
     def clcVolume(self):
@@ -402,7 +429,7 @@ class LinearElasticitySolver():
         # theta_gf = mfem.GridFunction(fe_physical_space)
         theta_gf = mfem.GridFunction(fe_physical_space, mfem.Vector(
             theta_discrete.reshape(-1, order="F")))
-        print(theta_gf.GetDataArray())
+        # print(theta_gf.GetDataArray())
         theta = mfem.VectorGridFunctionCoefficient(theta_gf)
         
         sed_integrator = mfem.BoundaryNormalLFIntegrator(theta)
@@ -410,7 +437,7 @@ class LinearElasticitySolver():
         b = mfem.LinearForm(fe_scalar_space)
         b.AddBoundaryIntegrator(sed_integrator)
         b.Assemble()
-        print(b.GetDataArray())
+        # print(b.GetDataArray())
         return b.Sum()
 
 class Proj():

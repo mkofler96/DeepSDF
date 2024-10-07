@@ -134,23 +134,23 @@ def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False, export_aba
     verts = volumes.vertices
 
     BC = {1: [], 2: [], 3: []}
-    volumes.vertices[:,0].max()
-    volumes.vertices[:,1].max()
+
     tolerance = 3e-2
+    width = verts[:,0].max()
     for i in boundary_faces:
         # mark boundaries at x = 0 with 1
         if np.max(verts[faces.const_faces[i], 0]) < tolerance:
             BC[1].append(i)
-        # mark boundaries at x = 1 with 2
-        # elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.49*width,
-        #                     np.min(verts[faces.const_faces[i], 1]) > 0.999*height):
-        #     BC[2].append(i)
+        # mark boundaries at x = width with 2
+        elif np.max(verts[faces.const_faces[i], 0]) > (width - tolerance):
+            BC[2].append(i)
         # mark rest of the boundaries with 3
         else:
             BC[3].append(i)
     volumes.BC = BC
     if show_mesh:
         gus.show(volumes)
+    print(f"Exporting mesh with {len(volumes.volumes)} elements, {len(volumes.vertices)} vertices, {len(BC[1])} boundaries with marker 1, {len(BC[2])} boundaries with marker 2, and {len(BC[3])} boundaries with marker 3.")
     gus.io.mfem.export(str(filepath), volumes)
     if export_abaqus:
         gus.io.meshio.export(str(filepath.with_suffix(".inp")))

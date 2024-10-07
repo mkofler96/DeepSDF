@@ -1,10 +1,11 @@
 
 import mfem.ser as mfem
 
-from deep_sdf.analysis.mfem_prereq import LinearElasticitySolver, VolumeForceCoefficient3D
+from deep_sdf.analysis.mfem_prereq import LinearElasticitySolver, VolumeForceCoefficient3D, SurfaceForceCoefficient3D
 
 import gustaf as gus
 import numpy as np
+from typing import Union
 
 class LinearElasticityProblem:
     def __init__(self):
@@ -42,6 +43,9 @@ class LinearElasticityProblem:
         ess_bdr = mfem.intArray([0]*maxat)
         ess_bdr[0] = 1
 
+        nm_bdr = mfem.intArray([0]*maxat)
+        nm_bdr[1] = 1
+
         mfem.ConstantCoefficient(1.0)
         llambda = 0
         mu = 105
@@ -55,11 +59,23 @@ class LinearElasticityProblem:
         dim = self.mesh.Dimension()
 
         center = np.array((2.0, 0.5, 0.5))
-        force = np.array((0.0, 0.0, -100.0))
+        force = np.array((100.0, 0.0, 0.0))
         r = 0.1
         vforce_cf = VolumeForceCoefficient3D(r, center, force)
-        self.ElasticitySolver.rhs_cf = vforce_cf
+        xmin = 1.9
+        xmax = 2.0
+        zmin = 0.0
+        sforce_df = SurfaceForceCoefficient3D(xmin, xmax, zmin, force)
+        # self.ElasticitySolver.rhs_cf = vforce_cf
+        force = np.array((1.0, 0.0, 0.0))
+        const_vec = mfem.Vector(3)  # A 2D vector
+        const_vec.Assign((1.0, 0.0, 0.0))  # Set the vector components, e.g., (1.0, 2.0)
+
+        # Create a constant vector coefficient from the defined vector.
+        sforce_df = mfem.VectorConstantCoefficient(const_vec)
+        self.ElasticitySolver.surface_load = sforce_df
         self.ElasticitySolver.ess_bdr = ess_bdr
+        self.ElasticitySolver.nm_bdr = nm_bdr
 
     def solve(self):
         self.ElasticitySolver.SolveState()
@@ -69,62 +85,55 @@ class LinearElasticityProblem:
         self.u_data = u.GetDataArray()
         max_u = self.u_data.max()
         print(f"Finished Solution. Max deflection: {max_u}")
+        data_name = "linear_elasticity"
+        paraview_dc = mfem.ParaViewDataCollection(data_name, self.mesh)
 
-    def show_solution(self, output: str, **kwargs):
-        u_data = self.u_data
-        verts = self.mesh.GetVertexArray()
-        elements = self.mesh.GetElementsArray()
+        paraview_dc.SetPrefixPath("ParaView")
+        paraview_dc.SetLevelsOfDetail(self.ElasticitySolver.order)
 
-        elements = np.array([self.mesh.GetElementVertices(i) for i in range(self.mesh.GetNE())])
-        # vertices = gus.Vertices(verts)
-        # vertices.vertex_data["u"] = u.reshape(-1,2)
-        face_elements = gus.Volumes(verts, elements)
-        if self.u_data is not None:
-            face_elements.vertex_data["u_vec"] = u_data.reshape(-1, 3, order="F")
-            face_elements.vertex_data["u_mag"] = np.linalg.norm(u_data.reshape(-1, 3, order="F"), axis=1)
-        if self.strain_energy_density_data is not None:
-            face_elements.vertex_data["strain_energy_density"] = self.strain_energy_density_data
-        self.solution = face_elements
+        paraview_dc.SetDataFormat(mfem.VTKFormat_BINARY)
+        paraview_dc.SetHighOrderOutput(True)
+        paraview_dc.SetCycle(0)
+        paraview_dc.SetTime(0.0)
+        paraview_dc.RegisterField("displacement", u)
+        paraview_dc.Save()
+        print(f"Saving results to {data_name}")
 
-        available_options = self.solution.vertex_data.keys()
-        if available_options is None:
-            raise ValueError("No outputs available. Run simulation to create outputs.")
-        if output not in available_options:
-            raise ValueError(f"Desired output {output} not available. Available options are: {available_options}.")
-        if output in ["u_vec"]:
-            self.solution.show_options["arrow_data"] = output
-        elif output in ["u_mag", "strain_energy_density"]:
-            self.solution.show_options["data"] = output
-        else:
-            raise NotImplementedError(f"Plotting of {output} is not available yet.")
-        self.solution.show_options["lw"] = 3
-        gus.show(self.solution, axes=1, **kwargs)
+    def show_solution(self, output: Union[str, list[str]], **kwargs):
+        solutions = []
+        if type(output) is str:
+            output = [output]
+        for op in output:
+            u_data = self.u_data
+            verts = self.mesh.GetVertexArray()
+            elements = self.mesh.GetElementsArray()
 
-        # show_solution = False
-        # if show_solution:
-        #     # 7. Save the solution in a grid function.
-        #     u = self.ElasticitySolver.u
-        #     u = mfem.GridFunction(state_fes)
-        #     u.Assign(self.ElasticitySolver.u)
-        #     u_data = u.GetDataArray()
-        #     verts = mesh.GetVertexArray()
-        #     elements = mesh.GetElementsArray()
+            elements = np.array([self.mesh.GetElementVertices(i) for i in range(self.mesh.GetNE())])
+            # vertices = gus.Vertices(verts)
+            # vertices.vertex_data["u"] = u.reshape(-1,2)
+            face_elements = gus.Volumes(verts, elements)
+            if self.u_data is not None:
+                face_elements.vertex_data["u_vec"] = u_data.reshape(-1, 3, order="F")
+                face_elements.vertex_data["u_mag"] = np.linalg.norm(u_data.reshape(-1, 3, order="F"), axis=1)
+            if self.strain_energy_density_data is not None:
+                face_elements.vertex_data["strain_energy_density"] = self.strain_energy_density_data
+            solution = face_elements
 
-        #     elements = np.array([mesh.GetElementVertices(i) for i in range(mesh.GetNE())])
-        #     # vertices = gus.Vertices(verts)
-        #     # vertices.vertex_data["u"] = u.reshape(-1,2)
-        #     face_elements = gus.Faces(verts, elements)
-        #     face_elements.vertex_data["my_data"] = u_data.reshape(-1, 2, order="F")*1000
-        #     face_elements.show_options["arrow_data"] = "my_data"
-        #     face_elements.show_options["lw"] = 3
-        #     gus.show(face_elements)
+            available_options = solution.vertex_data.keys()
+            if available_options is None:
+                raise ValueError("No outputs available. Run simulation to create outputs.")
+            if op not in available_options:
+                raise ValueError(f"Desired output {op} not available. Available options are: {available_options}.")
+            if op in ["u_vec"]:
+                solution.show_options["arrow_data"] = op
+            elif op in ["u_mag", "strain_energy_density"]:
+                solution.show_options["data"] = op
+            else:
+                raise NotImplementedError(f"Plotting of {op} is not available yet.")
+            solution.show_options["lw"] = 3
+            solutions.append(solution)
+        gus.show(*solutions, axes=1, **kwargs)
 
-    def compute_compliance(self):
-        # 8. Compute the compliance.
-        if self.u_data is None:
-            raise ValueError("No solution found. Compute solution first to get Compliance.")
-        compliance = self.ElasticitySolver.clcStrainEnergyDensity() 
-        self.strain_energy_density_data = compliance.GetDataArray()
 
     def compute_shape_derivative(self):
         # 8. Compute the compliance.
@@ -134,6 +143,21 @@ class LinearElasticityProblem:
         derivative = self.ElasticitySolver.clcShapeDerivative(None)
         return derivative
     
+    def compute_compliance(self, dTheta=None):
+        # 8. Compute the compliance.
+        if self.u_data is None:
+            raise ValueError("No solution found. Compute solution first to get Compliance.")
+        compliance = self.ElasticitySolver.clcStrainEnergyDensity()
+        self.strain_energy_density_data = compliance.GetDataArray()
+        tot_compliance = compliance.GetDataArray().sum()
+
+        if dTheta is None:
+            compl_der = None
+        else:
+            compl_der = self.ElasticitySolver.clcComplianceShapeDerivative(dTheta)
+
+        return tot_compliance, compl_der
+
     def compute_volume(self, dTheta=None):
         vol = self.ElasticitySolver.clcVolume()
         if dTheta is None:

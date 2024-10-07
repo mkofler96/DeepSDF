@@ -52,7 +52,7 @@ xmax = 1.0
 zmin = 0.0
 force = np.array((1.0, 0.0, 0.0))
 const_vec = mfem.Vector(3)  # A 2D vector
-const_vec.Assign((0.0, 0.0, 1.0))  # Set the vector components, e.g., (1.0, 2.0)
+const_vec.Assign((1.0, 0.0, 0.0))  # Set the vector components, e.g., (1.0, 2.0)
 
 # Create a constant vector coefficient from the defined vector.
 surface_load = mfem.VectorConstantCoefficient(const_vec)

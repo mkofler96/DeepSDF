@@ -13,3 +13,4 @@
 *simulations/*
 *notebook_outputs*
 *.egg-info*
+**/ParaView/*
