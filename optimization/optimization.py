@@ -22,6 +22,7 @@ import trimesh
 import tempfile
 import matplotlib.pyplot as plt
 import subprocess
+import mmapy
 
 import pathlib
 import os
@@ -160,7 +161,7 @@ class struct_optimization():
         for key in option_keys:
             if key not in self.options:
                 raise KeyError(f"Key {key} not found in config.json")
-        available_optimizer_methods = ["BFGS", "COBYLA"]
+        available_optimizer_methods = ["BFGS", "COBYLA", "MMA"]
         method = self.options["optimization"]["method"]
         if not (method in available_optimizer_methods):
             raise ValueError(f"Optimizer {method} method not available. Available methods are {available_optimizer_methods}")

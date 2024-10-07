@@ -14,3 +14,4 @@
 *notebook_outputs*
 *.egg-info*
 **/ParaView/*
+*.egg-info

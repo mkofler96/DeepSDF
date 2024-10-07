@@ -1,3 +1,0 @@
-deep_sdf
-optimization
-sdf_sampler

@@ -1,0 +1,24 @@
+{
+    "geometry":{
+        "tiling": [2, 1, 1],
+        "transform_macro": false,
+        "width": 30,
+        "height": 50
+    },
+    "abaqus": {
+        "minimum_step_size": 1,
+        "initial_step_size": 1,
+        "material": "linear",
+        "load_moment": 1e7,
+        "load_force": 500000,
+        "load_scaling": 5e-3,
+        "abaqus_version": "2024",
+        "ncpus": 4},
+        "optimization_options": {
+    },
+    "optimization": {
+        "method": "COBYLA",
+        "rhobeg": 0.1,
+        "disp": true
+    }
+}

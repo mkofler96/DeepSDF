@@ -20,11 +20,14 @@ setup(
       "meshio",
       "mfem",
       "numba",
+      "napf",
+      "mmapy"
    ],
    packages=['sdf_sampler', 
              'deep_sdf', 
              'deep_sdf.metrics', 
              'deep_sdf.networks',
-             'deep_sdf.analysis',
+             'analysis',
+             'analysis.problems',
              'optimization'],  #same as name
 )
