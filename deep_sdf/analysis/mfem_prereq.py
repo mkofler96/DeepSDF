@@ -236,67 +236,33 @@ class StrainEnergyDensityCoefficient2D():
         self.coeff = coeff
 
 
-class StrainEnergyDensityCoefficient():
-    '''
-    Python Note: 
-       Approach here is to replace Eval and GetVectorGradient method call in C++
-       using the dependency feature of mfem.jit.
+class StrainEnergyDensityCoefficient(mfem.PyCoefficientBase):
+    def __init__(self, lambda_, mu_, u):
+        super(StrainEnergyDensityCoefficient, self).__init__(0)
+        self.lam = lambda_   # coefficient
+        self.mu = mu_       # coefficient
+        self.u = u   # displacement GridFunction
+        self.grad = mfem.DenseMatrix()
 
-       GetVectorGradient is mimiced by creating GradientGridFunctionCoefficient
-       for each component of u vector. Note GridFunction(fes, u.GetDataArray())
-       reuses the data array from u.
-    '''
+    def SetComponent(self, i, j):
+        self.si = i
+        self.sj = j
 
-    def __init__(self, llambda, mu, u):
+    def SetDisplacement(self, u):
+        self.u = u
 
-        fes = u.FESpace()
-        assert fes.GetOrdering() == mfem.Ordering.byNODES, "u has to use byNODES ordering"
+    def Eval(self, T, ip):
+        L = self.lam.Eval(T, ip)
+        M = self.mu.Eval(T, ip)
+        self.u.GetVectorGradient(T, self.grad)
+        div_u = self.grad.Trace()
+        density = L*div_u*div_u
+        dim = T.GetSpaceDim()
+        for i in range(dim):
+            for j in range(dim):
+                density += M*self.grad[i,j]*(self.grad[i,j]+self.grad[j,i]);
 
-        mesh = fes.GetMesh()
-        
-        fec = fes.FEColl()
-        fes = mfem.FiniteElementSpace(mesh, fec)
-        size = len(u.GetDataArray())
-        u_data_single_vec = u.GetDataArray().copy()
-        u_data = u_data_single_vec.reshape(-1, 3, order="F")
-        u1 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,0]))   # first component
-        u2 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,1]))   # second component
-        u3 = mfem.GridFunction(fes, mfem.Vector(
-            u_data[:,2]))   # third component
-
-
-        c_gradu1 = mfem.GradientGridFunctionCoefficient(u1)
-        c_gradu2 = mfem.GradientGridFunctionCoefficient(u2)
-        c_gradu3 = mfem.GradientGridFunctionCoefficient(u3)
-
-        @mfem.jit.scalar(dependency=(llambda, mu, c_gradu1, c_gradu2, c_gradu3))
-        def coeff(ptx, L, M, grad1, grad2, grad3):
-            div_u = grad1[0] + grad2[1] + grad3[2]
-            density = L*div_u*div_u
-
-            grad = np.zeros(shape=(3, 3), dtype=np.float64)
-            grad[0, 0] = grad1[0]
-            grad[0, 1] = grad1[1]
-            grad[0, 2] = grad1[2]
-            grad[1, 0] = grad2[0]
-            grad[1, 1] = grad2[1]
-            grad[1, 2] = grad2[2]
-            grad[2, 0] = grad3[0]
-            grad[2, 1] = grad3[1]
-            grad[2, 2] = grad3[2]
-
-            for i in range(3):
-                for j in range(3):
-                    density += M*grad[i, j]*(grad[i, j] + grad[j, i])
-            return density
-
-        self.fes = fes
-        self.size = size
-        self.u1u2u3 = (u1, u2, u3)
-        self.dependency = (c_gradu1, c_gradu2, c_gradu3)
-        self.coeff = coeff
+        return density
 
 class LinearElasticitySolver():
     def __init__(self, lambda_cf, mu_cf):
@@ -370,7 +336,7 @@ class LinearElasticitySolver():
 
     def clcStrainEnergyDensity(self):
         self.StrainEnergyDensity = StrainEnergyDensityCoefficient(self.lambda_cf, self.mu_cf, self.u)
-        self.SE.ProjectCoefficient(self.StrainEnergyDensity.coeff)
+        self.SE.ProjectCoefficient(self.StrainEnergyDensity)
         return self.SE
 
     def clcComplianceShapeDerivative(self, theta_discrete):

@@ -1,4 +1,5 @@
 import gustaf as gus
+import napf
 import numpy as np
 import pathlib
 import splinepy as sp
@@ -120,12 +121,23 @@ def tetrahedralize_surface(surface_mesh):
     t_in = tetgenpy.TetgenIO()
     t_in.setup_plc(surface_mesh.vertices, surface_mesh.faces.tolist())
     # gus.show(dmesh)
-    t_out = tetgenpy.tetrahedralize("p", t_in) #pqa
+    t_out = tetgenpy.tetrahedralize("pYq", t_in) #pqa
 
     tets = np.vstack(t_out.tetrahedra())
     verts = t_out.points()
 
-    return gus.Volumes(verts, tets)
+
+    kdt = napf.KDT(tree_data=verts, metric=1)
+
+    distances, face_indices = kdt.knn_search(
+        queries=surface_mesh.vertices,
+        kneighbors=1,
+        nthread=4,
+    )
+    tol = 1e-6
+    if distances.max() > tol:
+        Warning("Not all surface nodes as included in the volumetric mesh.")
+    return gus.Volumes(verts, tets), face_indices
 
 def export_mesh(volumes: gus.Volumes, filename: str, show_mesh=False, export_abaqus=False):
     filepath = pathlib.Path(filename)

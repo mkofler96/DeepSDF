@@ -69,7 +69,7 @@ class LinearElasticityProblem:
         # self.ElasticitySolver.rhs_cf = vforce_cf
         force = np.array((1.0, 0.0, 0.0))
         const_vec = mfem.Vector(3)  # A 2D vector
-        const_vec.Assign((1.0, 0.0, 0.0))  # Set the vector components, e.g., (1.0, 2.0)
+        const_vec.Assign((0.0, 0.0, -0.01))  # Set the vector components, e.g., (1.0, 2.0)
 
         # Create a constant vector coefficient from the defined vector.
         sforce_df = mfem.VectorConstantCoefficient(const_vec)
@@ -154,14 +154,18 @@ class LinearElasticityProblem:
         if dTheta is None:
             compl_der = None
         else:
-            compl_der = self.ElasticitySolver.clcComplianceShapeDerivative(dTheta)
+            compl_der = []
+            for i in range(dTheta.shape[2]):
+                compl_der.append(self.ElasticitySolver.clcComplianceShapeDerivative(dTheta[:,:,i]))
 
-        return tot_compliance, compl_der
+        return tot_compliance, np.array(compl_der)
 
     def compute_volume(self, dTheta=None):
         vol = self.ElasticitySolver.clcVolume()
         if dTheta is None:
             vol_der = None
         else:
-            vol_der = self.ElasticitySolver.clcVolumeShapeDerivative(dTheta)
-        return vol, vol_der
+            vol_der = []
+            for i in range(dTheta.shape[2]):
+                vol_der.append(self.ElasticitySolver.clcVolumeShapeDerivative(dTheta[:,:,i]))
+        return vol, np.array(vol_der)
