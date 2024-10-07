@@ -82,22 +82,6 @@ def create_microstructure_from_experiment(experiment_directory: str, tiling=None
     jac[np.where(jac>1)] = 0
     jac[np.where(jac<-1)] = 0
     return gus.Faces(verts_np, faces_np), jac
-    # max_plots = 8
-    # for i in range(min(max_plots,jac.shape[2])):
-    #     faces_der1 = gus.Faces(verts_np, faces_np)
-    #     normals = gus.create.faces.vertex_normals(faces_der1, angle_weighting=True, area_weighting=True)
-    #     directions = jac
-    #     positions = verts_np
-    #     switch_signs = -(2*(i%2)-1)
-    #     switch_signs = -1
-    #     dSdC = dot_prod(jac[:,:,i],normals.vertex_data["normals"])
-    #     faces_der1.vertex_data["directions"] = jac[:,:,i]*switch_signs
-    #     faces_der1.vertex_data["directions_normalized"] = switch_signs*dSdC
-    #     faces_der1.vertex_data["directions_magnitude"] = np.linalg.norm(switch_signs*dSdC, axis=1)
-    #     faces_der1.show_options["arrow_data"] = "directions_normalized"
-    #     faces_der1.show_options["data"] = "directions_magnitude"
-    #     faces.append(faces_der1)
-    # gus.show(*faces)
 
 def transform(x, t):
     p = 2/t
