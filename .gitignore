@@ -18,4 +18,5 @@
 *optimization_runs/*/*/*.inp
 *optimization_runs/*/*/*.mesh
 *optimization_runs/*/old_sims*/
+*optimization_runs/*/*/paraview_output/*
 *simulation/tmp*/
