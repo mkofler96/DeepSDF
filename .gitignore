@@ -15,3 +15,7 @@
 *.egg-info*
 **/ParaView/*
 *.egg-info
+*optimization_runs/*/*/*.inp
+*optimization_runs/*/*/*.mesh
+*optimization_runs/*/old_sims*/
+*simulation/tmp*/
