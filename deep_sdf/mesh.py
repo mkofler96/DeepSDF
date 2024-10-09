@@ -5,6 +5,7 @@ import logging
 import numpy as np
 import plyfile
 import skimage.measure
+import splinepy as sp
 import time
 import torch
 
@@ -150,12 +151,12 @@ def convert_sdf_samples_to_ply(
     )
 
 location_lookup = {
-    "x0": (0,1),
-    "x1": (0,-1),
-    "y0": (1,1),
-    "y1": (1,-1),
-    "z0": (2,1),
-    "z1": (2,-1),
+    "x0": (0,-1),
+    "x1": (0,1),
+    "y0": (1,-1),
+    "y1": (1,1),
+    "z0": (2,-1),
+    "z1": (2,1),
 }
 class CapType(TypedDict):
     cap: int
@@ -367,13 +368,7 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     flexi_cubes_constructor = FlexiCubes(device=device)
     samples, samples_orig, lat_vec_red, cube_idx = prepare_samples(flexi_cubes_constructor, 
                                                                     device, N, tiling, latent_vec_interpolation)
-
-    # print(f"Samples Shape: {samples.shape}")
-    # print(f"Samples Orig Shape: {samples_orig.shape}")
-    # print(f"Latent Vector Shape: {lat_vec_red.shape}")
-    # print(f"Cube Index Shape: {cube_idx.shape}")
-    # print(f"Requested Shape: {torch.prod(torch.tensor(N))}")
-
+    logging.debug(logging.INFO, f"Querying {np.prod(N)} DeepSDF points")
 
     verts, faces = evaluate_network(lat_vec_red,
                                     samples, samples_orig, decoder, N, cap_border_dict, cube_idx, output_tetmesh, flexi_cubes_constructor)
@@ -381,13 +376,13 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     deep_sdf.utils.log_memory_usage()
     save_memory = True
     tstart = time.time()
+    logging.debug(logging.INFO, f"Computing DeepSDF derivatives")
     if compute_derivatives:
         # shape of SDF jacobian = dVerts/dLatent: (n_verts, dim_phys, N_eval_points, dim_latent)
         # shape of Spline Jacobian = dLatent/dControl: (N_eval_points, n_control_points)
         # shape of Total Jacobian = dVerts/dControl: (n_verts, dim_phys, n_control_points, dim_latent)
 
         if save_memory:
-            basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
             # slow version
             # for i in range(jac.shape[3]):
             #     tot_jac.append(np.matmul(jac.detach().cpu().numpy()[:,:,:,i], basis_eval))
@@ -396,8 +391,10 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
             # small loop to loop over latent dimensions
             physical_dim = samples.shape[1]-1
             latent_dim = lat_vec_red.shape[1]
-            n_control_points = basis_eval.shape[1]
-
+            queries = np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1)
+            n_control_points = latent_vec_interpolation.control_points.shape[0]
+            basis, supports = latent_vec_interpolation.basis_and_support(queries)
+            basis_eval = sp.utils.data.make_matrix(basis, supports, n_control_points, as_array=True)
             basis_eval_torch = torch.from_numpy(basis_eval).to(device, dtype=torch.float32)
 
             tot_jac = []
@@ -445,7 +442,7 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
             jac_cpu = jac.detach().cpu().numpy()
             tot_jac_cpu = np.einsum('ijkl,km->ijml', jac_cpu, basis_eval)
     t_finish = time.time() - tstart
-    logging.log(logging.INFO, f"Time for computing derivatives: {t_finish}")
+    logging.log(logging.DEBUG, f"Time for computing derivatives: {t_finish}")
     verts = (verts+1)/2
     
     return verts, faces, tot_jac_cpu

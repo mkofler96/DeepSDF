@@ -1,5 +1,5 @@
 import sys
-sys.path.append(".")
+# sys.path.append(".")
 import deep_sdf.mesh
 import deep_sdf.utils
 import os
@@ -16,7 +16,7 @@ import skimage
 import meshio
 import tetgenpy
 import igl
-import mimi
+
 import gustaf as gus
 import trimesh
 import tempfile
@@ -34,7 +34,6 @@ import numpy as np
 import splinepy as sp
 import os
 import gustaf as gus
-from . import config
 import socket
 import os
 import vedo
@@ -51,6 +50,11 @@ import re
 import pandas as pd
 from dataclasses import dataclass
 import dataclasses
+
+from analysis.geometry import DeepSDFMesh
+from optimization import MMA
+from optimization import config
+from analysis.problems import CantileverBeam
 
 import logging
 
@@ -122,12 +126,12 @@ class struct_optimization():
 
         self.cache = {}
         self.logging = logging.getLogger("optimization")
-        self.logging.setLevel(logging.DEBUG)
         fh = logging.FileHandler(self.log_filename, mode='w')
         self.logging.addHandler(fh)
         fh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
         self.logging.log(logging.INFO, f"Starting optimization in {self.optimization_folder}")
         self.move_older_sims_to_temp_dir()
+        self.geometry = DeepSDFMesh(self.options["mesh"])
 
     def _in_cache(self, x):
         # search for x as key in self.cache
@@ -143,14 +147,17 @@ class struct_optimization():
              self._compute_solution(x) # same idea
         return self.cache[str(x.round(8))]["constraint"]
 
-    def set_x0(self, x0):
-            
-        control_points = np.array([x0]*6)
+    def set_x0(self, x0=None):
+        if x0 is None:
+            n_control_points = self.geometry.get_n_control_points()
+            n_latent = self.geometry.get_latent_shape()
+            control_points = np.zeros((n_control_points, n_latent))
+        else:
+            control_points = x0
 
-        x0 = control_points.reshape(-1)
-        self.start_values = x0
-        self.dv_names = [f"x{i}" for i in range(len(x0))]
-        self.bounds = [(-1,1)]*len(x0)
+        self.start_values = control_points.reshape(-1)
+        self.dv_names = [f"x{i}" for i in range(len(self.start_values))]
+        self.bounds = [(-1,1)]*len(self.start_values)
 
     def load_settings(self):
         self.options = config.Config.load_json(self.settings_filename)
@@ -165,19 +172,7 @@ class struct_optimization():
         method = self.options["optimization"]["method"]
         if not (method in available_optimizer_methods):
             raise ValueError(f"Optimizer {method} method not available. Available methods are {available_optimizer_methods}")
-        
-        if not ("experiment_directory" in self.options["general"]):
-            raise KeyError("Key experiment_directory not found in general settings")
-        if not ("checkpoint" in self.options["general"]):
-            raise KeyError("Key checkpoint not found in general settings")
-
-        if not os.path.exists(self.options["general"]["experiment_directory"]):
-            raise FileNotFoundError(f"Experiment directory {self.options['general']['experiment_directory']} not found")
-        
-        experiment_directory = self.options["general"]["experiment_directory"]
-        checkpoint = str(self.options["general"]["checkpoint"])
-        self.experiment_directory = experiment_directory
-        self.checkpoint = checkpoint
+    
         
 
     def run_optimization(self):
@@ -188,6 +183,8 @@ class struct_optimization():
             self.run_scipy_optimization(options=self.options["optimization"])
         elif self.options["optimization"]["method"] == "NSGA":
             self.run_NSGA_optimization()
+        elif self.options["optimization"]["method"] == "MMA":
+            self.run_MMA_optimization(self.options["optimization"])
         else:
             raise ValueError("Optimizer method not available")
         
@@ -200,166 +197,39 @@ class struct_optimization():
         self.iteration += 1
         temp_current_simulation_folder = self.create_temp_current_simulation_folder()
         self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
-        accuracy_deep_sdf_reconstruction = self.options["mesh"]["accuracy_deep_sdf_reconstruction"]
-        number_of_final_elements = self.options["mesh"]["number_of_final_elements"]
 
-        decoder = ws.load_trained_model(self.experiment_directory, self.checkpoint)
-        decoder.eval()
+        latent_shape = self.geometry.get_latent_shape()
+        control_points = np.array(control_point_values).reshape((-1, latent_shape))
+        self.geometry.generate_surface_mesh(control_points)
+        self.geometry.tetrahedralize_surface()
 
-        # box = sp.helpme.create.box(10,10,10).bspline
-        # small_box = sp.helpme.create.box(1,1,1).bspline
-        # box.insert_knots(0, [0.5])
-        # box.insert_knots(1, [0.5])
-        # box.insert_knots(2, [0.5])
-        #todo replace hard coded 18 and 16, 9 = number of control points, 16 = latent vector dimension
-        # in total we have 18 control points, 9 in front and 9 in back, but z direction is constant
-        control_points = np.array(control_point_values).reshape((-1, decoder.lin0.in_features-3))
+        fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
+        self.logging.debug(f"Writing surface mesh to {fname_surf}")
+        gus.io.meshio.export(fname_surf, self.geometry.surface_mesh)
 
-        latent_vec_interpolation = sp.BSpline(
-            degrees=[1, 2, 1],
-            knot_vectors=[[-1, -1, 1, 1], 
-                        [-1, -1, -1, 1, 1, 1], 
-                        [-1, -1, 1, 1]],
-            control_points=np.vstack([control_points, control_points]),
-        )
+        fname_volume_abq = temp_current_simulation_folder/f"volume{self.iteration}.inp"
+        gus.io.meshio.export(fname_volume_abq, self.geometry.volumes)
+        fname_volume_mfem = str(fname_volume_abq.with_suffix(".mesh"))
+        self.geometry.export_volume_mesh(fname_volume_mfem, show_mesh=False)
+        cl_beam = CantileverBeam.CantileverBeam(temp_current_simulation_folder)
+        cl_beam.read_mesh(fname_volume_mfem)
 
-        # microstructure = sp.Microstructure()
-        # # set outer spline and a (micro) tile
-        # microstructure.deformation_function = box
-        # microstructure.microtile = small_box
-        # # tiling determines tile resolutions within each bezier patch
-        # microstructure.tiling = [2, 2, 2]
-        # ms = microstructure.create().patches
+        # before solve, we should add a problem setup and set material properties
+        cl_beam.set_up()
+        dTheta = self.geometry.get_dTheta()
 
-        tiling = self.options["mesh"]["tiling"]
-        N_base = accuracy_deep_sdf_reconstruction
-        N = [N_base * t+1 for t in tiling]
 
-        cap_border_dict = {
-            "x0": {"cap": 1, "measure": 0.05},
-            # "x1": {"cap": 1, "measure": 0.1},
-            # "y0": {"cap": 1, "measure": 0.1},
-            "y1": {"cap": 1, "measure": 0.1},
-        }
-        self.logging.log(logging.INFO, f"Start Querying {np.prod(N)} DeepSDF points")
-
-        if self.options["mesh"]["tetmesh_from_flexicubes"]:
-            verts, volumes = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"], output_tetmesh=True)
-            mesh = gus.Volumes(verts.cpu().numpy(), volumes.cpu().numpy())
-            gus.show(mesh)
-        else:
-            verts, faces = deep_sdf.mesh.create_mesh_microstructure(tiling, decoder, latent_vec_interpolation, "none", cap_border_dict=cap_border_dict, N=N, use_flexicubes=self.options["mesh"]["use_flexicubes"])
-            
-            # if flexicubes is used, mesh is exported as torch tensor, therefore we need to convert it to numpy
-            if self.options["mesh"]["use_flexicubes"]:
-                faces = faces.cpu().numpy()
-                verts = verts.cpu().numpy()
-
-            self.logging.log(logging.INFO, f"Finished Querying DeepSDF with {len(verts)} vertices and {len(faces)} faces")
-
-            # step 1: apply Free Form Deformation
-            # bring slightly outside vertices back
-            n_verts_outside = np.sum(verts > 1) + np.sum(verts < 0)
-            self.logging.log(logging.INFO, f"Maximum deviation is {np.max(verts)}")
-            self.logging.log(logging.INFO, f"Minimum deviation is {np.min(verts)}")
-            self.logging.log(logging.INFO, f"Moving {n_verts_outside} vertices to [0,1]")
-            verts[verts>1] = 1
-            verts[verts<0] = 0
-            
-            # Free Form Deformation
-            # geometric parameters
-            width, height, depth = self.options["mesh"]["macro_dimensions"]
-
-            control_points=np.array([
-                    [0, 0, 0],
-                    [0, height, 0],
-                    [width, 0, 0],
-                    [width, height, 0]
-                ])
-
-            deformation_surf = sp.BSpline(
-                degrees=[1,1],
-                control_points=control_points,
-                knot_vectors=[[0, 0, 1, 1],[0, 0, 1, 1]],
-            )
-
-            deformation_volume = deformation_surf.create.extruded(extrusion_vector=[0,0,depth])
-            self.logging.log(logging.INFO, f"Applying Free Form Deformation to {len(verts)} vertices")
-            verts = deformation_volume.evaluate(verts)
-
-            # step 2: generate surface mesh
-            surf_mesh = gus.faces.Faces(verts, faces)
-            # step 3: decimate the surface mesh
-            
-            if self.options["mesh"]["decimate_mesh"]:
-                self.logging.log(logging.INFO, f"Decimating surface mesh to {number_of_final_elements} elements")
-                r = igl.decimate(surf_mesh.vertices, surf_mesh.faces, int(number_of_final_elements))
-                dmesh = gus.Faces(r[1], r[2])
-                # gus.show(dmesh)
-            else:
-                dmesh = surf_mesh
-
-            fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
-            self.logging.log(logging.INFO, f"Writing surface mesh to {fname_surf}")
-            gus.io.meshio.export(fname_surf, dmesh)
-
-            self.logging.log(logging.INFO, f"Tetrahedralizing decimated surface mesh with TetGen")
-            use_pygalmesh = False
-            if use_pygalmesh:
-                import pygalmesh
-                mesh_pg = pygalmesh.generate_volume_mesh_from_surface_mesh(
-                    fname_surf,
-
-                )
-                mesh = gus.Volumes(mesh_pg.points, mesh_pg.cells[1].data)
-            else:
-                t_in = tetgenpy.TetgenIO()
-                t_in.setup_plc(dmesh.vertices, dmesh.faces.tolist())
-                # gus.show(dmesh)
-                t_out = tetgenpy.tetrahedralize("p", t_in) #pqa
-
-                tets = np.vstack(t_out.tetrahedra())
-                verts = t_out.points()
-
-                mesh = gus.Volumes(verts, tets)
-
-        faces = mesh.to_faces(False)
-        boundary_faces = faces.single_faces()
-
-        BC = {1: [], 2: [], 3: []} 
-        for i in boundary_faces:
-            # mark boundaries at x = 0 with 1
-            if np.max(verts[faces.const_faces[i], 0]) < 3e-2*height:
-                BC[1].append(i)
-            # mark boundaries at x = 1 with 2
-            elif np.logical_and(np.min(verts[faces.const_faces[i], 0]) > 0.9*width,
-                                np.min(verts[faces.const_faces[i], 1]) > 0.999*height):
-                BC[2].append(i)
-            # mark rest of the boundaries with 3
-            else:
-                BC[3].append(i)
-        fname_volume = temp_current_simulation_folder/f"volume{self.iteration}.inp"
-        mesh.BC = BC
-        gus.io.mfem.export(fname_volume.with_suffix(".mesh"), mesh)
-        gus.io.meshio.export(fname_volume, mesh)
-        simulation_name = temp_current_simulation_folder
-        output_dir = temp_current_simulation_folder.parent
-        self.logging.log(logging.INFO, f"Running simulation with mesh {fname_volume}")
-        use_direct_solver = False
-        cl_beam = mimi.LECantileverBeam(str(fname_volume.with_suffix('.mesh')), str(output_dir), str(simulation_name),use_direct_solver)
+        volume, der_vol = cl_beam.compute_volume(dTheta=dTheta)
+        if der_vol is None:
+            der_vol = 0
+        logging.debug(f"Vol: {volume:.5g}, dVol: {der_vol}")
         cl_beam.solve()
-        compliance = cl_beam.compliance
-
-        use_trimesh_for_volume_calculation = True
-
-        if use_trimesh_for_volume_calculation:
-            mesh = trimesh.Trimesh(vertices=verts, faces=faces.const_faces)
-            volume = mesh.volume
-            self.logging.log(logging.INFO, f"Volume calculated with trimesh: {volume} | with MFEM: {cl_beam.volume}")
-        else:
-            volume = cl_beam.volume
+        compliance, der_compliance = cl_beam.compute_compliance(dTheta=dTheta)
+        if der_compliance is None:
+            der_compliance = 0
+        logging.debug(f"Compliance: {compliance:.5g}, dCompliance: {der_compliance}")
         vol_constraint = self.options["general"]["volume_constraint"]
-        self.cache[str(control_point_values.round(8))] = {"objective": compliance, "constraint": vol_constraint-volume}  # f, g are scalars
+        self.cache[str(control_point_values.round(8))] = {"objective": (compliance, der_compliance), "constraint": (volume - vol_constraint, der_vol)}  # f, g are scalars
         self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
         self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)
@@ -370,7 +240,7 @@ class struct_optimization():
         save_every = self.iteration % self.options["general"]["save_every"] == 0
         first_iteration = self.iteration == 1
         if save_every or first_iteration:
-            self.logging.log(logging.INFO, f"Saving simulation results to {self.current_simulation_folder}")
+            self.logging.debug(f"Saving simulation results to {self.current_simulation_folder}")
             shutil.copytree(temp_current_simulation_folder, self.current_simulation_folder)
             
         shutil.rmtree(temp_current_simulation_folder)
@@ -401,6 +271,21 @@ class struct_optimization():
                                 options=opti_options_without_method)
         return result
 
+    def run_MMA_optimization(self, options):
+               # do all your calculations only once here
+        # in the end fill the cache
+        
+        def obj_fun(x):
+            res = self.objective(x)
+            return res
+
+        def constraint(x):
+            res = self.constraint(x)
+            return res
+        x0 = self.start_values
+        mma_opti = MMA.MMA()
+        result = mma_opti.minimize(x0, obj_fun, constraint, self.bounds, options)
+        return result
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)

@@ -6,11 +6,13 @@ from analysis.MFEMLinearElasticity import LinearElasticitySolver, VolumeForceCoe
 import gustaf as gus
 import numpy as np
 from typing import Union
+import logging
 
 class CantileverBeam:
-    def __init__(self):
+    def __init__(self, simulation_folder):
         self.strain_energy_density_data = None
         self.u_data = None
+        self.simulation_folder = simulation_folder
 
     def read_mesh(self, mesh_filename):
         self.mesh = mfem.Mesh.LoadFromFile(mesh_filename)
@@ -84,11 +86,11 @@ class CantileverBeam:
         # self.u_data = u.GetDataArray().copy()
         self.u_data = u.GetDataArray()
         max_u = self.u_data.max()
-        print(f"Finished Solution. Max deflection: {max_u}")
-        data_name = "linear_elasticity"
+        logging.debug(f"Finished Solution. Max deflection: {max_u}")
+        data_name = "paraview_output"
         paraview_dc = mfem.ParaViewDataCollection(data_name, self.mesh)
 
-        paraview_dc.SetPrefixPath("ParaView")
+        paraview_dc.SetPrefixPath(str(self.simulation_folder))
         paraview_dc.SetLevelsOfDetail(self.ElasticitySolver.order)
 
         paraview_dc.SetDataFormat(mfem.VTKFormat_BINARY)
@@ -97,7 +99,7 @@ class CantileverBeam:
         paraview_dc.SetTime(0.0)
         paraview_dc.RegisterField("displacement", u)
         paraview_dc.Save()
-        print(f"Saving results to {data_name}")
+        logging.debug(f"Saving results to {data_name}")
 
     def show_solution(self, output: Union[str, list[str]], **kwargs):
         solutions = []
@@ -169,3 +171,5 @@ class CantileverBeam:
             for i in range(dTheta.shape[2]):
                 vol_der.append(self.ElasticitySolver.clcVolumeShapeDerivative(dTheta[:,:,i]))
         return vol, np.array(vol_der)
+
+

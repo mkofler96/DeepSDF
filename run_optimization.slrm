@@ -1,7 +1,10 @@
 #!/bin/bash
-#SBATCH --partition=pro
-#SBATCH --nodelist=neptune
-#SBATCH --cpus-per-task=10
-#SBATCH --mem=100G
+#SBATCH --partition=GPU-a6000
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --time=02:00:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=10G
+#SBATCH --gres=gpu:a6000:1
 
-/usr2/mkofler/.conda/envs/kaolin/bin/python/bin/python optimization/optimization.py
+/home/michael.kofler/miniforge3/envs/pytorch/bin/python optimization/optimization.py
