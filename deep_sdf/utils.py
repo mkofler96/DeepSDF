@@ -5,6 +5,7 @@ import logging
 import torch
 import numpy as np
 
+
 def add_common_args(arg_parser):
     arg_parser.add_argument(
         "--debug",
@@ -30,7 +31,7 @@ def add_common_args(arg_parser):
 
 
 def configure_logging(args):
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
     if args.debug:
         logger.setLevel(logging.DEBUG)
     elif args.quiet:
@@ -46,6 +47,8 @@ def configure_logging(args):
         file_logger_handler = logging.FileHandler(args.logfile)
         file_logger_handler.setFormatter(formatter)
         logger.addHandler(file_logger_handler)
+
+
 
 
 def decode_sdf(decoder, latent_vector, queries):    

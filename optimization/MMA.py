@@ -3,9 +3,12 @@ from mmapy import mmasub
 import numpy as np
 import logging
 
+
+
 class MMA():
     def __init__(self):
         pass
+        self.logger =  logging.getLogger(__name__)
 
     def minimize(self, x0, objective, constraint, bounds, options):
         bounds = np.array(bounds)
@@ -58,11 +61,11 @@ class MMA():
             x = xmma
             ch = np.abs(np.mean(x.T-xold1.T)/np.mean(x.T))
 
-            logging.info("It.: {0:4} | Obj.: {1:1.3e} | Constr.:  {2:1.3e} | ch.: {3:1.3e} | C: {4:1.3e}".format(loop, f0val, fval[0][0], ch, C))
+            self.logger.info("It.: {0:4} | Obj.: {1:1.3e} | Constr.:  {2:1.3e} | ch.: {3:1.3e} | C: {4:1.3e}".format(loop, f0val, fval[0][0], ch, C))
             if ch < options["deltaIt"]:
-                logging.info("Convergence reached")
+                self.logger.info("Convergence reached")
                 break
             if loop == options["maxIt"]:
-                logging.info("Max Iterations reached")
+                self.logger.info("Max Iterations reached")
                 break
         return x

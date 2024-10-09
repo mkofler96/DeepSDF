@@ -54,6 +54,8 @@ class DeepSDFMesh():
         latent_vec_interpolation.uniform_refine(self.options["refinement"])
         self.latent_vec_interpolation = latent_vec_interpolation
 
+        self.logger = logging.getLogger(__name__)
+
     def get_latent_shape(self) -> int:
         return self.latent.shape[1]
 
@@ -88,7 +90,7 @@ class DeepSDFMesh():
         self.jacobian = jac
 
     def tetrahedralize_surface(self):
-        logging.debug("Tetrahedralizing surface mesh")
+        self.logger.debug("Tetrahedralizing surface mesh")
         t_in = tetgenpy.TetgenIO()
         t_in.setup_plc(self.surface_mesh.vertices, self.surface_mesh.faces.tolist())
         # gus.show(dmesh)
@@ -142,7 +144,7 @@ class DeepSDFMesh():
         volumes.BC = BC
         if show_mesh:
             gus.show(volumes)
-        logging.debug(f"Exporting mesh with {len(volumes.volumes)} elements, {len(volumes.vertices)} vertices, {len(BC[1])} boundaries with marker 1, {len(BC[2])} boundaries with marker 2, and {len(BC[3])} boundaries with marker 3.")
+        self.logger.debug(f"Exporting mesh with {len(volumes.volumes)} elements, {len(volumes.vertices)} vertices, {len(BC[1])} boundaries with marker 1, {len(BC[2])} boundaries with marker 2, and {len(BC[3])} boundaries with marker 3.")
         gus.io.mfem.export(str(filepath), volumes)
         if export_abaqus:
             gus.io.meshio.export(str(filepath.with_suffix(".inp")))

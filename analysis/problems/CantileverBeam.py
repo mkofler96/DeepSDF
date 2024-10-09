@@ -6,7 +6,9 @@ from analysis.MFEMLinearElasticity import LinearElasticitySolver, VolumeForceCoe
 import gustaf as gus
 import numpy as np
 from typing import Union
-import logging
+# import logging
+
+# logger = logging.getLogger("CantileverBeam")
 
 class CantileverBeam:
     def __init__(self, simulation_folder):
@@ -86,7 +88,7 @@ class CantileverBeam:
         # self.u_data = u.GetDataArray().copy()
         self.u_data = u.GetDataArray()
         max_u = self.u_data.max()
-        logging.debug(f"Finished Solution. Max deflection: {max_u}")
+        # logger.debug(f"Finished Solution. Max deflection: {max_u}")
         data_name = "paraview_output"
         paraview_dc = mfem.ParaViewDataCollection(data_name, self.mesh)
 
@@ -99,7 +101,7 @@ class CantileverBeam:
         paraview_dc.SetTime(0.0)
         paraview_dc.RegisterField("displacement", u)
         paraview_dc.Save()
-        logging.debug(f"Saving results to {data_name}")
+        # logger.debug(f"Saving results to {data_name}")
 
     def show_solution(self, output: Union[str, list[str]], **kwargs):
         solutions = []

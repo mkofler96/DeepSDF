@@ -55,7 +55,8 @@ from numpy import sqrt, log, exp
 import numpy as np
 from numba import njit
 from numba.types import float64
-
+import logging
+logging.getLogger("numba").setLevel(logging.WARNING)
 from mfem import mfem_mode
 
 '''

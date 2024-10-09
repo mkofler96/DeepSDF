@@ -57,6 +57,11 @@ from optimization import MMA
 from analysis.problems import CantileverBeam
 
 import logging
+import logging.handlers
+from logging.config import dictConfig
+logger = logging.getLogger(__name__)
+
+
 
 @dataclass
 class OptimizationResults:
@@ -108,8 +113,8 @@ class struct_optimization():
         for folder in os.listdir(self.optimization_folder):
             if "simulation" in folder:
                 shutil.move(self.optimization_folder/folder, old_sim_dir/folder)
-                self.logging.log(logging.INFO, "Older simulation files detected.")
-                self.logging.log(logging.INFO, f"Moving {folder} to {old_sim_dir}")
+                self.logger.info("Older simulation files detected.")
+                self.logger.info(f"Moving {folder} to {old_sim_dir}")
 
     @property
     def log_filename(self):
@@ -125,12 +130,8 @@ class struct_optimization():
             raise FileNotFoundError(f"No config.json in {self.optimization_folder}")
 
         self.cache = {}
-        self.logging = logging.getLogger("optimization")
-        fh = logging.FileHandler(self.log_filename, mode='w')
-        self.logging.addHandler(fh)
-        fh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-        fh.setLevel(logging.DEBUG)
-        self.logging.log(logging.INFO, f"Starting optimization in {self.optimization_folder}")
+        self.logger = logging.getLogger(__name__)
+        self.logger.info(f"Starting optimization in {self.optimization_folder}")
         self.move_older_sims_to_temp_dir()
         self.geometry = DeepSDFMesh(self.options["mesh"])
 
@@ -195,17 +196,17 @@ class struct_optimization():
 
 
     def _compute_solution(self, control_point_values):  
+        self.logger.debug(f"Computing Solution")
         self.iteration += 1
         temp_current_simulation_folder = self.create_temp_current_simulation_folder()
-        self.logging.log(logging.DEBUG, f"Design vector difference to start: \n {control_point_values-self.start_values}")
-
         latent_shape = self.geometry.get_latent_shape()
         control_points = np.array(control_point_values).reshape((-1, latent_shape))
+        self.logger.debug(f"Generating Geometry")
         self.geometry.generate_surface_mesh(control_points)
         self.geometry.tetrahedralize_surface()
 
         fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
-        self.logging.debug(f"Writing surface mesh to {fname_surf}")
+        self.logger.debug(f"Writing surface mesh to {fname_surf}")
         gus.io.meshio.export(fname_surf, self.geometry.surface_mesh)
 
         fname_volume_abq = temp_current_simulation_folder/f"volume{self.iteration}.inp"
@@ -223,15 +224,15 @@ class struct_optimization():
         volume, der_vol = cl_beam.compute_volume(dTheta=dTheta)
         if der_vol is None:
             der_vol = 0
-        logging.debug(f"Vol: {volume:.5g}, dVol: {der_vol}")
+        self.logger.debug(f"Vol: {volume:.5g}, dVol: {der_vol}")
         cl_beam.solve()
         compliance, der_compliance = cl_beam.compute_compliance(dTheta=dTheta)
         if der_compliance is None:
             der_compliance = 0
-        logging.debug(f"Compliance: {compliance:.5g}, dCompliance: {der_compliance}")
+        self.logger.log(logging.DEBUG, f"Compliance: {compliance:.5g}, dCompliance: {der_compliance}")
         vol_constraint = self.options["general"]["volume_constraint"]
         self.cache[str(control_point_values.round(8))] = {"objective": (compliance, der_compliance), "constraint": (volume - vol_constraint, der_vol)}  # f, g are scalars
-        self.logging.log(logging.INFO, f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
+        self.logger.debug(f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
         self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)
 
@@ -241,7 +242,7 @@ class struct_optimization():
         save_every = self.iteration % self.options["general"]["save_every"] == 0
         first_iteration = self.iteration == 1
         if save_every or first_iteration:
-            self.logging.debug(f"Saving simulation results to {self.current_simulation_folder}")
+            self.logger.debug(f"Saving simulation results to {self.current_simulation_folder}")
             shutil.copytree(temp_current_simulation_folder, self.current_simulation_folder)
             
         shutil.rmtree(temp_current_simulation_folder)
@@ -311,3 +312,46 @@ def copy_all_simulations(source_dir, destination_dir):
                 print(f"Copying {file} to {destination_dir/folder/file.name}")
     # for pathlib.Path(source_dir).glob("*/"):
     #     shutil.copytree(source_dir, destination_dir)
+
+def configure_logging(args):
+    """
+    Initialize logging defaults for Project.
+
+    :param logfile_path: logfile used to the logfile
+    :type logfile_path: string
+
+    This function does:
+
+    - Assign INFO and DEBUG level to logger file handler and console handler
+
+    """
+    DEFAULT_LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+    }
+    dictConfig(DEFAULT_LOGGING)
+    if args.logfile is not None:
+        logfile = args.logfile
+    else:
+        logfile = "optimization.log"
+    default_formatter = logging.Formatter("%(asctime)s %(module)s - %(levelname)s - %(message)s", datefmt='%H:%M:%S')
+
+    file_handler = logging.FileHandler(logfile, mode='w')
+    file_handler.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    file_handler.setFormatter(default_formatter)
+    console_handler.setFormatter(default_formatter)
+
+    logging.root.setLevel(logging.DEBUG)
+    logging.root.addHandler(file_handler)
+    logging.root.addHandler(console_handler)
+
+    logger_blocklist = [
+        "numba",
+    ]
+
+    for module in logger_blocklist:
+        logging.getLogger(module).setLevel(logging.WARNING)
