@@ -6,8 +6,7 @@ import splinepy as sp
 import tetgenpy
 import torch
 import logging
-import io
-import sys
+import time
 import os
 from contextlib import redirect_stdout
 
@@ -74,7 +73,9 @@ class DeepSDFMesh():
         self.latent_vec_interpolation.control_points = control_points
         latent_vec_interpolation = self.latent_vec_interpolation
         decoder = self.decoder
+
         verts, faces, jac = deep_sdf.mesh.create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, cap_border_dict=cap_border_dict, N=N, device=device, compute_derivatives=True)
+
         jac = jac.reshape((jac.shape[0], jac.shape[1], -1))
         verts_np = verts.detach().cpu().numpy()
         faces_np = faces.detach().cpu().numpy()

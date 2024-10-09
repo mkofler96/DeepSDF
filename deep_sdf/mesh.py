@@ -373,13 +373,13 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     samples, samples_orig, lat_vec_red, cube_idx = prepare_samples(flexi_cubes_constructor, 
                                                                     device, N, tiling, latent_vec_interpolation)
     logger.debug(f"Querying {np.prod(N)} DeepSDF points")
+    tstart = time.time()
 
     verts, faces = evaluate_network(lat_vec_red,
                                     samples, samples_orig, decoder, N, cap_border_dict, cube_idx, output_tetmesh, flexi_cubes_constructor)
     tot_jac = []
     deep_sdf.utils.log_memory_usage()
     save_memory = True
-    tstart = time.time()
     logger.debug(f"Computing DeepSDF derivatives")
     if compute_derivatives:
         # shape of SDF jacobian = dVerts/dLatent: (n_verts, dim_phys, N_eval_points, dim_latent)
@@ -446,7 +446,7 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
             jac_cpu = jac.detach().cpu().numpy()
             tot_jac_cpu = np.einsum('ijkl,km->ijml', jac_cpu, basis_eval)
     t_finish = time.time() - tstart
-    logger.log(logging.DEBUG, f"Time for computing derivatives: {t_finish}")
+    logger.log(logging.DEBUG, f"Time for querying {np.prod(N)} points and computing derivatives: {t_finish}")
     verts = (verts+1)/2
     
     return verts, faces, tot_jac_cpu
@@ -493,7 +493,7 @@ def evaluate_network(lat_vec_red, samples, samples_orig, decoder, N, cap_border_
             .squeeze(1)
         )
     sample_time = time.time()
-    logger.debug("sampling takes: %f" % (sample_time - start_time))
+    # logger.debug("sampling takes: %f" % (sample_time - start_time))
     for loc, cap_dict in cap_border_dict.items():
         cap, measure = cap_dict["cap"], cap_dict["measure"]
         dim, multiplier = location_lookup[loc]

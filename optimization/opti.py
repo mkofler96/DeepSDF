@@ -1,53 +1,19 @@
-import sys
-# sys.path.append(".")
-import deep_sdf.mesh
-import deep_sdf.utils
 import os
 import json
-import torch
-import deep_sdf.workspace as ws
 import pathlib
-import time
-import datetime
-import splinepy as sp
-import gustaf as gus
 import numpy as np
-import skimage
-import meshio
-import tetgenpy
-import igl
 
-import gustaf as gus
-import trimesh
 import tempfile
-import matplotlib.pyplot as plt
-import subprocess
-import mmapy
 
 import pathlib
-import os
 from typing import Union
-import json
 
 import scipy
 import numpy as np
-import splinepy as sp
-import os
 import gustaf as gus
-import socket
-import os
-import vedo
-import meshio
 
-from typing import TypedDict
-
-import numpy as np
-import splinepy as sp
-import os
 import shutil
-import re
 
-import pandas as pd
 from dataclasses import dataclass
 import dataclasses
 
@@ -60,7 +26,7 @@ import logging
 import logging.handlers
 from logging.config import dictConfig
 logger = logging.getLogger(__name__)
-
+logging.getLogger("gustaf").setLevel(logging.WARNING)
 
 
 @dataclass
