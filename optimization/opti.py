@@ -52,8 +52,8 @@ from dataclasses import dataclass
 import dataclasses
 
 from analysis.geometry import DeepSDFMesh
-from optimization import MMA
 from optimization import config
+from optimization import MMA
 from analysis.problems import CantileverBeam
 
 import logging
@@ -129,6 +129,7 @@ class struct_optimization():
         fh = logging.FileHandler(self.log_filename, mode='w')
         self.logging.addHandler(fh)
         fh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        fh.setLevel(logging.DEBUG)
         self.logging.log(logging.INFO, f"Starting optimization in {self.optimization_folder}")
         self.move_older_sims_to_temp_dir()
         self.geometry = DeepSDFMesh(self.options["mesh"])
