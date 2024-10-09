@@ -148,7 +148,7 @@ class SDFSampler:
             avg_time_per_reconstruction = tot_time/(i+1)
             estimated_remaining_time = avg_time_per_reconstruction*(len(sdfs)-(i+1))
             time_string = str(datetime.timedelta(seconds=round(estimated_remaining_time)))
-            print(f"reconstructing {fname} ({(i+1)}/{len(sdfs)}) [{(i+1)/len(sdfs)*100:.2f}%] in {time_string} ({avg_time_per_reconstruction:.2f}s/file)")
+            print(f"Sampling {fname} ({(i+1)}/{len(sdfs)}) [{(i+1)/len(sdfs)*100:.2f}%] in {time_string} ({avg_time_per_reconstruction:.2f}s/file)")
         return split
         
     def write_json(self, json_fname, data_info, split_files):
