@@ -376,7 +376,9 @@ class DoubleLatticeExtruded(_TileBase):
                 )
             )
             for index, spline in enumerate(spline_list):
-                spline_list[index] = create.extruded(spline, extrusion_vector=[0, 0, 1])
+                # switch x and z axis by inserting zeros for y
+                spline_list[index].control_points = _np.insert(spline_list[index].control_points, 1, values=0, axis=1)
+                spline_list[index] = create.extruded(spline, extrusion_vector=[0, 1, 0])
             # Pass to output
             if i_derivative == 0:
                 splines = spline_list.copy()
