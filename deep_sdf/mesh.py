@@ -8,6 +8,8 @@ import skimage.measure
 import splinepy as sp
 import time
 import torch
+import pathlib
+import os
 
 from typing import TypedDict
 from enum import Enum
@@ -53,7 +55,7 @@ def create_mesh(
     samples.requires_grad = False
 
     head = 0
-
+    latent_vec = latent_vec.to(device)
     while head < num_samples:
         sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].to(device)
 
@@ -75,7 +77,7 @@ def create_mesh(
         sdf_values.data.cpu(),
         voxel_origin,
         voxel_size,
-        ply_filename + ".ply",
+        ply_filename,
         offset,
         scale,
     )
@@ -520,3 +522,18 @@ def evaluate_network(lat_vec_red, samples, samples_orig, decoder, N, cap_border_
                                 resolution=tuple(N),
                                 output_tetmesh=output_tetmesh)
     return verts, faces
+
+def create_mesh_from_latent(experiment_directory, epoch, index, **kwargs):
+    decoder = deep_sdf.ws.load_trained_model(experiment_directory, str(epoch))
+    latent_vecs = deep_sdf.ws.load_latent_vectors(experiment_directory, str(epoch))
+    class_name = "all"
+    instance_name = f"{index}"
+    dataset = "latent_recon"
+    fname = deep_sdf.ws.get_reconstructed_mesh_filename(experiment_directory, 
+                                                    epoch, dataset, class_name, 
+                                                    instance_name)
+    fname = pathlib.Path(fname)
+    if os.path.isdir(fname.parent) == False:
+        os.makedirs(fname.parent)
+    create_mesh(decoder, latent_vecs[index], str(fname), **kwargs)
+    return fname
