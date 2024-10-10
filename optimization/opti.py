@@ -197,6 +197,8 @@ class struct_optimization():
         self.logger.debug(f"Volume: {volume:.5g}, "
                           f"dVolume: {der_vol_shape} array "
                           f"with mean {der_vol_mean:.5g}")
+        if np.any(np.isnan(der_vol)):
+            self.logger.warning("Nan detected in volume derivative.")
         cl_beam.solve()
         compliance, der_compliance = cl_beam.compute_compliance(dTheta=dTheta)
         if der_compliance is None:

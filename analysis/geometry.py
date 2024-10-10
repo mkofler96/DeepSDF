@@ -88,13 +88,21 @@ class DeepSDFMesh():
         jac[np.where(jac<-1)] = 0
         # check watertightness of mesh
         tri_m = trimesh.Trimesh(verts_np, faces_np, vertex_attributes={"jac": jac})
+        if self.options["remove_orphans"]:
+            self.logger.debug("Removing orphan meshs")
+            cc = trimesh.graph.connected_components(tri_m.face_adjacency)
+            mask = np.zeros(len(tri_m.faces), dtype=np.bool_)
+            n_faces = np.array([c.shape[0] for c in cc], dtype=np.int64)
+            mask[cc[np.argmax(n_faces)]] = True
+            tri_m.update_faces(mask)
         if not tri_m.is_watertight:
             self.logger.debug("Mesh is not watertight - trying to fix by eliminating degenerate faces")
-            tri_m.update_faces(tri_m.nondegenerate_faces(height=1e-10))
+            tri_m.update_faces(tri_m.nondegenerate_faces())
             if not tri_m.is_watertight:
                 self.logger.warning("Mesh is still not watertight after eliminating degenerate faces")
             else:
                 self.logger.debug("Successfully fixed mesh.")
+
         self.surface_mesh = tri_m
         # self.surface_mesh = tri_m
         self.jacobian = tri_m.vertex_attributes["jac"]
@@ -165,14 +173,24 @@ class DeepSDFMesh():
         jacobian = self.jacobian
         dVertices = None
         dVertices = np.zeros((volumes.vertices.shape[0], volumes.vertices.shape[1], jacobian.shape[2]))
-        # normals = gus.create.faces.vertex_normals(faces, angle_weighting=True, area_weighting=True).vertex_data["normals"]
-        normals = faces.vertex_normals
+        
+        if np.any(np.isnan(jacobian)):
+            logging.warning("Nan values in jacobian detected")
+        normals = self.surface_mesh.vertex_normals
+        # gus_faces = gus.Faces(faces.vertices, faces.faces)
+        # normals = gus.create.faces.vertex_normals(gus_faces, angle_weighting=True, area_weighting=True)
+        # # .vertex_data["normals"]    
+        zero_normals = np.all(normals==0, axis=1)
+        n_zero_normals = len(np.nonzero(zero_normals))
+        if n_zero_normals > 0:
+            self.logger.debug(f"{n_zero_normals} 0-Normal vectors detected")
         dVertices_normal = np.zeros_like(jacobian)
         for i in range(jacobian.shape[2]):
             dVertices_normal[:,:,i] = dot_prod(np.float64(jacobian[:,:,i]),normals)
             dVertices[self.surface_mesh_indices[:,0],:,i] = dVertices_normal[:,:,i]
         return dVertices
         
+
 
 def transform(x, t):
     p = 2/t
@@ -192,11 +210,12 @@ def sdf_struct(decoder, queries, tiling, latent_vec_interpolation):
 
     return deep_sdf.utils.decode_sdf(decoder, None, queries).squeeze(1).detach().cpu().numpy()
 
-
-
-
 def dot_prod(A, B) -> np.ndarray:
     dot_ai_bi = (A * B).sum(axis=-1, keepdims=True)
     dot_bi_bi = (B * B).sum(axis=-1, keepdims=True)  # or square `norm`
+    zero_normals = np.all(B==0, axis=1)
+    n_zero_normals = len(np.nonzero(zero_normals))
+    if n_zero_normals > 0:
+        dot_bi_bi[zero_normals] = np.Inf
     C = dot_ai_bi / dot_bi_bi * B
     return C
