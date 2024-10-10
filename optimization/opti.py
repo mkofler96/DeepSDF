@@ -11,6 +11,7 @@ from typing import Union
 import scipy
 import numpy as np
 import gustaf as gus
+import socket
 
 import shutil
 
@@ -97,7 +98,7 @@ class struct_optimization():
 
         self.cache = {}
         self.logger = logging.getLogger(__name__)
-        self.logger.info(f"Starting optimization in {self.optimization_folder}")
+        self.logger.info(f"Starting optimization in {self.optimization_folder} on {socket.gethostname()}")
         self.move_older_sims_to_temp_dir()
         self.geometry = DeepSDFMesh(self.options["mesh"])
 
@@ -171,7 +172,9 @@ class struct_optimization():
         self.geometry.generate_surface_mesh(control_points)
         fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
         self.logger.debug(f"Writing surface mesh to {fname_surf}")
-        gus.io.meshio.export(fname_surf, self.geometry.surface_mesh)
+        surface_mesh = gus.Faces(self.geometry.surface_mesh.vertices,
+                                self.geometry.surface_mesh.faces)
+        gus.io.meshio.export(fname_surf, surface_mesh)
 
         self.geometry.tetrahedralize_surface()
         fname_volume_abq = temp_current_simulation_folder/f"volume{self.iteration}.inp"
@@ -189,15 +192,26 @@ class struct_optimization():
         volume, der_vol = cl_beam.compute_volume(dTheta=dTheta)
         if der_vol is None:
             der_vol = 0
-        self.logger.debug(f"Vol: {volume:.5g}, dVol: {der_vol}")
+        der_vol_shape = der_vol.shape
+        der_vol_mean = np.mean(der_vol)
+        self.logger.debug(f"Volume: {volume:.5g}, "
+                          f"dVolume: {der_vol_shape} array "
+                          f"with mean {der_vol_mean:.5g}")
         cl_beam.solve()
         compliance, der_compliance = cl_beam.compute_compliance(dTheta=dTheta)
         if der_compliance is None:
             der_compliance = 0
-        self.logger.log(logging.DEBUG, f"Compliance: {compliance:.5g}, dCompliance: {der_compliance}")
+        der_compl_shape = der_compliance.shape
+        der_compl_mean = np.mean(der_compliance)
+        self.logger.debug(f"Compliance: {compliance:.5g}, "
+                          f"dCompliance: {der_compl_shape} array "
+                          f"with mean {der_compl_mean:.5g}")
         vol_constraint = self.options["general"]["volume_constraint"]
-        self.cache[str(control_point_values.round(8))] = {"objective": (compliance, der_compliance), "constraint": (volume - vol_constraint, der_vol)}  # f, g are scalars
-        self.logger.debug(f"Finished iteration {self.iteration} with compliance {compliance} and volume {volume}")
+        self.cache[str(control_point_values.round(8))] = {
+            "objective": (compliance, der_compliance), 
+            "constraint": (volume - vol_constraint, der_vol)}  # f, g are scalars
+        self.logger.debug(f"Finished iteration {self.iteration} "
+                          f" with compliance {compliance} and volume {volume}")
         self.optimization_results.append_result(control_point_values, volume, compliance)
         self.save_and_clear(temp_current_simulation_folder)
 

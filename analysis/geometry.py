@@ -6,9 +6,8 @@ import splinepy as sp
 import tetgenpy
 import torch
 import logging
-import time
+import trimesh
 import os
-from contextlib import redirect_stdout
 
 import deep_sdf.utils
 from deep_sdf import workspace as ws
@@ -87,8 +86,18 @@ class DeepSDFMesh():
         faces = []
         jac[np.where(jac>1)] = 0
         jac[np.where(jac<-1)] = 0
-        self.surface_mesh = gus.Faces(verts_np, faces_np)
-        self.jacobian = jac
+        # check watertightness of mesh
+        tri_m = trimesh.Trimesh(verts_np, faces_np, vertex_attributes={"jac": jac})
+        if not tri_m.is_watertight:
+            self.logger.debug("Mesh is not watertight - trying to fix by eliminating degenerate faces")
+            tri_m.update_faces(tri_m.nondegenerate_faces(height=1e-10))
+            if not tri_m.is_watertight:
+                self.logger.warning("Mesh is still not watertight after eliminating degenerate faces")
+            else:
+                self.logger.debug("Successfully fixed mesh.")
+        self.surface_mesh = tri_m
+        # self.surface_mesh = tri_m
+        self.jacobian = tri_m.vertex_attributes["jac"]
 
     def tetrahedralize_surface(self):
         self.logger.debug("Tetrahedralizing surface mesh")
@@ -156,10 +165,11 @@ class DeepSDFMesh():
         jacobian = self.jacobian
         dVertices = None
         dVertices = np.zeros((volumes.vertices.shape[0], volumes.vertices.shape[1], jacobian.shape[2]))
-        normals = gus.create.faces.vertex_normals(faces, angle_weighting=True, area_weighting=True)
+        # normals = gus.create.faces.vertex_normals(faces, angle_weighting=True, area_weighting=True).vertex_data["normals"]
+        normals = faces.vertex_normals
         dVertices_normal = np.zeros_like(jacobian)
         for i in range(jacobian.shape[2]):
-            dVertices_normal[:,:,i] = dot_prod(np.float64(jacobian[:,:,i]),normals.vertex_data["normals"])
+            dVertices_normal[:,:,i] = dot_prod(np.float64(jacobian[:,:,i]),normals)
             dVertices[self.surface_mesh_indices[:,0],:,i] = dVertices_normal[:,:,i]
         return dVertices
         

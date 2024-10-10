@@ -431,13 +431,13 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
                 # _, dVerts_dControl_i = torch.autograd.functional.jvp(function, lat_vec_red.reshape(-1), v=dLatent_dControl)
                 # tot_jac.append(dVerts_dControl_i.reshape(-1, physical_dim))
             torch.cuda.empty_cache()
-            deep_sdf.utils.log_memory_usage()
+            # deep_sdf.utils.log_memory_usage()
             tot_jac = torch.stack([torch.stack(inner_jac, dim=2) for inner_jac in tot_jac], dim=3)
             tot_jac_cpu = tot_jac.detach().cpu().numpy()
         else:
             jac = torch.autograd.functional.jacobian(lambda l: evaluate_network(l)[0], lat_vec_red)
             torch.cuda.empty_cache()
-            deep_sdf.utils.log_memory_usage()
+            # deep_sdf.utils.log_memory_usage()
             basis_eval = latent_vec_interpolation.basis(np.clip(samples_orig[:, :3].detach().cpu().numpy(), -1, 1))
             # slow version
             # for i in range(jac.shape[3]):
@@ -448,7 +448,9 @@ def create_mesh_microstructure_diff(tiling, decoder, latent_vec_interpolation, N
     t_finish = time.time() - tstart
     logger.log(logging.DEBUG, f"Time for querying {np.prod(N)} points and computing derivatives: {t_finish}")
     verts = (verts+1)/2
-    
+    max_memory = torch.cuda.max_memory_allocated(device=device)
+    maxmem_human = deep_sdf.utils.format_memory_size(max_memory)
+    logger.debug(f"Maximum memory used by {device}: {maxmem_human}")
     return verts, faces, tot_jac_cpu
 
 
