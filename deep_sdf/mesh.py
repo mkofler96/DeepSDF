@@ -512,14 +512,14 @@ def evaluate_network(lat_vec_red, samples, samples_orig, decoder, N, cap_border_
         sdf_values = torch.maximum(sdf_values, -border_sdf)
 
 
-    sdf_values = sdf_values.reshape(N[0]+1, N[1]+1, N[2]+1)
+    # sdf_values = sdf_values.reshape(N[0]+1, N[1]+1, N[2]+1)
     # sdf_values = torch.tensor(sdf_values).to(device)
 
     
     # flexicubes has the possibility to output tetmesh, but it's extremely slow
     # and often fails
     verts, faces, loss = flexicubes_reconstructor(voxelgrid_vertices=samples_orig[:, :3],
-                                scalar_field=sdf_values.view(-1), 
+                                scalar_field=sdf_values, 
                                 cube_idx=cube_idx,
                                 resolution=tuple(N),
                                 output_tetmesh=output_tetmesh)
