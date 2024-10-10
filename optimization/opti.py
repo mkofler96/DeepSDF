@@ -169,12 +169,11 @@ class struct_optimization():
         control_points = np.array(control_point_values).reshape((-1, latent_shape))
         self.logger.debug(f"Generating Geometry")
         self.geometry.generate_surface_mesh(control_points)
-        self.geometry.tetrahedralize_surface()
-
         fname_surf = temp_current_simulation_folder/f"surf{self.iteration}.inp"
         self.logger.debug(f"Writing surface mesh to {fname_surf}")
         gus.io.meshio.export(fname_surf, self.geometry.surface_mesh)
 
+        self.geometry.tetrahedralize_surface()
         fname_volume_abq = temp_current_simulation_folder/f"volume{self.iteration}.inp"
         gus.io.meshio.export(fname_volume_abq, self.geometry.volumes)
         fname_volume_mfem = str(fname_volume_abq.with_suffix(".mesh"))
