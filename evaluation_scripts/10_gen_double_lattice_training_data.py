@@ -21,8 +21,9 @@ SDF_sampler = sdf_sampler.SDFSampler(str(outdir), str(splitdir))
 
 sdfs = []
 index = 0
-for i, t1 in enumerate(np.linspace(0.01, 0.2, 20)):
-    for j, t2 in enumerate(np.linspace(0.01, 0.2, 20)):
+# old was from 0.01 to 0.2, now 0.05 to 0.2, to avoid topological changes
+for i, t1 in enumerate(np.linspace(0.05, 0.2, 21)):
+    for j, t2 in enumerate(np.linspace(0.05, 0.2, 21)):
         tile_creator = DoubleLatticeExtruded()
         tile = tile_creator.create_tile(parameters=np.array([[t1, t2]]))
         mesh = sp.helpme.extract.faces(sp.multipatch.Multipatch(tile[0]), 20)
@@ -36,6 +37,6 @@ for i, t1 in enumerate(np.linspace(0.01, 0.2, 20)):
 
 dataset_info = {
     "dataset_name": "microstructure",
-    "class_name": "double_lattice"}
+    "class_name": "double_lattice_no_topo"}
 training_split_info = SDF_sampler.sample_sdfs(sdfs, dataset_info, n_samples=1e5, sampling_strategy="uniform", show=False)
-SDF_sampler.write_json("double_lattice_3D.json", dataset_info, training_split_info)
+SDF_sampler.write_json("double_lattice_no_topo_3D.json", dataset_info, training_split_info)

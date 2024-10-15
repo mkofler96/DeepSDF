@@ -18,5 +18,4 @@ if __name__ == "__main__":
 
     optimization = struct_optimization(optimization_dir)
 
-    optimization.set_x0(None)
-    optimization.run_optimization()
+    optimization.create_animation()

@@ -53,6 +53,9 @@ class DeepSDFMesh():
         self.latent_vec_interpolation = latent_vec_interpolation
 
         self.logger = logging.getLogger(__name__)
+        self.logger.debug(f"Initialied latent vector with "
+                          f"{latent_vec_interpolation.control_mesh_resolutions}"
+                           " control points")
 
     def get_latent_shape(self) -> int:
         return self.latent.shape[1]

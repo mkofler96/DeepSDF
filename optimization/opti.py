@@ -98,8 +98,7 @@ class struct_optimization():
 
         self.cache = {}
         self.logger = logging.getLogger(__name__)
-        self.logger.info(f"Starting optimization in {self.optimization_folder} on {socket.gethostname()}")
-        self.move_older_sims_to_temp_dir()
+
         self.geometry = DeepSDFMesh(self.options["mesh"])
 
     def _in_cache(self, x):
@@ -145,6 +144,8 @@ class struct_optimization():
         
 
     def run_optimization(self):
+        self.logger.info(f"Starting optimization in {self.optimization_folder} on {socket.gethostname()}")
+        self.move_older_sims_to_temp_dir()
         scipy_optimizers = ["BFGS", "COBYLA"]
         if self.options["optimization"]["method"] == "MOOP":
             self.run_PSO_optimization()
@@ -269,6 +270,9 @@ class struct_optimization():
         mma_opti = MMA.MMA()
         result = mma_opti.minimize(x0, obj_fun, constraint, self.bounds, options)
         return result
+    
+    # def create_animation(self):
+    #     self
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
