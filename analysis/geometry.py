@@ -18,7 +18,7 @@ class DeepSDFMesh():
     """
     generates microstructure from DeepSDF experiment
     """
-    def __init__(self, mesh_options):
+    def __init__(self, mesh_options, experiment_location=None):
         # check if required keys are present
         if not ("experiment_directory" in mesh_options):
             raise KeyError("Key experiment_directory not found in general settings")
@@ -27,8 +27,11 @@ class DeepSDFMesh():
         if not os.path.exists(mesh_options["experiment_directory"]):
             raise FileNotFoundError(f"Experiment directory {mesh_options['experiment_directory']} not found")
         self.options = mesh_options
-
-        self.exp_dir = self.options["experiment_directory"]
+        if experiment_location is None:
+            experiment_location = pathlib.Path(".")
+        else:
+            experiment_location = pathlib.Path(experiment_location)
+        self.exp_dir = experiment_location/self.options["experiment_directory"]
         checkpoint = self.options["checkpoint"]
         self.latent = ws.load_latent_vectors(self.exp_dir, checkpoint).to("cpu").numpy()
         self.decoder = ws.load_trained_model(self.exp_dir, checkpoint).to(device)

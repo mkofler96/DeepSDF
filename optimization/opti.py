@@ -87,7 +87,7 @@ class struct_optimization():
     def log_filename(self):
         return self.optimization_folder/"optimization_logs.log"
 
-    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike]):
+    def __init__(self, optimization_folder: Union[str, bytes, os.PathLike], experiment_location=None):
 
         self.optimization_folder = pathlib.Path(optimization_folder)
         self.optimization_results = OptimizationResults([], [], [])
@@ -99,7 +99,7 @@ class struct_optimization():
         self.cache = {}
         self.logger = logging.getLogger(__name__)
 
-        self.geometry = DeepSDFMesh(self.options["mesh"])
+        self.geometry = DeepSDFMesh(self.options["mesh"], experiment_location=experiment_location)
 
     def _in_cache(self, x):
         # search for x as key in self.cache
@@ -271,8 +271,11 @@ class struct_optimization():
         result = mma_opti.minimize(x0, obj_fun, constraint, self.bounds, options)
         return result
     
-    # def create_animation(self):
-    #     self
+    def create_animation(self):
+        for directory in self.optimization_folder.iterdir():
+            print(directory)
+        # mesh = gus.io.meshio.load(self.optimization_folder)
+        # self
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
