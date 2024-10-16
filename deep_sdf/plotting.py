@@ -28,20 +28,24 @@ def extract_paths(data, current_path=''):
     return paths
 
 
-def show_random_training_files(experiment_directory, deep_sdf_dir, n_files=4, epoch=None):
+def show_random_training_files(experiment_directory, 
+                               n_files=4, 
+                               epoch=None,
+                               only_show_halve=False):
     specs = ws.load_experiment_specifications(experiment_directory)
-    data_dir = pathlib.Path(deep_sdf_dir)
-    split_dir = data_dir/specs["TrainSplit"]
-    npz_filenames = extract_paths(json.load(open(split_dir)))
+    npz_filenames = extract_paths(json.load(open(specs["TrainSplit"])))
     ids = np.random.choice(len(npz_filenames), n_files, replace=False)
     plots = []
     for plt_id, id in enumerate(ids):
         current_plot = []
         plt = vedo.Plotter(axes=1)
         npz_filename = npz_filenames[id]
-        full_filename = os.path.join(data_dir/specs["DataSource"], "SdfSamples", npz_filename +".npz")
+        full_filename = os.path.join(specs["DataSource"], "SdfSamples", npz_filename +".npz")
         points = np.load(full_filename)
         all_points = np.vstack([points["neg"], points["pos"]])
+        if only_show_halve:
+            mask = np.where(all_points[:, 2] < 0)
+            all_points = all_points[mask]
         points = gus.vertices.Vertices(all_points[:, :3])
         points.vertex_data["sdf"] = all_points[:, -1]
         points.show_options["data"] = "sdf"
