@@ -9,7 +9,7 @@ import torch
 
 import deep_sdf.utils
 from deep_sdf import workspace as ws
-from sdf_sampler.plotting import scatter_contour_at_z_level
+from sdf_sampler.plotting import scatter_contour_at_origin
 
 this_folder = pathlib.Path(__file__).parent
 
@@ -125,7 +125,7 @@ ax.set_yticks([])
 
 plt.savefig(f"{this_folder}/structure_parameter_transform{graded_string}.png", dpi=600, bbox_inches="tight")
 fig, ax = plt.subplots(1, 1, figsize=(5/2.54, 5/2.54))
-scatter_contour_at_z_level(sdf_struct, custom_axis=ax, res=1000, flip_axes=True, eval_area=(-1,1), scale=(1,1))
+scatter_contour_at_origin(sdf_struct, normal=(0,1,0), custom_axis=ax, res=1000, flip_axes=True, eval_area=(-1,1), scale=(1,1))
 ax.set_xlabel(r"$x (\lambda_1)$")
 ax.set_ylabel(r"$y (\lambda_2)$")
 ax.set_xticks([])

@@ -1,12 +1,13 @@
 {
     "mesh":{
-        "N_base_reconstruction": 20,
+        "N_base_reconstruction": 21,
         "decimate_mesh": true,
-        "tiling": [8, 1, 4],
+        "tiling": [16, 1, 8],
         "degrees": [1, 1, 1],
-        "refinement": [0,0,1,2],
+        "refinement": [0,0,0,2,2],
         "experiment_directory": "experiments/double_lattice_3D_small_network",
         "checkpoint": "1000",
+        "remove_orphans": true,
         "cap_border_dict": {
             "x0": {"cap": 1, "measure": 0.05},
             "x1": {"cap": -1, "measure": 0.05},
@@ -19,7 +20,7 @@
     "optimization": {
         "method": "MMA",
         "deltaIt": 1e-10,
-        "maxIt": 100
+        "maxIt": 300
     },
     "general": {
         "temp_dir": "simulation",

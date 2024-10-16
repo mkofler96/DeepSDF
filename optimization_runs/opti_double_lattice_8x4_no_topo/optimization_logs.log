@@ -1,0 +1,254 @@
+13:55:56 geometry - DEBUG - Initialied latent vector with [5 2 3] control points
+13:55:56 opti - DEBUG - Settings bounds to (-0.5, 0.5)
+13:55:56 opti - INFO - Starting optimization in optimization_runs/opti_double_lattice_8x4_no_topo on a-a100-q-5
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_8 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_3 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_1 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_14 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_11 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_5 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_21 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_20 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_31 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_29 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_17 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_37 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_33 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_35 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_26 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_10 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_18 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_4 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_34 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_12 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_28 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_13 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_32 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_7 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:56 opti - INFO - Older simulation files detected.
+13:55:56 opti - INFO - Moving simulation_23 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_27 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_25 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_9 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_36 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_2 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_19 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_24 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_16 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_30 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_22 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_6 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_38 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - INFO - Older simulation files detected.
+13:55:57 opti - INFO - Moving simulation_15 to optimization_runs/opti_double_lattice_8x4_no_topo/old_sims
+13:55:57 opti - DEBUG - Computing Solution
+13:55:57 opti - DEBUG - Generating Geometry
+13:55:57 mesh - DEBUG - Querying 316030 DeepSDF points
+13:55:58 utils - DEBUG - torch.cuda.memory_allocated: 312.69MiB | torch.cuda.memory_reserved: 438.00MiB
+13:55:58 mesh - DEBUG - Computing DeepSDF derivatives
+13:55:58 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.091418743133545
+13:55:58 mesh - DEBUG - Maximum memory used by cuda: 965.23MiB
+13:55:59 geometry - DEBUG - Removing orphan meshs
+13:55:59 opti - DEBUG - Writing surface mesh to simulation/tmpwgddrk82/simulation_1/surf1.inp
+13:55:59 geometry - DEBUG - Tetrahedralizing surface mesh
+13:56:20 geometry - DEBUG - Exporting mesh with 572628 elements, 123434 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 150978 boundaries with marker 3.
+13:56:27 geometry - DEBUG - 1 0-Normal vectors detected
+13:57:13 opti - DEBUG - Volume: 1.3571, dVolume: (60,) array with mean -0.0098787
+13:59:54 opti - DEBUG - Compliance: 3.3332, dCompliance: (60,) array with mean 2.1892e-07
+13:59:54 opti - DEBUG - Finished iteration 1  with compliance 3.333247690187957 and volume 1.357138372439069
+13:59:54 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_1
+13:59:54 MMA - INFO - It.:    1 | Obj.: 1.000e+00 | Constr.:  8.571e-01 | ch.: 1.000e+00 | C: 3.333e+00
+13:59:54 opti - DEBUG - Computing Solution
+13:59:54 opti - DEBUG - Generating Geometry
+13:59:54 mesh - DEBUG - Querying 316030 DeepSDF points
+13:59:54 utils - DEBUG - torch.cuda.memory_allocated: 324.17MiB | torch.cuda.memory_reserved: 598.00MiB
+13:59:54 mesh - DEBUG - Computing DeepSDF derivatives
+13:59:55 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 0.9796297550201416
+13:59:55 mesh - DEBUG - Maximum memory used by cuda: 976.16MiB
+13:59:55 geometry - DEBUG - Removing orphan meshs
+13:59:55 opti - DEBUG - Writing surface mesh to simulation/tmpbz3lu694/simulation_2/surf2.inp
+13:59:56 geometry - DEBUG - Tetrahedralizing surface mesh
+14:00:17 geometry - DEBUG - Exporting mesh with 573641 elements, 125785 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 162474 boundaries with marker 3.
+14:00:23 geometry - DEBUG - 1 0-Normal vectors detected
+14:01:10 opti - DEBUG - Volume: 1.269, dVolume: (60,) array with mean -0.012283
+14:04:09 opti - DEBUG - Compliance: 4.1307, dCompliance: (60,) array with mean 3.1439e-07
+14:04:09 opti - DEBUG - Finished iteration 2  with compliance 4.130741004878707 and volume 1.268993784586387
+14:04:09 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_2
+14:04:10 MMA - INFO - It.:    2 | Obj.: 1.239e+00 | Constr.:  7.690e-01 | ch.: 3.792e-01 | C: 4.131e+00
+14:04:10 opti - DEBUG - Computing Solution
+14:04:10 opti - DEBUG - Generating Geometry
+14:04:10 mesh - DEBUG - Querying 316030 DeepSDF points
+14:04:10 utils - DEBUG - torch.cuda.memory_allocated: 325.77MiB | torch.cuda.memory_reserved: 622.00MiB
+14:04:10 mesh - DEBUG - Computing DeepSDF derivatives
+14:04:11 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.0040950775146484
+14:04:11 mesh - DEBUG - Maximum memory used by cuda: 1001.06MiB
+14:04:11 geometry - DEBUG - Removing orphan meshs
+14:04:11 opti - DEBUG - Writing surface mesh to simulation/tmprwc098t4/simulation_3/surf3.inp
+14:04:12 geometry - DEBUG - Tetrahedralizing surface mesh
+14:04:35 geometry - DEBUG - Exporting mesh with 546900 elements, 124646 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 173946 boundaries with marker 3.
+14:04:41 geometry - DEBUG - 1 0-Normal vectors detected
+14:05:28 opti - DEBUG - Volume: 1.1682, dVolume: (60,) array with mean -0.013329
+14:08:22 opti - DEBUG - Compliance: 5.21, dCompliance: (60,) array with mean 5.2456e-07
+14:08:22 opti - DEBUG - Finished iteration 3  with compliance 5.210004234873165 and volume 1.1681573669144891
+14:08:22 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_3
+14:08:22 MMA - INFO - It.:    3 | Obj.: 1.563e+00 | Constr.:  6.682e-01 | ch.: 1.061e-06 | C: 5.210e+00
+14:08:22 opti - DEBUG - Computing Solution
+14:08:22 opti - DEBUG - Generating Geometry
+14:08:22 mesh - DEBUG - Querying 316030 DeepSDF points
+14:08:22 utils - DEBUG - torch.cuda.memory_allocated: 327.29MiB | torch.cuda.memory_reserved: 746.00MiB
+14:08:22 mesh - DEBUG - Computing DeepSDF derivatives
+14:08:23 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.058995246887207
+14:08:23 mesh - DEBUG - Maximum memory used by cuda: 1011.02MiB
+14:08:23 geometry - DEBUG - Removing orphan meshs
+14:08:24 opti - DEBUG - Writing surface mesh to simulation/tmp1cr4kb3j/simulation_4/surf4.inp
+14:08:24 geometry - DEBUG - Tetrahedralizing surface mesh
+14:08:45 geometry - DEBUG - Exporting mesh with 485528 elements, 120038 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 185974 boundaries with marker 3.
+14:08:51 geometry - DEBUG - 1 0-Normal vectors detected
+14:09:36 opti - DEBUG - Volume: 1.0423, dVolume: (60,) array with mean -0.012168
+14:12:34 opti - DEBUG - Compliance: 6.7583, dCompliance: (60,) array with mean 5.1195e-07
+14:12:34 opti - DEBUG - Finished iteration 4  with compliance 6.758346197143335 and volume 1.0422856679545287
+14:12:34 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_4
+14:12:34 MMA - INFO - It.:    4 | Obj.: 2.028e+00 | Constr.:  5.423e-01 | ch.: 2.362e-07 | C: 6.758e+00
+14:12:34 opti - DEBUG - Computing Solution
+14:12:34 opti - DEBUG - Generating Geometry
+14:12:34 mesh - DEBUG - Querying 316030 DeepSDF points
+14:12:34 utils - DEBUG - torch.cuda.memory_allocated: 331.61MiB | torch.cuda.memory_reserved: 770.00MiB
+14:12:34 mesh - DEBUG - Computing DeepSDF derivatives
+14:12:35 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 0.9947052001953125
+14:12:35 mesh - DEBUG - Maximum memory used by cuda: 1022.35MiB
+14:12:36 geometry - DEBUG - Removing orphan meshs
+14:12:36 opti - DEBUG - Writing surface mesh to simulation/tmp5y29tzpv/simulation_5/surf5.inp
+14:12:36 geometry - DEBUG - Tetrahedralizing surface mesh
+14:12:56 geometry - DEBUG - Exporting mesh with 429448 elements, 116553 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 194618 boundaries with marker 3.
+14:13:01 geometry - DEBUG - 1 0-Normal vectors detected
+14:13:43 opti - DEBUG - Volume: 0.90878, dVolume: (60,) array with mean -0.010096
+14:17:02 opti - DEBUG - Compliance: 8.7255, dCompliance: (60,) array with mean 5.4458e-07
+14:17:02 opti - DEBUG - Finished iteration 5  with compliance 8.725477573606117 and volume 0.9087824479304297
+14:17:02 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_5
+14:17:02 MMA - INFO - It.:    5 | Obj.: 2.618e+00 | Constr.:  4.088e-01 | ch.: 1.384e-07 | C: 8.725e+00
+14:17:02 opti - DEBUG - Computing Solution
+14:17:02 opti - DEBUG - Generating Geometry
+14:17:03 mesh - DEBUG - Querying 316030 DeepSDF points
+14:17:03 utils - DEBUG - torch.cuda.memory_allocated: 331.32MiB | torch.cuda.memory_reserved: 808.00MiB
+14:17:03 mesh - DEBUG - Computing DeepSDF derivatives
+14:17:04 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.0609190464019775
+14:17:04 mesh - DEBUG - Maximum memory used by cuda:   1.01GiB
+14:17:04 geometry - DEBUG - Removing orphan meshs
+14:17:04 caching - DEBUG - 5 items cleared from cache: ['edges_face', 'edges', 'edges_sorted', 'face_adjacency_edges', 'face_adjacency']
+14:17:04 opti - DEBUG - Writing surface mesh to simulation/tmpzplvugn3/simulation_6/surf6.inp
+14:17:05 geometry - DEBUG - Tetrahedralizing surface mesh
+14:17:20 geometry - DEBUG - Exporting mesh with 346234 elements, 92871 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 147406 boundaries with marker 3.
+14:17:24 geometry - DEBUG - 1 0-Normal vectors detected
+14:17:56 opti - DEBUG - Volume: 0.67487, dVolume: (60,) array with mean -0.011661
+14:25:49 opti - DEBUG - Compliance: 23.832, dCompliance: (60,) array with mean 3.9015e-06
+14:25:49 opti - DEBUG - Finished iteration 6  with compliance 23.83223211241804 and volume 0.6748677277013706
+14:25:49 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_6
+14:25:49 MMA - INFO - It.:    6 | Obj.: 7.150e+00 | Constr.:  1.749e-01 | ch.: 3.054e+06 | C: 2.383e+01
+14:25:49 opti - DEBUG - Computing Solution
+14:25:49 opti - DEBUG - Generating Geometry
+14:25:50 mesh - DEBUG - Querying 316030 DeepSDF points
+14:25:50 utils - DEBUG - torch.cuda.memory_allocated: 331.52MiB | torch.cuda.memory_reserved: 770.00MiB
+14:25:50 mesh - DEBUG - Computing DeepSDF derivatives
+14:25:51 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.0565931797027588
+14:25:51 mesh - DEBUG - Maximum memory used by cuda:   1.01GiB
+14:25:51 geometry - DEBUG - Removing orphan meshs
+14:25:51 caching - DEBUG - 5 items cleared from cache: ['edges_face', 'edges', 'edges_sorted', 'face_adjacency_edges', 'face_adjacency']
+14:25:51 opti - DEBUG - Writing surface mesh to simulation/tmp5384e3cz/simulation_7/surf7.inp
+14:25:52 geometry - DEBUG - Tetrahedralizing surface mesh
+14:26:05 geometry - DEBUG - Exporting mesh with 314982 elements, 82263 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 126622 boundaries with marker 3.
+14:26:09 geometry - DEBUG - 1 0-Normal vectors detected
+14:26:37 opti - DEBUG - Volume: 0.63388, dVolume: (60,) array with mean -0.012203
+14:31:57 opti - DEBUG - Compliance: 28.613, dCompliance: (60,) array with mean 5.8401e-06
+14:31:57 opti - DEBUG - Finished iteration 7  with compliance 28.613424735584744 and volume 0.633884828157236
+14:31:57 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_7
+14:31:57 MMA - INFO - It.:    7 | Obj.: 8.584e+00 | Constr.:  1.339e-01 | ch.: 6.967e-01 | C: 2.861e+01
+14:31:57 opti - DEBUG - Computing Solution
+14:31:57 opti - DEBUG - Generating Geometry
+14:31:57 mesh - DEBUG - Querying 316030 DeepSDF points
+14:31:57 utils - DEBUG - torch.cuda.memory_allocated: 332.69MiB | torch.cuda.memory_reserved: 814.00MiB
+14:31:57 mesh - DEBUG - Computing DeepSDF derivatives
+14:31:59 mesh - DEBUG - Time for querying 316030 points and computing derivatives: 1.0677714347839355
+14:31:59 mesh - DEBUG - Maximum memory used by cuda:   1.01GiB
+14:31:59 geometry - DEBUG - Removing orphan meshs
+14:31:59 caching - DEBUG - 5 items cleared from cache: ['edges_face', 'edges', 'edges_sorted', 'face_adjacency_edges', 'face_adjacency']
+14:31:59 opti - DEBUG - Writing surface mesh to simulation/tmp1_yzn9x4/simulation_8/surf8.inp
+14:32:00 geometry - DEBUG - Tetrahedralizing surface mesh
+14:32:13 geometry - DEBUG - Exporting mesh with 313644 elements, 82125 vertices, 3292 boundaries with marker 1, 8034 boundaries with marker 2, and 126622 boundaries with marker 3.
+14:32:16 geometry - DEBUG - 1 0-Normal vectors detected
+14:32:45 opti - DEBUG - Volume: 0.63388, dVolume: (60,) array with mean -0.012203
+14:38:02 opti - DEBUG - Compliance: 28.72, dCompliance: (60,) array with mean 5.9068e-06
+14:38:02 opti - DEBUG - Finished iteration 8  with compliance 28.720360658186873 and volume 0.6338848297181159
+14:38:02 opti - DEBUG - Saving simulation results to optimization_runs/opti_double_lattice_8x4_no_topo/simulation_8
+14:38:02 MMA - INFO - It.:    8 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.529e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:    9 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 7.712e-07 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   10 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.659e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   11 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.364e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   12 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.313e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   13 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.816e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   14 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 4.023e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   15 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.235e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   16 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 5.507e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   17 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.026e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   18 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 5.699e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   19 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.222e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   20 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.746e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   21 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 9.702e-06 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   22 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.080e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   23 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.972e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   24 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.651e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   25 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 3.541e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   26 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 5.065e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   27 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.815e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   28 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 6.035e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   29 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.640e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   30 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 4.803e-05 | C: 2.872e+01
+14:38:02 MMA - INFO - It.:   31 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.012e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   32 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.458e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   33 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.100e-05 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   34 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.735e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   35 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 2.478e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   36 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.377e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   37 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 6.931e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   38 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.236e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   39 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.251e-04 | C: 2.872e+01
+14:38:03 MMA - INFO - It.:   40 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 1.679e-07 | C: 2.872e+01
+14:38:04 MMA - INFO - It.:   41 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.331e-07 | C: 2.872e+01
+14:38:04 MMA - INFO - It.:   42 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 8.331e-07 | C: 2.872e+01
+14:38:04 MMA - INFO - It.:   43 | Obj.: 8.616e+00 | Constr.:  1.339e-01 | ch.: 0.000e+00 | C: 2.872e+01
+14:38:04 MMA - INFO - Convergence reached

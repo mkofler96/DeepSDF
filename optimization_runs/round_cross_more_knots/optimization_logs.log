@@ -1,0 +1,80 @@
+2024-10-09 11:23:55,803 - optimization - INFO - Starting optimization in optimization_runs/opti_refined_cps_more_cells
+2024-10-09 11:23:55,806 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,806 - optimization - INFO - Moving simulation_8 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,807 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,807 - optimization - INFO - Moving simulation_3 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,808 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,808 - optimization - INFO - Moving simulation_1 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,808 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,808 - optimization - INFO - Moving simulation_14 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,809 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,809 - optimization - INFO - Moving simulation_11 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,809 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,809 - optimization - INFO - Moving simulation_5 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,810 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,810 - optimization - INFO - Moving simulation_10 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,810 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,810 - optimization - INFO - Moving simulation_4 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,811 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,811 - optimization - INFO - Moving simulation_12 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,811 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,811 - optimization - INFO - Moving simulation_13 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,812 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,812 - optimization - INFO - Moving simulation_7 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,812 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,812 - optimization - INFO - Moving simulation_9 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,813 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,813 - optimization - INFO - Moving simulation_2 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,813 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,813 - optimization - INFO - Moving simulation_6 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:23:55,814 - optimization - INFO - Older simulation files detected.
+2024-10-09 11:23:55,814 - optimization - INFO - Moving simulation_15 to optimization_runs/opti_refined_cps_more_cells/old_sims
+2024-10-09 11:26:29,919 - optimization - INFO - Finished iteration 1 with compliance 14813.614474646225 and volume 0.1581850656932327
+2024-10-09 11:28:47,615 - optimization - INFO - Finished iteration 2 with compliance 9398.927863158 and volume 0.1647813175611279
+2024-10-09 11:31:15,634 - optimization - INFO - Finished iteration 3 with compliance 3624.6182064398245 and volume 0.18478913477423506
+2024-10-09 11:33:21,559 - optimization - INFO - Finished iteration 4 with compliance 594.1647366991855 and volume 0.24838025604726807
+2024-10-09 11:35:37,371 - optimization - INFO - Finished iteration 5 with compliance 184.10452009918254 and volume 0.333955114008073
+2024-10-09 11:37:54,208 - optimization - INFO - Finished iteration 6 with compliance 83.25137416785938 and volume 0.41038947343626864
+2024-10-09 11:40:14,266 - optimization - INFO - Finished iteration 7 with compliance 59.384652528400046 and volume 0.44806276499706865
+2024-10-09 11:42:37,257 - optimization - INFO - Finished iteration 8 with compliance 47.09452677125687 and volume 0.4717093181929741
+2024-10-09 11:44:59,284 - optimization - INFO - Finished iteration 9 with compliance 42.791698217038295 and volume 0.48487495286262033
+2024-10-09 11:47:20,026 - optimization - INFO - Finished iteration 10 with compliance 39.885500315006304 and volume 0.4920655422424692
+2024-10-09 11:49:47,181 - optimization - INFO - Finished iteration 11 with compliance 39.00669912580877 and volume 0.4957665940687565
+2024-10-09 11:52:10,016 - optimization - INFO - Finished iteration 12 with compliance 37.89786620725223 and volume 0.49763795394497257
+2024-10-09 11:54:32,487 - optimization - INFO - Finished iteration 13 with compliance 37.84092261003954 and volume 0.4985871336132388
+2024-10-09 11:57:26,054 - optimization - INFO - Finished iteration 14 with compliance 37.3579523443601 and volume 0.49906823926621374
+2024-10-09 11:59:51,389 - optimization - INFO - Finished iteration 15 with compliance 36.80804234042162 and volume 0.4991877069143211
+2024-10-09 12:02:17,871 - optimization - INFO - Finished iteration 16 with compliance 36.85609393378555 and volume 0.4992505791097302
+2024-10-09 12:04:44,689 - optimization - INFO - Finished iteration 17 with compliance 35.8748235666355 and volume 0.4992427373248105
+2024-10-09 12:07:09,705 - optimization - INFO - Finished iteration 18 with compliance 34.550943299521755 and volume 0.49936266005114716
+2024-10-09 12:09:45,372 - optimization - INFO - Finished iteration 19 with compliance 34.38675584800097 and volume 0.49921917112468117
+2024-10-09 12:12:09,652 - optimization - INFO - Finished iteration 20 with compliance 32.74081191582786 and volume 0.4990198671895242
+2024-10-09 12:14:50,865 - optimization - INFO - Finished iteration 21 with compliance 31.952611750920234 and volume 0.49888052331221333
+2024-10-09 12:17:14,768 - optimization - INFO - Finished iteration 22 with compliance 30.209107889604855 and volume 0.49883343868506175
+2024-10-09 12:19:41,247 - optimization - INFO - Finished iteration 23 with compliance 28.923913328773942 and volume 0.49856676604387173
+2024-10-09 12:22:05,557 - optimization - INFO - Finished iteration 24 with compliance 27.15725407846387 and volume 0.49860437461845225
+2024-10-09 12:24:52,732 - optimization - INFO - Finished iteration 25 with compliance 25.464677072316135 and volume 0.4985386334908959
+2024-10-09 12:27:15,714 - optimization - INFO - Finished iteration 26 with compliance 24.547664405136565 and volume 0.49856188249961186
+2024-10-09 12:29:38,393 - optimization - INFO - Finished iteration 27 with compliance 23.57273320324555 and volume 0.49859501974542
+2024-10-09 12:32:03,657 - optimization - INFO - Finished iteration 28 with compliance 22.136159715469525 and volume 0.49876120574847305
+2024-10-09 12:34:29,279 - optimization - INFO - Finished iteration 29 with compliance 22.383278551515893 and volume 0.4987612054848233
+2024-10-09 12:36:52,092 - optimization - INFO - Finished iteration 30 with compliance 21.416354910523673 and volume 0.4988052094072912
+2024-10-09 12:39:12,896 - optimization - INFO - Finished iteration 31 with compliance 21.50710701093306 and volume 0.49880520963425956
+2024-10-09 12:41:33,553 - optimization - INFO - Finished iteration 32 with compliance 21.06733017745035 and volume 0.4986339496275476
+2024-10-09 12:43:53,816 - optimization - INFO - Finished iteration 33 with compliance 20.280822125685965 and volume 0.4988524814648803
+2024-10-09 12:46:11,696 - optimization - INFO - Finished iteration 34 with compliance 19.76776052934456 and volume 0.4989867618661693
+2024-10-09 12:48:40,335 - optimization - INFO - Finished iteration 35 with compliance 19.07527442438047 and volume 0.49902566099120615
+2024-10-09 12:51:26,622 - optimization - INFO - Finished iteration 36 with compliance 18.67302499601265 and volume 0.49903561308416317
+2024-10-09 12:53:48,121 - optimization - INFO - Finished iteration 37 with compliance 18.30797815187323 and volume 0.499025508800344
+2024-10-09 12:56:07,573 - optimization - INFO - Finished iteration 38 with compliance 17.947514626141018 and volume 0.4990353110927156
+2024-10-09 12:58:24,053 - optimization - INFO - Finished iteration 39 with compliance 17.209655205690197 and volume 0.4990568909481883
+2024-10-09 13:00:40,957 - optimization - INFO - Finished iteration 40 with compliance 17.610667145225882 and volume 0.4990568908646733
+2024-10-09 13:03:04,118 - optimization - INFO - Finished iteration 41 with compliance 17.31846008238738 and volume 0.4991437460865715
+2024-10-09 13:05:22,841 - optimization - INFO - Finished iteration 42 with compliance 17.05244444525543 and volume 0.49911061662374767
+2024-10-09 13:07:40,208 - optimization - INFO - Finished iteration 43 with compliance 16.632054546470872 and volume 0.4991740451108852
+2024-10-09 13:09:57,947 - optimization - INFO - Finished iteration 44 with compliance 16.847166211125018 and volume 0.49919298369589565
+2024-10-09 13:12:20,608 - optimization - INFO - Finished iteration 45 with compliance 16.420921037950595 and volume 0.4992698042808532
+2024-10-09 13:14:55,729 - optimization - INFO - Finished iteration 46 with compliance 16.759913645569878 and volume 0.49928293945742547
+2024-10-09 13:17:13,906 - optimization - INFO - Finished iteration 47 with compliance 16.495172100147315 and volume 0.4993414588838468
+2024-10-09 13:19:36,068 - optimization - INFO - Finished iteration 48 with compliance 16.55479698245204 and volume 0.49934145951109
+2024-10-09 13:22:01,293 - optimization - INFO - Finished iteration 49 with compliance 16.281588831505882 and volume 0.49934626424722833
