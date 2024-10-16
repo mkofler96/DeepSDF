@@ -367,6 +367,22 @@ class LinearElasticitySolver():
         b.Assemble()
         # print(b.GetDataArray())
         return b.Sum()
+    
+    def clcTotCompliance(self):
+        """
+        calculates the shape derivative according to section 6.3 in 
+        Allaire, G., Dapogny, C. & Jouve, F. Shape and topology optimization. 
+        in Geometric partial differential equations, part II (eds. Bonito, A. & Nochetto, R. H.) vol. 22 (2021).
+        """
+        if self.StrainEnergyDensity is None:
+            self.clcStrainEnergyDensity()
+        fec = mfem.H1_FECollection(self.order, 3)
+        fe_scalar_space = mfem.FiniteElementSpace(self.mesh, fec, 1)
+
+        b = mfem.LinearForm(fe_scalar_space)
+        b.AddDomainIntegrator(mfem.DomainLFIntegrator(self.StrainEnergyDensity))
+        b.Assemble()
+        return b.Sum()
 
     def clcVolume(self):
         b = mfem.LinearForm(self.fes)

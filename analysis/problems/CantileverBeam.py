@@ -153,7 +153,8 @@ class CantileverBeam:
             raise ValueError("No solution found. Compute solution first to get Compliance.")
         compliance = self.ElasticitySolver.clcStrainEnergyDensity()
         self.strain_energy_density_data = compliance.GetDataArray()
-        tot_compliance = compliance.GetDataArray().sum()
+        # tot_compliance = compliance.GetDataArray().sum()
+        tot_compliance = self.ElasticitySolver.clcTotCompliance()
 
         if dTheta is None:
             compl_der = None
