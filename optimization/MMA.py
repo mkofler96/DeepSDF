@@ -34,7 +34,7 @@ class MMA():
             if loop == 1:
                 C0 = C
             f0val = C/C0
-            df0dx = dC.reshape(-1,1)
+            df0dx = dC.reshape(-1,1)/C0
             fval = np.array([[Vol]])
             dfdx = dVol.reshape(1,-1)
             
