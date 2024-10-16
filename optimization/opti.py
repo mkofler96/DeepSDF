@@ -126,7 +126,14 @@ class struct_optimization():
 
         self.start_values = control_points.reshape(-1)
         self.dv_names = [f"x{i}" for i in range(len(self.start_values))]
-        self.bounds = [(-1,1)]*len(self.start_values)
+        if "bounds" in self.options["optimization"]:
+            lb = self.options["optimization"]["bounds"][0]
+            ub = self.options["optimization"]["bounds"][1]
+        else:
+            lb = -1
+            ub = 1
+        self.logger.debug(f"Settings bounds to ({lb}, {ub})")
+        self.bounds = [(lb,ub)]*len(self.start_values)
 
     def load_settings(self):
         self.options = config.Config.load_json(self.settings_filename)
