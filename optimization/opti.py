@@ -9,6 +9,7 @@ import pathlib
 from typing import Union
 
 import scipy
+import matplotlib.pyplot as plt
 import numpy as np
 import gustaf as gus
 import imageio.v3 as imageio
@@ -116,14 +117,13 @@ class struct_optimization():
              self._compute_solution(x) # same idea
         return self.cache[str(x.round(8))]["constraint"]
 
-    def set_x0(self, x0=None):
-        if x0 is None:
-            n_control_points = self.geometry.get_n_control_points()
-            n_latent = self.geometry.get_latent_shape()
-            control_points = np.zeros((n_control_points, n_latent))
-        else:
-            control_points = x0
-
+    def set_x0(self):
+        n_control_points = self.geometry.get_n_control_points()
+        n_latent = self.geometry.get_latent_shape()
+        control_points = np.zeros((n_control_points, n_latent))
+        if "x0" in self.options["optimization"]:
+            control_points += self.options["optimization"]["x0"]
+        self.logger.debug(f"Setting x0 to: {control_points}")
         self.start_values = control_points.reshape(-1)
         self.dv_names = [f"x{i}" for i in range(len(self.start_values))]
         if "bounds" in self.options["optimization"]:
@@ -153,6 +153,7 @@ class struct_optimization():
 
     def run_optimization(self):
         self.logger.info(f"Starting optimization in {self.optimization_folder} on {socket.gethostname()}")
+        self.set_x0()
         self.move_older_sims_to_temp_dir()
         scipy_optimizers = ["BFGS", "COBYLA"]
         if self.options["optimization"]["method"] == "MOOP":
@@ -314,6 +315,66 @@ class struct_optimization():
 
         imageio.imwrite(self.optimization_folder/'animtation.gif', images, duration=300)       
 
+    # def plot_convergence(self, custom_axis=None):
+    #     if custom_axis is None:
+    #         fig, ax = plt.subplots()
+    #     with open(self.optimization_folder / "results.json", "r") as f:
+    #         self.optimization_results = dataclasses.from_dict(dataclasses.make_dataclass('OptimizationResults', []), json.load(f))
+    #     ax.plot(self.optimization_results)
+
+    def plot_convergence(self, custom_axis=None, normalize=True):
+        if custom_axis is None:
+            fig, ax = plt.subplots()
+        # optimization_results = load_results(pathlib.Path(self.optimization_folder), as_np_array=False)
+        with open(self.optimization_folder / "results.json", "r") as f:
+            res_dict = json.load(f)
+            self.optimization_results = OptimizationResults(**res_dict)
+        print(self.optimization_results)
+        compliance = np.array(self.optimization_results.compliance)
+        volume = np.array(self.optimization_results.volume)
+        if normalize:
+            compliance = compliance/compliance[0]
+            volume = volume/self.options["general"]["volume_constraint"]
+
+        # ax.plot(np.array(self.optimization_results.compliance)/self.optimization_results.compliance[0], label="Objective")
+        # # todo: hardcoded constraint 6
+        # ax.plot(np.array(self.optimization_results.volume)/self.options["general"]["volume_constraint"], label="Constraint")
+        ax2 = ax.twinx()
+
+        # Plot the objective on the left y-axis
+        ax.plot(compliance, label="Objective", color='blue')
+        ax.set_ylim([0, np.ceil(np.max(compliance))])
+        # Plot the constraint on the right y-axis
+        ax2.plot(volume, label="Constraint", color='orange')
+        ax2.set_ylim([0, np.ceil(np.max(volume))])
+        # Set labels for the axes
+        ax.set_ylabel('Objective')
+        ax2.set_ylabel('Constraint')
+
+        # Combine legends
+        lines, labels = ax.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax2.legend(lines + lines2, labels + labels2)
+
+        # Optionally set titles, grid, etc.
+        ax.set_xlabel('Iteration')
+
+        # Show the plot
+        plt.show()
+
+
+def load_results(optimization_folder, as_np_array=False):
+    with open(optimization_folder/"results.json", "r") as f:
+        optimization_results = json.load(f)
+        print(f"loaded: {optimization_folder/'results.json'}")
+    if as_np_array:
+        return np.array([optimization_results["compliance"],
+                            optimization_results["volume"],
+                            optimization_results["design_vector"]]).T
+    else:
+        return optimization_results    
+
+
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
     if not os.path.exists(sim_path):
@@ -380,3 +441,8 @@ def configure_logging(args):
 
     for module in logger_blocklist:
         logging.getLogger(module).setLevel(logging.WARNING)
+
+
+if __name__ == "__main__":
+    optimization = struct_optimization("optimization_runs/test_opti")
+    optimization.plot_convergence()
