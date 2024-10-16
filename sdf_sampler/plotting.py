@@ -60,9 +60,14 @@ def scatter_contour_at_z_level(fun, z_level=0, res=100, custom_axis = None,
 
 def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, custom_axis = None,
                                eval_area = (-1,1), scale=(1,1),
-                               custom_zoom: custom_zoom={"x": [0.25, 0.75],
-                                                         "y": [-0.25, -0.75]},
+                               custom_zoom = None,
                                 clim = None, flip_axes=False):
+    """
+    example for custom zoom:
+        custom_zoom={"x": [0.25, 0.75],
+                        "y": [-0.25, -0.75]}
+    """
+    plt_show = True
     if custom_axis:
         ax = [custom_axis]
         plt_show = False
@@ -71,6 +76,7 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
     else:
         _, ax = plt.subplots(1, 1)
         ax = [ax]
+
 
     spacing = 2.0/res              # Distance between points
 
@@ -89,13 +95,13 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
     
     # cbar = ax[0].scatter(X, Y, c=sdf, cmap="seismic")c
     cbar = ax[0].contourf(sdf, cmap="seismic", levels=10)
-    ax[0].contour(sdf, levels=[0], color="black", linewidths=0.5)
+    ax[0].contour(sdf, levels=[0], colors="black", linewidths=0.5)
     if clim:
         cbar.set_clim(clim[0], clim[1])
     else:
         cbar.set_clim(-1,1)
     ax[0].set_aspect(1)
-
+    ax[0].axis("off")
     if custom_zoom is not None and not custom_axis:
         x2 = np.linspace(custom_zoom["x"][0], custom_zoom["x"][1], num=res)
         y2 = np.linspace(custom_zoom["y"][0], custom_zoom["y"][1], num=res)
@@ -104,7 +110,7 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         sdf2 = fun(np.vstack([X2.flatten(), Y2.flatten(), Z2.flatten()]).T).reshape(X2.shape)
 
         # cbar = ax[1].scatter(X2, Y2, c=sdf2, cmap="seismic")
-        cbar = ax[1].contour(X2*scale[0], Y2*scale[0], sdf2, levels=[0], colors="seismic")
+        cbar = ax[1].contour(X2*scale[0], Y2*scale[0], sdf2, levels=[0], colors="black")
         if clim:
             cbar.set_clim(clim[0], clim[1])
         else:
