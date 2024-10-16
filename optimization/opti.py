@@ -11,6 +11,7 @@ from typing import Union
 import scipy
 import numpy as np
 import gustaf as gus
+import imageio.v3 as imageio
 import socket
 
 import shutil
@@ -272,10 +273,39 @@ class struct_optimization():
         return result
     
     def create_animation(self):
+        mesh_files = []
         for directory in self.optimization_folder.iterdir():
-            print(directory)
-        # mesh = gus.io.meshio.load(self.optimization_folder)
-        # self
+            if "simulation" in str(directory):
+                print(f"Sim dir: {directory}")
+                sim_index = directory.stem.split("_")[1]
+                surf_filename = directory/("surf"+sim_index + ".inp")
+                print(f"Surface filename: {surf_filename}")
+                mesh_files.append((int(sim_index), surf_filename))
+                # mesh_files.append(directory.glob("surf*")[0])
+                # mesh_files.extend(list(directory.glob("surf*")))
+            else:
+                print(f"Non dir: {directory}")
+
+           
+        images = []
+        for index, mesh_file in sorted(mesh_files, 
+                                       key=lambda surf_ind_tuple: surf_ind_tuple[0]):
+            logger.info(f"Creating sreenshot of {mesh_file}")
+            mesh = gus.io.meshio.load(str(mesh_file))
+            cam = dict(
+                position=(3.25705, -3.50828, 1.45651),
+                focal_point=(1.00000, 0.500000, 0.525011),
+                viewup=(-0.0983954, 0.172364, 0.980107),
+                roll=-70.6513,
+                distance=4.69343,
+                clipping_range=(2.65216, 7.27428),
+            )
+            showable = gus.show([f"Iteration: {index:<3}", mesh], cam=cam, interactive=False, offscreen=True)
+            showable.screenshot(mesh_file.with_suffix(".png").as_posix())
+            image = imageio.imread(str(mesh_file.with_suffix(".png")))
+            images.append(image)
+
+        imageio.imwrite(self.optimization_folder/'animtation.gif', images, duration=300)       
 
 def create_default_simulation(simulation_path: Union[str, bytes, os.PathLike]):
     sim_path = pathlib.Path(simulation_path)
