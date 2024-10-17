@@ -390,9 +390,11 @@ class struct_optimization():
     #         self.optimization_results = dataclasses.from_dict(dataclasses.make_dataclass('OptimizationResults', []), json.load(f))
     #     ax.plot(self.optimization_results)
 
-    def plot_convergence(self, custom_axis=None, normalize=True):
+    def plot_convergence(self, custom_axis=None, normalize=True, twoaxis=False):
         if custom_axis is None:
             fig, ax = plt.subplots()
+        else:
+            ax = custom_axis
         # optimization_results = load_results(pathlib.Path(self.optimization_folder), as_np_array=False)
         with open(self.optimization_folder / "results.json", "r") as f:
             res_dict = json.load(f)
@@ -407,28 +409,34 @@ class struct_optimization():
         # ax.plot(np.array(self.optimization_results.compliance)/self.optimization_results.compliance[0], label="Objective")
         # # todo: hardcoded constraint 6
         # ax.plot(np.array(self.optimization_results.volume)/self.options["general"]["volume_constraint"], label="Constraint")
-        ax2 = ax.twinx()
-
-        # Plot the objective on the left y-axis
-        ax.plot(compliance, label="Objective", color='blue')
-        ax.set_ylim([0, np.ceil(np.max(compliance))])
-        # Plot the constraint on the right y-axis
-        ax2.plot(volume, label="Constraint", color='orange')
-        ax2.set_ylim([0, np.ceil(np.max(volume))])
-        # Set labels for the axes
-        ax.set_ylabel('Objective')
-        ax2.set_ylabel('Constraint')
-
-        # Combine legends
-        lines, labels = ax.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2)
-
+        ax.plot(compliance, label="Objective")
+        comp_lim = np.ceil(np.max(compliance))
+        vol_lim = np.ceil(np.max(volume))
+        if twoaxis:
+            ax.set_ylim(bottom=0)
+            ax2.set_ylim(bottom=0)
+            ax2 = ax.twinx()
+            ax.set_ylabel('Objective')
+            # Plot the objective on the left y-axis
+            # Plot the constraint on the right y-axis
+            ax2.plot(volume, label="Constraint")
+            # Set labels for the axes
+            ax2.set_ylabel('Constraint')
+            # Combine legends
+            lines, labels = ax.get_legend_handles_labels()
+            lines2, labels2 = ax2.get_legend_handles_labels()
+            ax2.legend(lines + lines2, labels + labels2)
+        else:
+            ax.plot(volume, label="Constraint")
+            ax.set_ylabel("Normalized Objective/Constraint")
+            ax.set_ylim(bottom=0)
+            ax.legend()
         # Optionally set titles, grid, etc.
         ax.set_xlabel('Iteration')
 
         # Show the plot
-        plt.show()
+        if custom_axis is None:
+            plt.show()
 
 
 def load_results(optimization_folder, as_np_array=False):
