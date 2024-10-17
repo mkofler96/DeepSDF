@@ -12,6 +12,7 @@ import scipy
 import matplotlib.pyplot as plt
 import numpy as np
 import gustaf as gus
+import splinepy as sp
 import imageio.v3 as imageio
 import socket
 
@@ -280,7 +281,7 @@ class struct_optimization():
         result = mma_opti.minimize(x0, obj_fun, constraint, self.bounds, options)
         return result
     
-    def create_animation(self):
+    def create_animation(self, add_boundary_conditions=False):
         mesh_files = []
         for directory in self.optimization_folder.iterdir():
             if "simulation" in str(directory):
@@ -293,6 +294,65 @@ class struct_optimization():
                 # mesh_files.extend(list(directory.glob("surf*")))
             else:
                 print(f"Non dir: {directory}")
+        _TUWIEN_COLOR_SCHEME = {
+            "blue": (0, 102, 153),
+            "black": (0, 0, 0),
+            "white": (255, 255, 255),
+            "blue_1": (84, 133, 171),
+            "blue_2": (114, 173, 213),
+            "blue_3": (166, 213, 236),
+            "blue_4": (223, 242, 253),
+            "grey": (100, 99, 99),
+            "grey_1": (157, 157, 156),
+            "grey_2": (208, 208, 208),
+            "grey_3": (237, 237, 237),
+            "green": (0, 126, 113),
+            "green_1": (106, 170, 165),
+            "green_2": (162, 198, 194),
+            "green_3": (233, 241, 240),
+            "magenta": (186, 70, 130),
+            "magenta_1": (205, 129, 168),
+            "magenta_2": (223, 175, 202),
+            "magenta_3": (245, 229, 239),
+            "yellow": (225, 137, 34),
+            "yellow_1": (238, 180, 115),
+            "yellow_2": (245, 208, 168),
+            "yellow_3": (153, 239, 225),
+        }
+
+        if add_boundary_conditions:
+            fix = sp.helpme.create.box(0, 1.5, 1.5)
+            fix.control_points -= np.array([0.001, 0.25, 0.25])
+            fix.show_options["control_points"] = False
+            fix.show_options["c"] = _TUWIEN_COLOR_SCHEME["black"]
+
+            n_arrows_x = 6
+            n_arrows_y = n_arrows_x/2
+            l_arrows = 0.3
+            area_of_application = 48/24
+
+            start_arrow = np.array([[2-area_of_application,0,1],[2,1,1]])
+            end_arrow = start_arrow + np.array([[0, 0, l_arrows]])
+            resolutions = np.array([n_arrows_x,n_arrows_x, n_arrows_y])
+            verts_start = gus.create.vertices.raster(bounds=start_arrow, resolutions=resolutions)
+            verts_end = gus.create.vertices.raster(bounds=end_arrow, resolutions=resolutions)
+
+            a_edges = []
+            for vr, vl in zip(verts_start.vertices, verts_end.vertices):
+                e = gus.Edges([vl, vr], [[0,1]])
+                a_edges.append(e)
+
+            d_F = gus.Edges.concat(a_edges)
+            d_F.show_options["as_arrows"] = True
+            d_F.show_options["c"] = _TUWIEN_COLOR_SCHEME["blue_1"]
+            # d_F.show_options["lw"] = 30
+            cam = dict(
+                position=(3.73103, -4.35002, 1.65212),
+                focal_point=(0.999999, 0.500001, 0.525011),
+                viewup=(-0.0983954, 0.172364, 0.980107),
+                distance=5.67905,
+                clipping_range=(3.08500, 8.96935),
+            )
 
            
         images = []
@@ -308,12 +368,20 @@ class struct_optimization():
                 distance=4.69343,
                 clipping_range=(2.65216, 7.27428),
             )
-            showable = gus.show([f"Iteration: {index:<3}", mesh], cam=cam, interactive=False, offscreen=True)
+            if add_boundary_conditions:
+                shown_geom = [mesh, fix, d_F]
+                name = "animtation_with_fix"
+            else:
+                shown_geom = [mesh]
+                name = "animtation"
+            showable = gus.show([f"Iteration: {index:<3}", shown_geom], cam=cam, interactive=False, offscreen=True)
+
+
             showable.screenshot(mesh_file.with_suffix(".png").as_posix())
             image = imageio.imread(str(mesh_file.with_suffix(".png")))
             images.append(image)
 
-        imageio.imwrite(self.optimization_folder/'animtation.gif', images, duration=300)       
+        imageio.imwrite(self.optimization_folder/f'{name}.gif', images, duration=300)       
 
     # def plot_convergence(self, custom_axis=None):
     #     if custom_axis is None:
