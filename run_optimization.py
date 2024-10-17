@@ -10,7 +10,7 @@ if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description="Run a DeepMS optimization")
     deep_sdf.add_common_args(arg_parser)
     args = arg_parser.parse_args()
-    optimization_dir = "optimization_runs/opti_double_lattice_8x4_no_topo"
+    optimization_dir = "optimization_runs/round_cross_more_knot_vecs"
     args.logfile = optimization_dir+"/optimization_logs.log"
     configure_logging(args)
 
@@ -18,5 +18,4 @@ if __name__ == "__main__":
 
     optimization = struct_optimization(optimization_dir)
 
-    optimization.set_x0(None)
     optimization.run_optimization()

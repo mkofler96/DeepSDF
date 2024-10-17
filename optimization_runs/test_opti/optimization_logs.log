@@ -1,14 +1,106 @@
-17:27:04 opti - INFO - Starting optimization in optimization_runs/test_opti on a-a6000-q-1
-17:27:04 geometry - DEBUG - Initialied latent vector with [9 2 5] control points
-17:27:04 opti - DEBUG - Computing Solution
-17:27:04 opti - DEBUG - Generating Geometry
-17:27:04 mesh - DEBUG - Querying 80410 DeepSDF points
-17:27:05 utils - DEBUG - torch.cuda.memory_allocated:  87.54MiB | torch.cuda.memory_reserved: 132.00MiB
-17:27:05 mesh - DEBUG - Computing DeepSDF derivatives
-17:27:06 mesh - DEBUG - Time for querying 80410 points and computing derivatives: 1.3007733821868896
-17:27:06 mesh - DEBUG - Maximum memory used by cuda: 318.43MiB
-17:27:06 geometry - DEBUG - Removing orphan meshs
-17:27:06 opti - DEBUG - Writing surface mesh to simulation/tmpszfg96p8/simulation_1/surf1.inp
-17:27:06 geometry - DEBUG - Tetrahedralizing surface mesh
-17:27:08 geometry - DEBUG - Exporting mesh with 134359 elements, 33490 vertices, 1452 boundaries with marker 1, 3722 boundaries with marker 2, and 43882 boundaries with marker 3.
-17:27:10 geometry - DEBUG - 1 0-Normal vectors detected
+16:08:29 geometry - DEBUG - Initialied latent vector with [9 2 5] control points
+16:08:29 opti - INFO - Starting optimization in optimization_runs/test_opti on a-a6000-q-1
+16:08:29 opti - DEBUG - Setting x0 to: [[0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+16:08:29 opti - DEBUG - Settings bounds to (-1, 1)
+16:08:29 opti - DEBUG - Computing Solution
+16:08:29 opti - DEBUG - Generating Geometry
+16:08:29 mesh - DEBUG - Querying 80410 DeepSDF points
+16:08:29 utils - DEBUG - torch.cuda.memory_allocated:  87.54MiB | torch.cuda.memory_reserved: 132.00MiB
+16:08:29 mesh - DEBUG - Computing DeepSDF derivatives
+16:08:31 mesh - DEBUG - Time for querying 80410 points and computing derivatives: 1.3716843128204346
+16:08:31 mesh - DEBUG - Maximum memory used by cuda: 318.43MiB
+16:08:31 geometry - DEBUG - Removing orphan meshs
+16:08:31 opti - DEBUG - Writing surface mesh to simulation/tmpes8ojm5k/simulation_1/surf1.inp
+16:08:31 geometry - DEBUG - Tetrahedralizing surface mesh
+16:08:37 geometry - DEBUG - Exporting mesh with 135545 elements, 33666 vertices, 1452 boundaries with marker 1, 3722 boundaries with marker 2, and 43882 boundaries with marker 3.
+16:08:39 geometry - DEBUG - 1 0-Normal vectors detected
+16:08:39 pyplot - DEBUG - Loaded backend agg version v2.2.

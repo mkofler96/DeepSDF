@@ -1,0 +1,2065 @@
+17:10:31 geometry - DEBUG - Initialied latent vector with [9 2 5] control points
+17:10:31 opti - INFO - Starting optimization in optimization_runs/round_cross_more_knot_vecs on i-v100-q-3
+17:10:31 opti - DEBUG - Setting x0 to: [[-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]
+ [-0.45]]
+17:10:31 opti - DEBUG - Settings bounds to (-1, 1)
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_8 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_3 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_1 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_14 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_11 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_5 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_21 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_20 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_31 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_29 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_17 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_33 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_26 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_10 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_18 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_4 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_34 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_12 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_28 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_13 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_32 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_7 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_23 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_27 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_25 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_9 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_2 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_19 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_24 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_16 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_30 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_22 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_6 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - INFO - Older simulation files detected.
+17:10:31 opti - INFO - Moving simulation_15 to optimization_runs/round_cross_more_knot_vecs/old_sims
+17:10:31 opti - DEBUG - Computing Solution
+17:10:31 opti - DEBUG - Generating Geometry
+17:10:31 mesh - DEBUG - Querying 450241 DeepSDF points
+17:10:32 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.04GiB
+17:10:32 mesh - DEBUG - Computing DeepSDF derivatives
+17:10:37 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.7894814014434814
+17:10:37 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:10:37 opti - DEBUG - Writing surface mesh to simulation/tmpief4ptck/simulation_1/surf1.inp
+17:10:38 geometry - DEBUG - Tetrahedralizing surface mesh
+17:10:47 geometry - DEBUG - Exporting mesh with 303767 elements, 87401 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 125908 boundaries with marker 3.
+17:10:50 geometry - DEBUG - 1 0-Normal vectors detected
+17:11:25 opti - DEBUG - Volume: 0.51773, dVolume: (90,) array with mean -0.031477
+17:14:05 opti - DEBUG - Compliance: 0.00019794, dCompliance: (90,) array with mean 2.1571e-05
+17:14:05 opti - DEBUG - Finished iteration 1  with compliance 0.00019794488277237037 and volume 0.5177278297487765
+17:14:05 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_1
+17:14:05 MMA - INFO - It.:    1 | Obj.: 1.000e+00 | Constr.:  1.773e-02 | ch.: 3.567e-02 | C: 1.979e-04
+17:14:05 opti - DEBUG - Computing Solution
+17:14:05 opti - DEBUG - Generating Geometry
+17:14:06 mesh - DEBUG - Querying 450241 DeepSDF points
+17:14:06 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:14:06 mesh - DEBUG - Computing DeepSDF derivatives
+17:14:11 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.62753438949585
+17:14:11 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:14:11 opti - DEBUG - Writing surface mesh to simulation/tmpcxwpvxs8/simulation_2/surf2.inp
+17:14:12 geometry - DEBUG - Tetrahedralizing surface mesh
+17:14:21 geometry - DEBUG - Exporting mesh with 300405 elements, 86736 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 125232 boundaries with marker 3.
+17:14:24 geometry - DEBUG - 1 0-Normal vectors detected
+17:14:58 opti - DEBUG - Volume: 0.5018, dVolume: (90,) array with mean -0.031019
+17:17:46 opti - DEBUG - Compliance: 0.00019288, dCompliance: (90,) array with mean 2.1415e-05
+17:17:46 opti - DEBUG - Finished iteration 2  with compliance 0.00019287955809705996 and volume 0.5018011463106743
+17:17:46 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_2
+17:17:47 MMA - INFO - It.:    2 | Obj.: 9.744e-01 | Constr.:  1.801e-03 | ch.: 2.229e-02 | C: 1.929e-04
+17:17:47 opti - DEBUG - Computing Solution
+17:17:47 opti - DEBUG - Generating Geometry
+17:17:47 mesh - DEBUG - Querying 450241 DeepSDF points
+17:17:47 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.53GiB
+17:17:47 mesh - DEBUG - Computing DeepSDF derivatives
+17:17:52 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.630370378494263
+17:17:52 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:17:53 opti - DEBUG - Writing surface mesh to simulation/tmp41hmu0ls/simulation_3/surf3.inp
+17:17:53 geometry - DEBUG - Tetrahedralizing surface mesh
+17:18:02 geometry - DEBUG - Exporting mesh with 302999 elements, 87158 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 125436 boundaries with marker 3.
+17:18:05 geometry - DEBUG - 1 0-Normal vectors detected
+17:18:39 opti - DEBUG - Volume: 0.4959, dVolume: (90,) array with mean -0.031046
+17:21:29 opti - DEBUG - Compliance: 0.00018323, dCompliance: (90,) array with mean 2.0526e-05
+17:21:29 opti - DEBUG - Finished iteration 3  with compliance 0.00018322711291461993 and volume 0.49589958189397926
+17:21:29 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_3
+17:21:29 MMA - INFO - It.:    3 | Obj.: 9.256e-01 | Constr.:  -4.100e-03 | ch.: 1.807e-02 | C: 1.832e-04
+17:21:29 opti - DEBUG - Computing Solution
+17:21:29 opti - DEBUG - Generating Geometry
+17:21:29 mesh - DEBUG - Querying 450241 DeepSDF points
+17:21:29 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.45GiB
+17:21:29 mesh - DEBUG - Computing DeepSDF derivatives
+17:21:35 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.64337682723999
+17:21:35 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:21:35 opti - DEBUG - Writing surface mesh to simulation/tmpl99qfhqp/simulation_4/surf4.inp
+17:21:36 geometry - DEBUG - Tetrahedralizing surface mesh
+17:21:44 geometry - DEBUG - Exporting mesh with 300053 elements, 86375 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 124332 boundaries with marker 3.
+17:21:47 geometry - DEBUG - 1 0-Normal vectors detected
+17:22:22 opti - DEBUG - Volume: 0.49376, dVolume: (90,) array with mean -0.030863
+17:25:12 opti - DEBUG - Compliance: 0.00017279, dCompliance: (90,) array with mean 1.9159e-05
+17:25:12 opti - DEBUG - Finished iteration 4  with compliance 0.00017278913344369684 and volume 0.49375616883922396
+17:25:12 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_4
+17:25:12 MMA - INFO - It.:    4 | Obj.: 8.729e-01 | Constr.:  -6.244e-03 | ch.: 1.551e-02 | C: 1.728e-04
+17:25:12 opti - DEBUG - Computing Solution
+17:25:12 opti - DEBUG - Generating Geometry
+17:25:12 mesh - DEBUG - Querying 450241 DeepSDF points
+17:25:12 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.42GiB
+17:25:12 mesh - DEBUG - Computing DeepSDF derivatives
+17:25:17 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.566598176956177
+17:25:17 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:25:18 opti - DEBUG - Writing surface mesh to simulation/tmprz3iynmg/simulation_5/surf5.inp
+17:25:18 geometry - DEBUG - Tetrahedralizing surface mesh
+17:25:27 geometry - DEBUG - Exporting mesh with 295070 elements, 85129 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 122448 boundaries with marker 3.
+17:25:30 geometry - DEBUG - 1 0-Normal vectors detected
+17:26:04 opti - DEBUG - Volume: 0.49403, dVolume: (90,) array with mean -0.030512
+17:28:56 opti - DEBUG - Compliance: 0.00016405, dCompliance: (90,) array with mean 1.8252e-05
+17:28:56 opti - DEBUG - Finished iteration 5  with compliance 0.00016405179524072846 and volume 0.4940315433028857
+17:28:56 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_5
+17:28:56 MMA - INFO - It.:    5 | Obj.: 8.288e-01 | Constr.:  -5.968e-03 | ch.: 1.477e-02 | C: 1.641e-04
+17:28:56 opti - DEBUG - Computing Solution
+17:28:56 opti - DEBUG - Generating Geometry
+17:28:57 mesh - DEBUG - Querying 450241 DeepSDF points
+17:28:57 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:28:57 mesh - DEBUG - Computing DeepSDF derivatives
+17:29:02 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.636234760284424
+17:29:02 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:29:03 opti - DEBUG - Writing surface mesh to simulation/tmp69dcne9r/simulation_6/surf6.inp
+17:29:03 geometry - DEBUG - Tetrahedralizing surface mesh
+17:29:12 geometry - DEBUG - Exporting mesh with 295646 elements, 85142 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 122248 boundaries with marker 3.
+17:29:14 geometry - DEBUG - 1 0-Normal vectors detected
+17:29:49 opti - DEBUG - Volume: 0.49567, dVolume: (90,) array with mean -0.030066
+17:32:36 opti - DEBUG - Compliance: 0.00015794, dCompliance: (90,) array with mean 1.7639e-05
+17:32:36 opti - DEBUG - Finished iteration 6  with compliance 0.00015794413507435074 and volume 0.49567241546860197
+17:32:36 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_6
+17:32:37 MMA - INFO - It.:    6 | Obj.: 7.979e-01 | Constr.:  -4.328e-03 | ch.: 1.374e-02 | C: 1.579e-04
+17:32:37 opti - DEBUG - Computing Solution
+17:32:37 opti - DEBUG - Generating Geometry
+17:32:37 mesh - DEBUG - Querying 450241 DeepSDF points
+17:32:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:32:37 mesh - DEBUG - Computing DeepSDF derivatives
+17:32:42 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.620966911315918
+17:32:42 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:32:43 opti - DEBUG - Writing surface mesh to simulation/tmpplccge76/simulation_7/surf7.inp
+17:32:43 geometry - DEBUG - Tetrahedralizing surface mesh
+17:32:51 geometry - DEBUG - Exporting mesh with 292931 elements, 84447 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 121276 boundaries with marker 3.
+17:32:54 geometry - DEBUG - 1 0-Normal vectors detected
+17:33:28 opti - DEBUG - Volume: 0.49674, dVolume: (90,) array with mean -0.029618
+17:36:22 opti - DEBUG - Compliance: 0.00015303, dCompliance: (90,) array with mean 1.747e-05
+17:36:22 opti - DEBUG - Finished iteration 7  with compliance 0.00015303419635714362 and volume 0.4967433413773749
+17:36:22 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_7
+17:36:22 MMA - INFO - It.:    7 | Obj.: 7.731e-01 | Constr.:  -3.257e-03 | ch.: 1.484e-02 | C: 1.530e-04
+17:36:22 opti - DEBUG - Computing Solution
+17:36:22 opti - DEBUG - Generating Geometry
+17:36:22 mesh - DEBUG - Querying 450241 DeepSDF points
+17:36:22 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:36:22 mesh - DEBUG - Computing DeepSDF derivatives
+17:36:28 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.620640993118286
+17:36:28 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:36:28 opti - DEBUG - Writing surface mesh to simulation/tmp7gca66x_/simulation_8/surf8.inp
+17:36:29 geometry - DEBUG - Tetrahedralizing surface mesh
+17:36:37 geometry - DEBUG - Exporting mesh with 291354 elements, 84077 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 120756 boundaries with marker 3.
+17:36:40 geometry - DEBUG - 1 0-Normal vectors detected
+17:37:14 opti - DEBUG - Volume: 0.49749, dVolume: (90,) array with mean -0.029148
+17:40:01 opti - DEBUG - Compliance: 0.00014901, dCompliance: (90,) array with mean 1.6735e-05
+17:40:01 opti - DEBUG - Finished iteration 8  with compliance 0.00014900566341664517 and volume 0.4974926442436027
+17:40:01 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_8
+17:40:02 MMA - INFO - It.:    8 | Obj.: 7.528e-01 | Constr.:  -2.507e-03 | ch.: 1.233e-02 | C: 1.490e-04
+17:40:02 opti - DEBUG - Computing Solution
+17:40:02 opti - DEBUG - Generating Geometry
+17:40:02 mesh - DEBUG - Querying 450241 DeepSDF points
+17:40:02 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:40:02 mesh - DEBUG - Computing DeepSDF derivatives
+17:40:07 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.619014263153076
+17:40:07 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:40:08 opti - DEBUG - Writing surface mesh to simulation/tmprqzxss7p/simulation_9/surf9.inp
+17:40:08 geometry - DEBUG - Tetrahedralizing surface mesh
+17:40:16 geometry - DEBUG - Exporting mesh with 289787 elements, 83737 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 120476 boundaries with marker 3.
+17:40:19 geometry - DEBUG - 1 0-Normal vectors detected
+17:40:52 opti - DEBUG - Volume: 0.49805, dVolume: (90,) array with mean -0.028964
+17:43:45 opti - DEBUG - Compliance: 0.00014596, dCompliance: (90,) array with mean 1.5945e-05
+17:43:45 opti - DEBUG - Finished iteration 9  with compliance 0.0001459558542377704 and volume 0.49805014980358836
+17:43:45 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_9
+17:43:45 MMA - INFO - It.:    9 | Obj.: 7.374e-01 | Constr.:  -1.950e-03 | ch.: 1.544e-02 | C: 1.460e-04
+17:43:45 opti - DEBUG - Computing Solution
+17:43:45 opti - DEBUG - Generating Geometry
+17:43:45 mesh - DEBUG - Querying 450241 DeepSDF points
+17:43:45 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:43:45 mesh - DEBUG - Computing DeepSDF derivatives
+17:43:51 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.604080677032471
+17:43:51 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:43:51 opti - DEBUG - Writing surface mesh to simulation/tmpea544m6r/simulation_10/surf10.inp
+17:43:51 geometry - DEBUG - Tetrahedralizing surface mesh
+17:44:00 geometry - DEBUG - Exporting mesh with 290331 elements, 83821 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 120356 boundaries with marker 3.
+17:44:03 geometry - DEBUG - 1 0-Normal vectors detected
+17:44:36 opti - DEBUG - Volume: 0.49837, dVolume: (90,) array with mean -0.028945
+17:47:27 opti - DEBUG - Compliance: 0.00014349, dCompliance: (90,) array with mean 1.586e-05
+17:47:27 opti - DEBUG - Finished iteration 10  with compliance 0.00014348901814660288 and volume 0.4983742305953275
+17:47:27 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_10
+17:47:27 MMA - INFO - It.:   10 | Obj.: 7.249e-01 | Constr.:  -1.626e-03 | ch.: 1.047e-02 | C: 1.435e-04
+17:47:27 opti - DEBUG - Computing Solution
+17:47:27 opti - DEBUG - Generating Geometry
+17:47:28 mesh - DEBUG - Querying 450241 DeepSDF points
+17:47:28 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:47:28 mesh - DEBUG - Computing DeepSDF derivatives
+17:47:33 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.633451461791992
+17:47:33 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:47:34 opti - DEBUG - Writing surface mesh to simulation/tmprwq7srnm/simulation_11/surf11.inp
+17:47:34 geometry - DEBUG - Tetrahedralizing surface mesh
+17:47:42 geometry - DEBUG - Exporting mesh with 289073 elements, 83508 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 119884 boundaries with marker 3.
+17:47:45 geometry - DEBUG - 1 0-Normal vectors detected
+17:48:19 opti - DEBUG - Volume: 0.4984, dVolume: (90,) array with mean -0.028943
+17:51:12 opti - DEBUG - Compliance: 0.00014112, dCompliance: (90,) array with mean 1.548e-05
+17:51:12 opti - DEBUG - Finished iteration 11  with compliance 0.0001411196770723867 and volume 0.4984012881119043
+17:51:12 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_11
+17:51:12 MMA - INFO - It.:   11 | Obj.: 7.129e-01 | Constr.:  -1.599e-03 | ch.: 1.877e-02 | C: 1.411e-04
+17:51:12 opti - DEBUG - Computing Solution
+17:51:12 opti - DEBUG - Generating Geometry
+17:51:12 mesh - DEBUG - Querying 450241 DeepSDF points
+17:51:12 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+17:51:12 mesh - DEBUG - Computing DeepSDF derivatives
+17:51:18 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.615989685058594
+17:51:18 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:51:18 opti - DEBUG - Writing surface mesh to simulation/tmpvn3yfltu/simulation_12/surf12.inp
+17:51:19 geometry - DEBUG - Tetrahedralizing surface mesh
+17:51:27 geometry - DEBUG - Exporting mesh with 288465 elements, 83315 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 119424 boundaries with marker 3.
+17:51:30 geometry - DEBUG - 1 0-Normal vectors detected
+17:52:03 opti - DEBUG - Volume: 0.49855, dVolume: (90,) array with mean -0.028449
+17:55:18 opti - DEBUG - Compliance: 0.0001382, dCompliance: (90,) array with mean 1.4936e-05
+17:55:18 opti - DEBUG - Finished iteration 12  with compliance 0.00013820411088975306 and volume 0.49854558968278817
+17:55:18 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_12
+17:55:18 MMA - INFO - It.:   12 | Obj.: 6.982e-01 | Constr.:  -1.454e-03 | ch.: 1.646e-02 | C: 1.382e-04
+17:55:18 opti - DEBUG - Computing Solution
+17:55:18 opti - DEBUG - Generating Geometry
+17:55:18 mesh - DEBUG - Querying 450241 DeepSDF points
+17:55:18 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.49GiB
+17:55:18 mesh - DEBUG - Computing DeepSDF derivatives
+17:55:23 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.605246067047119
+17:55:23 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:55:24 opti - DEBUG - Writing surface mesh to simulation/tmp2qkdbnm9/simulation_13/surf13.inp
+17:55:24 geometry - DEBUG - Tetrahedralizing surface mesh
+17:55:32 geometry - DEBUG - Exporting mesh with 286897 elements, 82864 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 118724 boundaries with marker 3.
+17:55:35 geometry - DEBUG - 1 0-Normal vectors detected
+17:56:08 opti - DEBUG - Volume: 0.49838, dVolume: (90,) array with mean -0.028276
+17:59:11 opti - DEBUG - Compliance: 0.00013585, dCompliance: (90,) array with mean 1.4344e-05
+17:59:11 opti - DEBUG - Finished iteration 13  with compliance 0.00013585496720567027 and volume 0.4983766137195801
+17:59:11 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_13
+17:59:11 MMA - INFO - It.:   13 | Obj.: 6.863e-01 | Constr.:  -1.623e-03 | ch.: 2.798e-02 | C: 1.359e-04
+17:59:11 opti - DEBUG - Computing Solution
+17:59:11 opti - DEBUG - Generating Geometry
+17:59:11 mesh - DEBUG - Querying 450241 DeepSDF points
+17:59:11 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+17:59:11 mesh - DEBUG - Computing DeepSDF derivatives
+17:59:17 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.608322381973267
+17:59:17 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+17:59:17 opti - DEBUG - Writing surface mesh to simulation/tmpgw4p91s3/simulation_14/surf14.inp
+17:59:17 geometry - DEBUG - Tetrahedralizing surface mesh
+17:59:26 geometry - DEBUG - Exporting mesh with 285803 elements, 82553 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 118044 boundaries with marker 3.
+17:59:28 geometry - DEBUG - 1 0-Normal vectors detected
+18:00:01 opti - DEBUG - Volume: 0.49838, dVolume: (90,) array with mean -0.028274
+18:03:26 opti - DEBUG - Compliance: 0.00013275, dCompliance: (90,) array with mean 1.396e-05
+18:03:26 opti - DEBUG - Finished iteration 14  with compliance 0.00013274894306173127 and volume 0.4983757398247687
+18:03:26 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_14
+18:03:26 MMA - INFO - It.:   14 | Obj.: 6.706e-01 | Constr.:  -1.624e-03 | ch.: 4.191e-02 | C: 1.327e-04
+18:03:26 opti - DEBUG - Computing Solution
+18:03:26 opti - DEBUG - Generating Geometry
+18:03:26 mesh - DEBUG - Querying 450241 DeepSDF points
+18:03:26 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+18:03:26 mesh - DEBUG - Computing DeepSDF derivatives
+18:03:32 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.6084675788879395
+18:03:32 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:03:32 opti - DEBUG - Writing surface mesh to simulation/tmpwm4eq_gc/simulation_15/surf15.inp
+18:03:32 geometry - DEBUG - Tetrahedralizing surface mesh
+18:03:40 geometry - DEBUG - Exporting mesh with 283510 elements, 81971 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 117264 boundaries with marker 3.
+18:03:43 geometry - DEBUG - 1 0-Normal vectors detected
+18:04:16 opti - DEBUG - Volume: 0.49829, dVolume: (90,) array with mean -0.027911
+18:08:02 opti - DEBUG - Compliance: 0.00012953, dCompliance: (90,) array with mean 1.33e-05
+18:08:02 opti - DEBUG - Finished iteration 15  with compliance 0.00012952509091602218 and volume 0.4982895354195757
+18:08:02 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_15
+18:08:02 MMA - INFO - It.:   15 | Obj.: 6.543e-01 | Constr.:  -1.710e-03 | ch.: 1.198e-02 | C: 1.295e-04
+18:08:02 opti - DEBUG - Computing Solution
+18:08:02 opti - DEBUG - Generating Geometry
+18:08:03 mesh - DEBUG - Querying 450241 DeepSDF points
+18:08:03 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+18:08:03 mesh - DEBUG - Computing DeepSDF derivatives
+18:08:08 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.552457332611084
+18:08:08 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:08:08 opti - DEBUG - Writing surface mesh to simulation/tmpkapm1moe/simulation_16/surf16.inp
+18:08:09 geometry - DEBUG - Tetrahedralizing surface mesh
+18:08:17 geometry - DEBUG - Exporting mesh with 281754 elements, 81740 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 117216 boundaries with marker 3.
+18:08:20 geometry - DEBUG - 1 0-Normal vectors detected
+18:08:52 opti - DEBUG - Volume: 0.49835, dVolume: (90,) array with mean -0.027737
+18:12:26 opti - DEBUG - Compliance: 0.00012739, dCompliance: (90,) array with mean 1.2849e-05
+18:12:26 opti - DEBUG - Finished iteration 16  with compliance 0.00012738519309628358 and volume 0.49834952456336845
+18:12:26 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_16
+18:12:26 MMA - INFO - It.:   16 | Obj.: 6.435e-01 | Constr.:  -1.650e-03 | ch.: 2.148e-02 | C: 1.274e-04
+18:12:26 opti - DEBUG - Computing Solution
+18:12:26 opti - DEBUG - Generating Geometry
+18:12:26 mesh - DEBUG - Querying 450241 DeepSDF points
+18:12:26 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+18:12:26 mesh - DEBUG - Computing DeepSDF derivatives
+18:12:31 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.598379611968994
+18:12:31 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:12:32 opti - DEBUG - Writing surface mesh to simulation/tmp8ro35dy3/simulation_17/surf17.inp
+18:12:32 geometry - DEBUG - Tetrahedralizing surface mesh
+18:12:40 geometry - DEBUG - Exporting mesh with 280548 elements, 81269 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 116060 boundaries with marker 3.
+18:12:43 geometry - DEBUG - 1 0-Normal vectors detected
+18:13:15 opti - DEBUG - Volume: 0.49829, dVolume: (90,) array with mean -0.027068
+18:17:04 opti - DEBUG - Compliance: 0.0001246, dCompliance: (90,) array with mean 1.2133e-05
+18:17:04 opti - DEBUG - Finished iteration 17  with compliance 0.00012460241279525238 and volume 0.49829476687266955
+18:17:04 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_17
+18:17:04 MMA - INFO - It.:   17 | Obj.: 6.295e-01 | Constr.:  -1.705e-03 | ch.: 3.602e-02 | C: 1.246e-04
+18:17:04 opti - DEBUG - Computing Solution
+18:17:04 opti - DEBUG - Generating Geometry
+18:17:04 mesh - DEBUG - Querying 450241 DeepSDF points
+18:17:04 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.48GiB
+18:17:04 mesh - DEBUG - Computing DeepSDF derivatives
+18:17:10 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.57763409614563
+18:17:10 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:17:10 opti - DEBUG - Writing surface mesh to simulation/tmpv_7b6lv2/simulation_18/surf18.inp
+18:17:11 geometry - DEBUG - Tetrahedralizing surface mesh
+18:17:19 geometry - DEBUG - Exporting mesh with 277993 elements, 80633 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 115232 boundaries with marker 3.
+18:17:21 geometry - DEBUG - 1 0-Normal vectors detected
+18:17:53 opti - DEBUG - Volume: 0.49845, dVolume: (90,) array with mean -0.026539
+18:21:13 opti - DEBUG - Compliance: 0.00012109, dCompliance: (90,) array with mean 1.183e-05
+18:21:13 opti - DEBUG - Finished iteration 18  with compliance 0.0001210919979500451 and volume 0.49845481671338343
+18:21:13 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_18
+18:21:13 MMA - INFO - It.:   18 | Obj.: 6.117e-01 | Constr.:  -1.545e-03 | ch.: 3.222e-03 | C: 1.211e-04
+18:21:13 opti - DEBUG - Computing Solution
+18:21:13 opti - DEBUG - Generating Geometry
+18:21:13 mesh - DEBUG - Querying 450241 DeepSDF points
+18:21:13 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:21:13 mesh - DEBUG - Computing DeepSDF derivatives
+18:21:18 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.589909553527832
+18:21:18 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:21:19 opti - DEBUG - Writing surface mesh to simulation/tmpec2j2x5r/simulation_19/surf19.inp
+18:21:19 geometry - DEBUG - Tetrahedralizing surface mesh
+18:21:27 geometry - DEBUG - Exporting mesh with 278067 elements, 80560 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 114848 boundaries with marker 3.
+18:21:30 geometry - DEBUG - 1 0-Normal vectors detected
+18:22:01 opti - DEBUG - Volume: 0.49863, dVolume: (90,) array with mean -0.026453
+18:26:13 opti - DEBUG - Compliance: 0.00011905, dCompliance: (90,) array with mean 1.0879e-05
+18:26:13 opti - DEBUG - Finished iteration 19  with compliance 0.00011905484251074435 and volume 0.49863011503862875
+18:26:13 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_19
+18:26:13 MMA - INFO - It.:   19 | Obj.: 6.015e-01 | Constr.:  -1.370e-03 | ch.: 5.840e-02 | C: 1.191e-04
+18:26:13 opti - DEBUG - Computing Solution
+18:26:13 opti - DEBUG - Generating Geometry
+18:26:13 mesh - DEBUG - Querying 450241 DeepSDF points
+18:26:13 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:26:13 mesh - DEBUG - Computing DeepSDF derivatives
+18:26:19 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.593435525894165
+18:26:19 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:26:19 opti - DEBUG - Writing surface mesh to simulation/tmprrjwujbb/simulation_20/surf20.inp
+18:26:19 geometry - DEBUG - Tetrahedralizing surface mesh
+18:26:27 geometry - DEBUG - Exporting mesh with 279820 elements, 80830 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 114852 boundaries with marker 3.
+18:26:30 geometry - DEBUG - 1 0-Normal vectors detected
+18:27:02 opti - DEBUG - Volume: 0.49914, dVolume: (90,) array with mean -0.025643
+18:31:01 opti - DEBUG - Compliance: 0.00011549, dCompliance: (90,) array with mean 1.0353e-05
+18:31:01 opti - DEBUG - Finished iteration 20  with compliance 0.00011549184733492656 and volume 0.49914214487293745
+18:31:01 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_20
+18:31:02 MMA - INFO - It.:   20 | Obj.: 5.835e-01 | Constr.:  -8.579e-04 | ch.: 1.897e-03 | C: 1.155e-04
+18:31:02 opti - DEBUG - Computing Solution
+18:31:02 opti - DEBUG - Generating Geometry
+18:31:02 mesh - DEBUG - Querying 450241 DeepSDF points
+18:31:02 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:31:02 mesh - DEBUG - Computing DeepSDF derivatives
+18:31:07 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5834314823150635
+18:31:07 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:31:08 opti - DEBUG - Writing surface mesh to simulation/tmp1kwgixd6/simulation_21/surf21.inp
+18:31:08 geometry - DEBUG - Tetrahedralizing surface mesh
+18:31:16 geometry - DEBUG - Exporting mesh with 273819 elements, 79564 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 113520 boundaries with marker 3.
+18:31:18 geometry - DEBUG - 1 0-Normal vectors detected
+18:31:49 opti - DEBUG - Volume: 0.49894, dVolume: (90,) array with mean -0.025156
+18:36:03 opti - DEBUG - Compliance: 0.00011305, dCompliance: (90,) array with mean 9.4597e-06
+18:36:03 opti - DEBUG - Finished iteration 21  with compliance 0.00011304779020274673 and volume 0.49893673030656144
+18:36:03 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_21
+18:36:03 MMA - INFO - It.:   21 | Obj.: 5.711e-01 | Constr.:  -1.063e-03 | ch.: 3.435e-02 | C: 1.130e-04
+18:36:03 opti - DEBUG - Computing Solution
+18:36:03 opti - DEBUG - Generating Geometry
+18:36:03 mesh - DEBUG - Querying 450241 DeepSDF points
+18:36:03 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:36:03 mesh - DEBUG - Computing DeepSDF derivatives
+18:36:09 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.569421052932739
+18:36:09 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:36:09 opti - DEBUG - Writing surface mesh to simulation/tmp5k83rgi5/simulation_22/surf22.inp
+18:36:09 geometry - DEBUG - Tetrahedralizing surface mesh
+18:36:17 geometry - DEBUG - Exporting mesh with 272334 elements, 79099 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 112664 boundaries with marker 3.
+18:36:20 geometry - DEBUG - 1 0-Normal vectors detected
+18:36:51 opti - DEBUG - Volume: 0.49831, dVolume: (90,) array with mean -0.024754
+18:40:47 opti - DEBUG - Compliance: 0.00011129, dCompliance: (90,) array with mean 9.3385e-06
+18:40:47 opti - DEBUG - Finished iteration 22  with compliance 0.0001112871015866261 and volume 0.49831487745982456
+18:40:47 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_22
+18:40:47 MMA - INFO - It.:   22 | Obj.: 5.622e-01 | Constr.:  -1.685e-03 | ch.: 2.537e-02 | C: 1.113e-04
+18:40:47 opti - DEBUG - Computing Solution
+18:40:47 opti - DEBUG - Generating Geometry
+18:40:48 mesh - DEBUG - Querying 450241 DeepSDF points
+18:40:48 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:40:48 mesh - DEBUG - Computing DeepSDF derivatives
+18:40:53 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.592809677124023
+18:40:53 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:40:53 opti - DEBUG - Writing surface mesh to simulation/tmpljjnq28m/simulation_23/surf23.inp
+18:40:54 geometry - DEBUG - Tetrahedralizing surface mesh
+18:41:02 geometry - DEBUG - Exporting mesh with 272589 elements, 79283 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 113088 boundaries with marker 3.
+18:41:05 geometry - DEBUG - 1 0-Normal vectors detected
+18:41:36 opti - DEBUG - Volume: 0.49862, dVolume: (90,) array with mean -0.024527
+18:45:41 opti - DEBUG - Compliance: 0.00011097, dCompliance: (90,) array with mean 8.7854e-06
+18:45:41 opti - DEBUG - Finished iteration 23  with compliance 0.00011096644483522015 and volume 0.49861627815339804
+18:45:41 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_23
+18:45:41 MMA - INFO - It.:   23 | Obj.: 5.606e-01 | Constr.:  -1.384e-03 | ch.: 3.832e-02 | C: 1.110e-04
+18:45:41 opti - DEBUG - Computing Solution
+18:45:41 opti - DEBUG - Generating Geometry
+18:45:41 mesh - DEBUG - Querying 450241 DeepSDF points
+18:45:41 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:45:41 mesh - DEBUG - Computing DeepSDF derivatives
+18:45:47 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.590388298034668
+18:45:47 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:45:47 opti - DEBUG - Writing surface mesh to simulation/tmplwz7nwae/simulation_24/surf24.inp
+18:45:47 geometry - DEBUG - Tetrahedralizing surface mesh
+18:45:55 geometry - DEBUG - Exporting mesh with 269790 elements, 78539 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 111900 boundaries with marker 3.
+18:45:57 geometry - DEBUG - 1 0-Normal vectors detected
+18:46:29 opti - DEBUG - Volume: 0.49767, dVolume: (90,) array with mean -0.024004
+18:50:37 opti - DEBUG - Compliance: 0.00010817, dCompliance: (90,) array with mean 8.7441e-06
+18:50:37 opti - DEBUG - Finished iteration 24  with compliance 0.00010816599252346276 and volume 0.4976687615841283
+18:50:37 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_24
+18:50:37 MMA - INFO - It.:   24 | Obj.: 5.464e-01 | Constr.:  -2.331e-03 | ch.: 5.061e-03 | C: 1.082e-04
+18:50:37 opti - DEBUG - Computing Solution
+18:50:37 opti - DEBUG - Generating Geometry
+18:50:37 mesh - DEBUG - Querying 450241 DeepSDF points
+18:50:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:50:37 mesh - DEBUG - Computing DeepSDF derivatives
+18:50:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.579582691192627
+18:50:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:50:43 opti - DEBUG - Writing surface mesh to simulation/tmp6oc5ioc4/simulation_25/surf25.inp
+18:50:43 geometry - DEBUG - Tetrahedralizing surface mesh
+18:50:51 geometry - DEBUG - Exporting mesh with 270077 elements, 78589 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 111968 boundaries with marker 3.
+18:50:54 geometry - DEBUG - 1 0-Normal vectors detected
+18:51:25 opti - DEBUG - Volume: 0.4986, dVolume: (90,) array with mean -0.023742
+18:55:38 opti - DEBUG - Compliance: 0.00010626, dCompliance: (90,) array with mean 8.3079e-06
+18:55:38 opti - DEBUG - Finished iteration 25  with compliance 0.00010626097485614491 and volume 0.4986006459627225
+18:55:39 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_25
+18:55:39 MMA - INFO - It.:   25 | Obj.: 5.368e-01 | Constr.:  -1.399e-03 | ch.: 4.609e-02 | C: 1.063e-04
+18:55:39 opti - DEBUG - Computing Solution
+18:55:39 opti - DEBUG - Generating Geometry
+18:55:39 mesh - DEBUG - Querying 450241 DeepSDF points
+18:55:39 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+18:55:39 mesh - DEBUG - Computing DeepSDF derivatives
+18:55:44 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.593241214752197
+18:55:44 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+18:55:45 opti - DEBUG - Writing surface mesh to simulation/tmpbzwzva2e/simulation_26/surf26.inp
+18:55:45 geometry - DEBUG - Tetrahedralizing surface mesh
+18:55:53 geometry - DEBUG - Exporting mesh with 268736 elements, 78300 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 111460 boundaries with marker 3.
+18:55:55 geometry - DEBUG - 1 0-Normal vectors detected
+18:56:26 opti - DEBUG - Volume: 0.49924, dVolume: (90,) array with mean -0.023243
+19:00:28 opti - DEBUG - Compliance: 0.00010477, dCompliance: (90,) array with mean 8.048e-06
+19:00:28 opti - DEBUG - Finished iteration 26  with compliance 0.00010477374598426559 and volume 0.4992378837772476
+19:00:28 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_26
+19:00:28 MMA - INFO - It.:   26 | Obj.: 5.293e-01 | Constr.:  -7.621e-04 | ch.: 1.761e-03 | C: 1.048e-04
+19:00:28 opti - DEBUG - Computing Solution
+19:00:28 opti - DEBUG - Generating Geometry
+19:00:28 mesh - DEBUG - Querying 450241 DeepSDF points
+19:00:28 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:00:28 mesh - DEBUG - Computing DeepSDF derivatives
+19:00:34 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.572181463241577
+19:00:34 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:00:34 opti - DEBUG - Writing surface mesh to simulation/tmp60bzngnz/simulation_27/surf27.inp
+19:00:34 geometry - DEBUG - Tetrahedralizing surface mesh
+19:00:42 geometry - DEBUG - Exporting mesh with 267323 elements, 77955 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 111022 boundaries with marker 3.
+19:00:45 geometry - DEBUG - 1 0-Normal vectors detected
+19:01:15 opti - DEBUG - Volume: 0.49956, dVolume: (90,) array with mean -0.022985
+19:05:42 opti - DEBUG - Compliance: 0.00010363, dCompliance: (90,) array with mean 7.7183e-06
+19:05:42 opti - DEBUG - Finished iteration 27  with compliance 0.00010362581542896732 and volume 0.49955651446661475
+19:05:42 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_27
+19:05:42 MMA - INFO - It.:   27 | Obj.: 5.235e-01 | Constr.:  -4.435e-04 | ch.: 3.750e-02 | C: 1.036e-04
+19:05:42 opti - DEBUG - Computing Solution
+19:05:42 opti - DEBUG - Generating Geometry
+19:05:43 mesh - DEBUG - Querying 450241 DeepSDF points
+19:05:43 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:05:43 mesh - DEBUG - Computing DeepSDF derivatives
+19:05:48 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.568351984024048
+19:05:48 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:05:48 opti - DEBUG - Writing surface mesh to simulation/tmp4d_8e6uw/simulation_28/surf28.inp
+19:05:49 geometry - DEBUG - Tetrahedralizing surface mesh
+19:05:56 geometry - DEBUG - Exporting mesh with 266350 elements, 77789 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 110812 boundaries with marker 3.
+19:05:59 geometry - DEBUG - 1 0-Normal vectors detected
+19:06:29 opti - DEBUG - Volume: 0.49971, dVolume: (90,) array with mean -0.022521
+19:11:06 opti - DEBUG - Compliance: 0.00010264, dCompliance: (90,) array with mean 7.4501e-06
+19:11:06 opti - DEBUG - Finished iteration 28  with compliance 0.00010264477861813088 and volume 0.4997140159004515
+19:11:06 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_28
+19:11:06 MMA - INFO - It.:   28 | Obj.: 5.186e-01 | Constr.:  -2.860e-04 | ch.: 1.774e-02 | C: 1.026e-04
+19:11:06 opti - DEBUG - Computing Solution
+19:11:06 opti - DEBUG - Generating Geometry
+19:11:06 mesh - DEBUG - Querying 450241 DeepSDF points
+19:11:06 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.46GiB
+19:11:06 mesh - DEBUG - Computing DeepSDF derivatives
+19:11:12 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567691326141357
+19:11:12 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:11:12 opti - DEBUG - Writing surface mesh to simulation/tmpodwvowrq/simulation_29/surf29.inp
+19:11:12 geometry - DEBUG - Tetrahedralizing surface mesh
+19:11:20 geometry - DEBUG - Exporting mesh with 265711 elements, 77553 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 110348 boundaries with marker 3.
+19:11:22 geometry - DEBUG - 1 0-Normal vectors detected
+19:11:52 opti - DEBUG - Volume: 0.49966, dVolume: (90,) array with mean -0.022107
+19:16:26 opti - DEBUG - Compliance: 0.00010178, dCompliance: (90,) array with mean 7.0553e-06
+19:16:26 opti - DEBUG - Finished iteration 29  with compliance 0.00010177976696593544 and volume 0.49966496969094976
+19:16:26 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_29
+19:16:26 MMA - INFO - It.:   29 | Obj.: 5.142e-01 | Constr.:  -3.350e-04 | ch.: 2.897e-03 | C: 1.018e-04
+19:16:26 opti - DEBUG - Computing Solution
+19:16:26 opti - DEBUG - Generating Geometry
+19:16:27 mesh - DEBUG - Querying 450241 DeepSDF points
+19:16:27 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.46GiB
+19:16:27 mesh - DEBUG - Computing DeepSDF derivatives
+19:16:32 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570068359375
+19:16:32 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:16:32 opti - DEBUG - Writing surface mesh to simulation/tmpynjrtg8w/simulation_30/surf30.inp
+19:16:33 geometry - DEBUG - Tetrahedralizing surface mesh
+19:16:41 geometry - DEBUG - Exporting mesh with 265231 elements, 77366 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109920 boundaries with marker 3.
+19:16:43 geometry - DEBUG - 1 0-Normal vectors detected
+19:17:13 opti - DEBUG - Volume: 0.49974, dVolume: (90,) array with mean -0.021952
+19:21:50 opti - DEBUG - Compliance: 0.0001011, dCompliance: (90,) array with mean 6.9335e-06
+19:21:50 opti - DEBUG - Finished iteration 30  with compliance 0.00010109930598538426 and volume 0.49974389412219167
+19:21:50 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_30
+19:21:50 MMA - INFO - It.:   30 | Obj.: 5.107e-01 | Constr.:  -2.561e-04 | ch.: 2.164e-02 | C: 1.011e-04
+19:21:50 opti - DEBUG - Computing Solution
+19:21:50 opti - DEBUG - Generating Geometry
+19:21:50 mesh - DEBUG - Querying 450241 DeepSDF points
+19:21:50 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:21:50 mesh - DEBUG - Computing DeepSDF derivatives
+19:21:55 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.581957101821899
+19:21:55 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:21:56 opti - DEBUG - Writing surface mesh to simulation/tmpitwg485q/simulation_31/surf31.inp
+19:21:56 geometry - DEBUG - Tetrahedralizing surface mesh
+19:22:03 geometry - DEBUG - Exporting mesh with 264477 elements, 77211 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109652 boundaries with marker 3.
+19:22:06 geometry - DEBUG - 1 0-Normal vectors detected
+19:22:36 opti - DEBUG - Volume: 0.49962, dVolume: (90,) array with mean -0.021458
+19:27:52 opti - DEBUG - Compliance: 0.00010033, dCompliance: (90,) array with mean 6.8676e-06
+19:27:52 opti - DEBUG - Finished iteration 31  with compliance 0.0001003327810966896 and volume 0.4996161875712271
+19:27:52 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_31
+19:27:52 MMA - INFO - It.:   31 | Obj.: 5.069e-01 | Constr.:  -3.838e-04 | ch.: 7.386e-03 | C: 1.003e-04
+19:27:52 opti - DEBUG - Computing Solution
+19:27:52 opti - DEBUG - Generating Geometry
+19:27:53 mesh - DEBUG - Querying 450241 DeepSDF points
+19:27:53 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:27:53 mesh - DEBUG - Computing DeepSDF derivatives
+19:27:58 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.582654714584351
+19:27:58 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:27:58 opti - DEBUG - Writing surface mesh to simulation/tmpajttkv83/simulation_32/surf32.inp
+19:27:59 geometry - DEBUG - Tetrahedralizing surface mesh
+19:28:06 geometry - DEBUG - Exporting mesh with 262724 elements, 76874 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109360 boundaries with marker 3.
+19:28:09 geometry - DEBUG - 1 0-Normal vectors detected
+19:28:39 opti - DEBUG - Volume: 0.49962, dVolume: (90,) array with mean -0.021412
+19:34:13 opti - DEBUG - Compliance: 9.9431e-05, dCompliance: (90,) array with mean 6.6069e-06
+19:34:13 opti - DEBUG - Finished iteration 32  with compliance 9.943074690873689e-05 and volume 0.4996204080841952
+19:34:13 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_32
+19:34:13 MMA - INFO - It.:   32 | Obj.: 5.023e-01 | Constr.:  -3.796e-04 | ch.: 1.190e-02 | C: 9.943e-05
+19:34:13 opti - DEBUG - Computing Solution
+19:34:13 opti - DEBUG - Generating Geometry
+19:34:13 mesh - DEBUG - Querying 450241 DeepSDF points
+19:34:13 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:34:13 mesh - DEBUG - Computing DeepSDF derivatives
+19:34:19 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.581909656524658
+19:34:19 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:34:19 opti - DEBUG - Writing surface mesh to simulation/tmp4purhatw/simulation_33/surf33.inp
+19:34:19 geometry - DEBUG - Tetrahedralizing surface mesh
+19:34:27 geometry - DEBUG - Exporting mesh with 264026 elements, 77127 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109664 boundaries with marker 3.
+19:34:29 geometry - DEBUG - 1 0-Normal vectors detected
+19:35:00 opti - DEBUG - Volume: 0.4999, dVolume: (90,) array with mean -0.021134
+19:40:25 opti - DEBUG - Compliance: 9.8985e-05, dCompliance: (90,) array with mean 6.5482e-06
+19:40:25 opti - DEBUG - Finished iteration 33  with compliance 9.898496463933216e-05 and volume 0.4999022885021463
+19:40:25 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_33
+19:40:25 MMA - INFO - It.:   33 | Obj.: 5.001e-01 | Constr.:  -9.771e-05 | ch.: 2.810e-02 | C: 9.898e-05
+19:40:25 opti - DEBUG - Computing Solution
+19:40:25 opti - DEBUG - Generating Geometry
+19:40:25 mesh - DEBUG - Querying 450241 DeepSDF points
+19:40:25 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:40:25 mesh - DEBUG - Computing DeepSDF derivatives
+19:40:31 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.575596332550049
+19:40:31 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:40:31 opti - DEBUG - Writing surface mesh to simulation/tmpae9ly6d2/simulation_34/surf34.inp
+19:40:31 geometry - DEBUG - Tetrahedralizing surface mesh
+19:40:39 geometry - DEBUG - Exporting mesh with 264118 elements, 77046 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109356 boundaries with marker 3.
+19:40:41 geometry - DEBUG - 1 0-Normal vectors detected
+19:41:11 opti - DEBUG - Volume: 0.49973, dVolume: (90,) array with mean -0.021551
+19:45:38 opti - DEBUG - Compliance: 9.877e-05, dCompliance: (90,) array with mean 6.4502e-06
+19:45:38 opti - DEBUG - Finished iteration 34  with compliance 9.876975960555953e-05 and volume 0.4997313435125315
+19:45:38 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_34
+19:45:38 opti - DEBUG - Computing Solution
+19:45:38 opti - DEBUG - Generating Geometry
+19:45:38 mesh - DEBUG - Querying 450241 DeepSDF points
+19:45:38 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:45:38 mesh - DEBUG - Computing DeepSDF derivatives
+19:45:44 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5672783851623535
+19:45:44 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:45:44 opti - DEBUG - Writing surface mesh to simulation/tmp3v_4hbmw/simulation_35/surf35.inp
+19:45:44 geometry - DEBUG - Tetrahedralizing surface mesh
+19:45:52 geometry - DEBUG - Exporting mesh with 263514 elements, 76951 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109356 boundaries with marker 3.
+19:45:55 geometry - DEBUG - 1 0-Normal vectors detected
+19:46:25 opti - DEBUG - Volume: 0.49973, dVolume: (90,) array with mean -0.021551
+19:51:00 opti - DEBUG - Compliance: 9.8651e-05, dCompliance: (90,) array with mean 6.4025e-06
+19:51:00 opti - DEBUG - Finished iteration 35  with compliance 9.865113683145048e-05 and volume 0.4997313437459251
+19:51:00 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_35
+19:51:00 MMA - INFO - It.:   34 | Obj.: 4.990e-01 | Constr.:  -2.687e-04 | ch.: 4.726e-03 | C: 9.877e-05
+19:51:00 opti - DEBUG - Computing Solution
+19:51:00 opti - DEBUG - Generating Geometry
+19:51:00 mesh - DEBUG - Querying 450241 DeepSDF points
+19:51:00 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:51:00 mesh - DEBUG - Computing DeepSDF derivatives
+19:51:06 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.571835517883301
+19:51:06 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:51:06 opti - DEBUG - Writing surface mesh to simulation/tmp30dkz9i_/simulation_36/surf36.inp
+19:51:07 geometry - DEBUG - Tetrahedralizing surface mesh
+19:51:14 geometry - DEBUG - Exporting mesh with 264577 elements, 77134 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109452 boundaries with marker 3.
+19:51:17 geometry - DEBUG - 1 0-Normal vectors detected
+19:51:47 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.02103
+19:58:12 opti - DEBUG - Compliance: 9.8205e-05, dCompliance: (90,) array with mean 6.393e-06
+19:58:12 opti - DEBUG - Finished iteration 36  with compliance 9.820477806431758e-05 and volume 0.4998811787602697
+19:58:12 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_36
+19:58:12 MMA - INFO - It.:   35 | Obj.: 4.961e-01 | Constr.:  -1.188e-04 | ch.: 2.727e-02 | C: 9.820e-05
+19:58:12 opti - DEBUG - Computing Solution
+19:58:12 opti - DEBUG - Generating Geometry
+19:58:13 mesh - DEBUG - Querying 450241 DeepSDF points
+19:58:13 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+19:58:13 mesh - DEBUG - Computing DeepSDF derivatives
+19:58:18 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570416688919067
+19:58:18 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+19:58:18 opti - DEBUG - Writing surface mesh to simulation/tmp3h_87aej/simulation_37/surf37.inp
+19:58:19 geometry - DEBUG - Tetrahedralizing surface mesh
+19:58:27 geometry - DEBUG - Exporting mesh with 264754 elements, 77201 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109548 boundaries with marker 3.
+19:58:29 geometry - DEBUG - 1 0-Normal vectors detected
+19:58:59 opti - DEBUG - Volume: 0.50066, dVolume: (90,) array with mean -0.021054
+20:04:06 opti - DEBUG - Compliance: 9.7713e-05, dCompliance: (90,) array with mean 6.3258e-06
+20:04:06 opti - DEBUG - Finished iteration 37  with compliance 9.771266473449125e-05 and volume 0.5006598311512985
+20:04:06 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_37
+20:04:06 MMA - INFO - It.:   36 | Obj.: 4.936e-01 | Constr.:  6.598e-04 | ch.: 1.204e-02 | C: 9.771e-05
+20:04:06 opti - DEBUG - Computing Solution
+20:04:06 opti - DEBUG - Generating Geometry
+20:04:07 mesh - DEBUG - Querying 450241 DeepSDF points
+20:04:07 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:04:07 mesh - DEBUG - Computing DeepSDF derivatives
+20:04:12 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.556303262710571
+20:04:12 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:04:12 opti - DEBUG - Writing surface mesh to simulation/tmptq1m2l96/simulation_38/surf38.inp
+20:04:13 geometry - DEBUG - Tetrahedralizing surface mesh
+20:04:20 geometry - DEBUG - Exporting mesh with 265129 elements, 77293 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109576 boundaries with marker 3.
+20:04:23 geometry - DEBUG - 1 0-Normal vectors detected
+20:04:53 opti - DEBUG - Volume: 0.50097, dVolume: (90,) array with mean -0.021345
+20:09:30 opti - DEBUG - Compliance: 9.7177e-05, dCompliance: (90,) array with mean 6.2421e-06
+20:09:30 opti - DEBUG - Finished iteration 38  with compliance 9.717692366796085e-05 and volume 0.5009659702452729
+20:09:30 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_38
+20:09:30 opti - DEBUG - Computing Solution
+20:09:30 opti - DEBUG - Generating Geometry
+20:09:30 mesh - DEBUG - Querying 450241 DeepSDF points
+20:09:30 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:09:30 mesh - DEBUG - Computing DeepSDF derivatives
+20:09:36 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.558091402053833
+20:09:36 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:09:36 opti - DEBUG - Writing surface mesh to simulation/tmp6ok7j__p/simulation_39/surf39.inp
+20:09:36 geometry - DEBUG - Tetrahedralizing surface mesh
+20:09:44 geometry - DEBUG - Exporting mesh with 264778 elements, 77220 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109576 boundaries with marker 3.
+20:09:47 geometry - DEBUG - 1 0-Normal vectors detected
+20:10:17 opti - DEBUG - Volume: 0.50097, dVolume: (90,) array with mean -0.021345
+20:14:57 opti - DEBUG - Compliance: 9.7216e-05, dCompliance: (90,) array with mean 6.2976e-06
+20:14:57 opti - DEBUG - Finished iteration 39  with compliance 9.721643397024796e-05 and volume 0.5009659705630315
+20:14:57 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_39
+20:14:57 MMA - INFO - It.:   37 | Obj.: 4.909e-01 | Constr.:  9.660e-04 | ch.: 1.755e-02 | C: 9.718e-05
+20:14:57 opti - DEBUG - Computing Solution
+20:14:57 opti - DEBUG - Generating Geometry
+20:14:57 mesh - DEBUG - Querying 450241 DeepSDF points
+20:14:57 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:14:57 mesh - DEBUG - Computing DeepSDF derivatives
+20:15:03 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.551968336105347
+20:15:03 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:15:03 opti - DEBUG - Writing surface mesh to simulation/tmp2iolc50j/simulation_40/surf40.inp
+20:15:03 geometry - DEBUG - Tetrahedralizing surface mesh
+20:15:11 geometry - DEBUG - Exporting mesh with 263380 elements, 76853 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109080 boundaries with marker 3.
+20:15:13 geometry - DEBUG - 1 0-Normal vectors detected
+20:15:43 opti - DEBUG - Volume: 0.50079, dVolume: (90,) array with mean -0.020857
+20:20:32 opti - DEBUG - Compliance: 9.6941e-05, dCompliance: (90,) array with mean 6.1752e-06
+20:20:32 opti - DEBUG - Finished iteration 40  with compliance 9.694141543445545e-05 and volume 0.5007934301619099
+20:20:32 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_40
+20:20:32 MMA - INFO - It.:   38 | Obj.: 4.897e-01 | Constr.:  7.934e-04 | ch.: 2.125e-02 | C: 9.694e-05
+20:20:32 opti - DEBUG - Computing Solution
+20:20:32 opti - DEBUG - Generating Geometry
+20:20:32 mesh - DEBUG - Querying 450241 DeepSDF points
+20:20:32 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:20:32 mesh - DEBUG - Computing DeepSDF derivatives
+20:20:38 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.561114311218262
+20:20:38 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:20:38 opti - DEBUG - Writing surface mesh to simulation/tmpeljxoh16/simulation_41/surf41.inp
+20:20:38 geometry - DEBUG - Tetrahedralizing surface mesh
+20:20:46 geometry - DEBUG - Exporting mesh with 263609 elements, 76976 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109260 boundaries with marker 3.
+20:20:48 geometry - DEBUG - 1 0-Normal vectors detected
+20:21:19 opti - DEBUG - Volume: 0.50118, dVolume: (90,) array with mean -0.021398
+20:26:39 opti - DEBUG - Compliance: 9.6921e-05, dCompliance: (90,) array with mean 6.4002e-06
+20:26:39 opti - DEBUG - Finished iteration 41  with compliance 9.692072011835144e-05 and volume 0.5011831810639233
+20:26:39 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_41
+20:26:39 MMA - INFO - It.:   39 | Obj.: 4.896e-01 | Constr.:  1.183e-03 | ch.: 1.351e-02 | C: 9.692e-05
+20:26:39 opti - DEBUG - Computing Solution
+20:26:39 opti - DEBUG - Generating Geometry
+20:26:39 mesh - DEBUG - Querying 450241 DeepSDF points
+20:26:39 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:26:39 mesh - DEBUG - Computing DeepSDF derivatives
+20:26:44 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.560285329818726
+20:26:44 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:26:45 opti - DEBUG - Writing surface mesh to simulation/tmpk8rc68f1/simulation_42/surf42.inp
+20:26:45 geometry - DEBUG - Tetrahedralizing surface mesh
+20:26:52 geometry - DEBUG - Exporting mesh with 264311 elements, 77069 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109236 boundaries with marker 3.
+20:26:55 geometry - DEBUG - 1 0-Normal vectors detected
+20:27:25 opti - DEBUG - Volume: 0.50104, dVolume: (90,) array with mean -0.021018
+20:32:10 opti - DEBUG - Compliance: 9.6662e-05, dCompliance: (90,) array with mean 6.3e-06
+20:32:10 opti - DEBUG - Finished iteration 42  with compliance 9.666231315801839e-05 and volume 0.5010370461756058
+20:32:10 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_42
+20:32:10 MMA - INFO - It.:   40 | Obj.: 4.883e-01 | Constr.:  1.037e-03 | ch.: 3.466e-02 | C: 9.666e-05
+20:32:10 opti - DEBUG - Computing Solution
+20:32:10 opti - DEBUG - Generating Geometry
+20:32:10 mesh - DEBUG - Querying 450241 DeepSDF points
+20:32:10 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:32:10 mesh - DEBUG - Computing DeepSDF derivatives
+20:32:15 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.556408405303955
+20:32:15 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:32:16 opti - DEBUG - Writing surface mesh to simulation/tmpw48biwdh/simulation_43/surf43.inp
+20:32:16 geometry - DEBUG - Tetrahedralizing surface mesh
+20:32:24 geometry - DEBUG - Exporting mesh with 265018 elements, 77107 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109012 boundaries with marker 3.
+20:32:26 geometry - DEBUG - 1 0-Normal vectors detected
+20:32:56 opti - DEBUG - Volume: 0.50074, dVolume: (90,) array with mean -0.021387
+20:38:29 opti - DEBUG - Compliance: 9.651e-05, dCompliance: (90,) array with mean 6.3442e-06
+20:38:29 opti - DEBUG - Finished iteration 43  with compliance 9.650996174557547e-05 and volume 0.5007379481337223
+20:38:29 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_43
+20:38:29 opti - DEBUG - Computing Solution
+20:38:29 opti - DEBUG - Generating Geometry
+20:38:29 mesh - DEBUG - Querying 450241 DeepSDF points
+20:38:29 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:38:29 mesh - DEBUG - Computing DeepSDF derivatives
+20:38:35 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.56669020652771
+20:38:35 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:38:35 opti - DEBUG - Writing surface mesh to simulation/tmp2dl9woou/simulation_44/surf44.inp
+20:38:35 geometry - DEBUG - Tetrahedralizing surface mesh
+20:38:43 geometry - DEBUG - Exporting mesh with 264583 elements, 77037 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 109012 boundaries with marker 3.
+20:38:46 geometry - DEBUG - 1 0-Normal vectors detected
+20:39:15 opti - DEBUG - Volume: 0.50074, dVolume: (90,) array with mean -0.021387
+20:44:38 opti - DEBUG - Compliance: 9.653e-05, dCompliance: (90,) array with mean 6.3922e-06
+20:44:38 opti - DEBUG - Finished iteration 44  with compliance 9.652983154000276e-05 and volume 0.5007379485760955
+20:44:38 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_44
+20:44:38 MMA - INFO - It.:   41 | Obj.: 4.876e-01 | Constr.:  7.379e-04 | ch.: 2.341e-02 | C: 9.651e-05
+20:44:38 opti - DEBUG - Computing Solution
+20:44:38 opti - DEBUG - Generating Geometry
+20:44:39 mesh - DEBUG - Querying 450241 DeepSDF points
+20:44:39 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:44:39 mesh - DEBUG - Computing DeepSDF derivatives
+20:44:44 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.559140205383301
+20:44:44 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:44:44 opti - DEBUG - Writing surface mesh to simulation/tmpsrs2dw9k/simulation_45/surf45.inp
+20:44:45 geometry - DEBUG - Tetrahedralizing surface mesh
+20:44:52 geometry - DEBUG - Exporting mesh with 264080 elements, 76956 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108912 boundaries with marker 3.
+20:44:55 geometry - DEBUG - 1 0-Normal vectors detected
+20:45:25 opti - DEBUG - Volume: 0.50054, dVolume: (90,) array with mean -0.021003
+20:50:26 opti - DEBUG - Compliance: 9.6355e-05, dCompliance: (90,) array with mean 6.2438e-06
+20:50:26 opti - DEBUG - Finished iteration 45  with compliance 9.635498991745639e-05 and volume 0.5005403856656996
+20:50:26 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_45
+20:50:26 MMA - INFO - It.:   42 | Obj.: 4.868e-01 | Constr.:  5.404e-04 | ch.: 1.753e-02 | C: 9.635e-05
+20:50:26 opti - DEBUG - Computing Solution
+20:50:26 opti - DEBUG - Generating Geometry
+20:50:26 mesh - DEBUG - Querying 450241 DeepSDF points
+20:50:26 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:50:26 mesh - DEBUG - Computing DeepSDF derivatives
+20:50:32 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.711512565612793
+20:50:32 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:50:32 opti - DEBUG - Writing surface mesh to simulation/tmpn6a2i1gl/simulation_46/surf46.inp
+20:50:33 geometry - DEBUG - Tetrahedralizing surface mesh
+20:50:40 geometry - DEBUG - Exporting mesh with 264120 elements, 76876 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108520 boundaries with marker 3.
+20:50:43 geometry - DEBUG - 1 0-Normal vectors detected
+20:51:13 opti - DEBUG - Volume: 0.50013, dVolume: (90,) array with mean -0.021077
+20:56:29 opti - DEBUG - Compliance: 9.6281e-05, dCompliance: (90,) array with mean 6.3515e-06
+20:56:29 opti - DEBUG - Finished iteration 46  with compliance 9.628053881904746e-05 and volume 0.5001278160328243
+20:56:29 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_46
+20:56:29 opti - DEBUG - Computing Solution
+20:56:29 opti - DEBUG - Generating Geometry
+20:56:29 mesh - DEBUG - Querying 450241 DeepSDF points
+20:56:29 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+20:56:29 mesh - DEBUG - Computing DeepSDF derivatives
+20:56:35 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.555752277374268
+20:56:35 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+20:56:35 opti - DEBUG - Writing surface mesh to simulation/tmp5oz_yzcv/simulation_47/surf47.inp
+20:56:35 geometry - DEBUG - Tetrahedralizing surface mesh
+20:56:43 geometry - DEBUG - Exporting mesh with 264178 elements, 76886 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108520 boundaries with marker 3.
+20:56:46 geometry - DEBUG - 1 0-Normal vectors detected
+20:57:15 opti - DEBUG - Volume: 0.50013, dVolume: (90,) array with mean -0.021077
+21:02:37 opti - DEBUG - Compliance: 9.6356e-05, dCompliance: (90,) array with mean 6.2185e-06
+21:02:37 opti - DEBUG - Finished iteration 47  with compliance 9.635595721129946e-05 and volume 0.5001278156294152
+21:02:38 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_47
+21:02:38 MMA - INFO - It.:   43 | Obj.: 4.864e-01 | Constr.:  1.278e-04 | ch.: 2.629e-03 | C: 9.628e-05
+21:02:38 opti - DEBUG - Computing Solution
+21:02:38 opti - DEBUG - Generating Geometry
+21:02:38 mesh - DEBUG - Querying 450241 DeepSDF points
+21:02:38 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:02:38 mesh - DEBUG - Computing DeepSDF derivatives
+21:02:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.551690578460693
+21:02:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:02:44 opti - DEBUG - Writing surface mesh to simulation/tmpaq6qfie9/simulation_48/surf48.inp
+21:02:44 geometry - DEBUG - Tetrahedralizing surface mesh
+21:02:51 geometry - DEBUG - Exporting mesh with 262216 elements, 76468 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108256 boundaries with marker 3.
+21:02:54 geometry - DEBUG - 1 0-Normal vectors detected
+21:03:24 opti - DEBUG - Volume: 0.49993, dVolume: (90,) array with mean -0.020987
+21:08:39 opti - DEBUG - Compliance: 9.6111e-05, dCompliance: (90,) array with mean 6.2205e-06
+21:08:39 opti - DEBUG - Finished iteration 48  with compliance 9.61105742876135e-05 and volume 0.4999289261723839
+21:08:39 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_48
+21:08:39 opti - DEBUG - Computing Solution
+21:08:39 opti - DEBUG - Generating Geometry
+21:08:39 mesh - DEBUG - Querying 450241 DeepSDF points
+21:08:39 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:08:39 mesh - DEBUG - Computing DeepSDF derivatives
+21:08:45 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.564936637878418
+21:08:45 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:08:45 opti - DEBUG - Writing surface mesh to simulation/tmpkbj4ub9_/simulation_49/surf49.inp
+21:08:45 geometry - DEBUG - Tetrahedralizing surface mesh
+21:08:53 geometry - DEBUG - Exporting mesh with 262450 elements, 76535 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108256 boundaries with marker 3.
+21:08:55 geometry - DEBUG - 1 0-Normal vectors detected
+21:09:25 opti - DEBUG - Volume: 0.49993, dVolume: (90,) array with mean -0.020987
+21:14:40 opti - DEBUG - Compliance: 9.625e-05, dCompliance: (90,) array with mean 6.2817e-06
+21:14:40 opti - DEBUG - Finished iteration 49  with compliance 9.624978511396637e-05 and volume 0.4999289258720353
+21:14:40 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_49
+21:14:41 MMA - INFO - It.:   44 | Obj.: 4.855e-01 | Constr.:  -7.107e-05 | ch.: 1.959e-03 | C: 9.611e-05
+21:14:41 opti - DEBUG - Computing Solution
+21:14:41 opti - DEBUG - Generating Geometry
+21:14:41 mesh - DEBUG - Querying 450241 DeepSDF points
+21:14:41 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:14:41 mesh - DEBUG - Computing DeepSDF derivatives
+21:14:46 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570078611373901
+21:14:46 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:14:47 opti - DEBUG - Writing surface mesh to simulation/tmpesahds5m/simulation_50/surf50.inp
+21:14:47 geometry - DEBUG - Tetrahedralizing surface mesh
+21:14:54 geometry - DEBUG - Exporting mesh with 262467 elements, 76487 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108148 boundaries with marker 3.
+21:14:57 geometry - DEBUG - 1 0-Normal vectors detected
+21:15:26 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020963
+21:20:20 opti - DEBUG - Compliance: 9.6147e-05, dCompliance: (90,) array with mean 6.1099e-06
+21:20:20 opti - DEBUG - Finished iteration 50  with compliance 9.614663156876746e-05 and volume 0.4999404189864662
+21:20:20 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_50
+21:20:20 opti - DEBUG - Computing Solution
+21:20:20 opti - DEBUG - Generating Geometry
+21:20:20 mesh - DEBUG - Querying 450241 DeepSDF points
+21:20:20 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:20:20 mesh - DEBUG - Computing DeepSDF derivatives
+21:20:26 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.544413089752197
+21:20:26 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:20:26 opti - DEBUG - Writing surface mesh to simulation/tmp5xawk8uu/simulation_51/surf51.inp
+21:20:26 geometry - DEBUG - Tetrahedralizing surface mesh
+21:20:33 geometry - DEBUG - Exporting mesh with 262243 elements, 76482 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108148 boundaries with marker 3.
+21:20:36 geometry - DEBUG - 1 0-Normal vectors detected
+21:21:06 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020963
+21:25:57 opti - DEBUG - Compliance: 9.6169e-05, dCompliance: (90,) array with mean 6.1843e-06
+21:25:57 opti - DEBUG - Finished iteration 51  with compliance 9.616906694153017e-05 and volume 0.49994041918393145
+21:25:57 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_51
+21:25:57 MMA - INFO - It.:   45 | Obj.: 4.857e-01 | Constr.:  -5.958e-05 | ch.: 1.240e-02 | C: 9.615e-05
+21:25:57 opti - DEBUG - Computing Solution
+21:25:57 opti - DEBUG - Generating Geometry
+21:25:57 mesh - DEBUG - Querying 450241 DeepSDF points
+21:25:57 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:25:57 mesh - DEBUG - Computing DeepSDF derivatives
+21:26:03 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.554174900054932
+21:26:03 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:26:03 opti - DEBUG - Writing surface mesh to simulation/tmpxa18qcow/simulation_52/surf52.inp
+21:26:03 geometry - DEBUG - Tetrahedralizing surface mesh
+21:26:11 geometry - DEBUG - Exporting mesh with 262719 elements, 76522 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108060 boundaries with marker 3.
+21:26:13 geometry - DEBUG - 1 0-Normal vectors detected
+21:26:43 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.021102
+21:31:37 opti - DEBUG - Compliance: 9.6043e-05, dCompliance: (90,) array with mean 6.2211e-06
+21:31:37 opti - DEBUG - Finished iteration 52  with compliance 9.604285548979286e-05 and volume 0.4999401642891082
+21:31:37 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_52
+21:31:37 opti - DEBUG - Computing Solution
+21:31:37 opti - DEBUG - Generating Geometry
+21:31:37 mesh - DEBUG - Querying 450241 DeepSDF points
+21:31:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:31:37 mesh - DEBUG - Computing DeepSDF derivatives
+21:31:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.569459438323975
+21:31:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:31:43 opti - DEBUG - Writing surface mesh to simulation/tmp1gk_ydta/simulation_53/surf53.inp
+21:31:44 geometry - DEBUG - Tetrahedralizing surface mesh
+21:31:51 geometry - DEBUG - Exporting mesh with 262329 elements, 76443 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108060 boundaries with marker 3.
+21:31:54 geometry - DEBUG - 1 0-Normal vectors detected
+21:32:24 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.021102
+21:37:25 opti - DEBUG - Compliance: 9.6039e-05, dCompliance: (90,) array with mean 6.2418e-06
+21:37:25 opti - DEBUG - Finished iteration 53  with compliance 9.60386110767449e-05 and volume 0.49994016442040695
+21:37:25 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_53
+21:37:25 MMA - INFO - It.:   46 | Obj.: 4.852e-01 | Constr.:  -5.984e-05 | ch.: 1.372e-02 | C: 9.604e-05
+21:37:25 opti - DEBUG - Computing Solution
+21:37:25 opti - DEBUG - Generating Geometry
+21:37:25 mesh - DEBUG - Querying 450241 DeepSDF points
+21:37:25 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:37:25 mesh - DEBUG - Computing DeepSDF derivatives
+21:37:31 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.573281288146973
+21:37:31 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:37:31 opti - DEBUG - Writing surface mesh to simulation/tmpwpsxi932/simulation_54/surf54.inp
+21:37:31 geometry - DEBUG - Tetrahedralizing surface mesh
+21:37:39 geometry - DEBUG - Exporting mesh with 262432 elements, 76467 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108132 boundaries with marker 3.
+21:37:41 geometry - DEBUG - 1 0-Normal vectors detected
+21:38:11 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020934
+21:43:48 opti - DEBUG - Compliance: 9.5999e-05, dCompliance: (90,) array with mean 6.2058e-06
+21:43:48 opti - DEBUG - Finished iteration 54  with compliance 9.599867241896721e-05 and volume 0.4999893488301764
+21:43:48 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_54
+21:43:48 opti - DEBUG - Computing Solution
+21:43:48 opti - DEBUG - Generating Geometry
+21:43:48 mesh - DEBUG - Querying 450241 DeepSDF points
+21:43:48 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:43:48 mesh - DEBUG - Computing DeepSDF derivatives
+21:43:53 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565856456756592
+21:43:53 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:43:54 opti - DEBUG - Writing surface mesh to simulation/tmptqf4pp0g/simulation_55/surf55.inp
+21:43:54 geometry - DEBUG - Tetrahedralizing surface mesh
+21:44:01 geometry - DEBUG - Exporting mesh with 262635 elements, 76518 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108132 boundaries with marker 3.
+21:44:04 geometry - DEBUG - 1 0-Normal vectors detected
+21:44:34 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020934
+21:50:06 opti - DEBUG - Compliance: 9.5983e-05, dCompliance: (90,) array with mean 6.2609e-06
+21:50:06 opti - DEBUG - Finished iteration 55  with compliance 9.598306687221278e-05 and volume 0.49998934830957
+21:50:06 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_55
+21:50:06 MMA - INFO - It.:   47 | Obj.: 4.850e-01 | Constr.:  -1.065e-05 | ch.: 5.806e-03 | C: 9.600e-05
+21:50:06 opti - DEBUG - Computing Solution
+21:50:06 opti - DEBUG - Generating Geometry
+21:50:06 mesh - DEBUG - Querying 450241 DeepSDF points
+21:50:06 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:50:06 mesh - DEBUG - Computing DeepSDF derivatives
+21:50:11 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565982818603516
+21:50:11 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:50:12 opti - DEBUG - Writing surface mesh to simulation/tmpubbmdhte/simulation_56/surf56.inp
+21:50:12 geometry - DEBUG - Tetrahedralizing surface mesh
+21:50:19 geometry - DEBUG - Exporting mesh with 261623 elements, 76362 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108048 boundaries with marker 3.
+21:50:22 geometry - DEBUG - 1 0-Normal vectors detected
+21:50:51 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020984
+21:56:35 opti - DEBUG - Compliance: 9.5887e-05, dCompliance: (90,) array with mean 6.2571e-06
+21:56:35 opti - DEBUG - Finished iteration 56  with compliance 9.588712220038071e-05 and volume 0.49995905122723644
+21:56:35 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_56
+21:56:35 opti - DEBUG - Computing Solution
+21:56:35 opti - DEBUG - Generating Geometry
+21:56:35 mesh - DEBUG - Querying 450241 DeepSDF points
+21:56:35 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+21:56:35 mesh - DEBUG - Computing DeepSDF derivatives
+21:56:40 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5604407787323
+21:56:40 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+21:56:41 opti - DEBUG - Writing surface mesh to simulation/tmplmikfqni/simulation_57/surf57.inp
+21:56:41 geometry - DEBUG - Tetrahedralizing surface mesh
+21:56:48 geometry - DEBUG - Exporting mesh with 262012 elements, 76382 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108048 boundaries with marker 3.
+21:56:51 geometry - DEBUG - 1 0-Normal vectors detected
+21:57:21 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020984
+22:03:00 opti - DEBUG - Compliance: 9.5867e-05, dCompliance: (90,) array with mean 6.2618e-06
+22:03:00 opti - DEBUG - Finished iteration 57  with compliance 9.586736465856861e-05 and volume 0.49995905140975755
+22:03:00 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_57
+22:03:00 MMA - INFO - It.:   48 | Obj.: 4.844e-01 | Constr.:  -4.095e-05 | ch.: 6.465e-04 | C: 9.589e-05
+22:03:00 opti - DEBUG - Computing Solution
+22:03:00 opti - DEBUG - Generating Geometry
+22:03:01 mesh - DEBUG - Querying 450241 DeepSDF points
+22:03:01 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:03:01 mesh - DEBUG - Computing DeepSDF derivatives
+22:03:06 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.569138288497925
+22:03:06 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:03:06 opti - DEBUG - Writing surface mesh to simulation/tmp9h_m4yay/simulation_58/surf58.inp
+22:03:07 geometry - DEBUG - Tetrahedralizing surface mesh
+22:03:14 geometry - DEBUG - Exporting mesh with 261384 elements, 76318 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107964 boundaries with marker 3.
+22:03:17 geometry - DEBUG - 1 0-Normal vectors detected
+22:03:47 opti - DEBUG - Volume: 0.49989, dVolume: (90,) array with mean -0.020895
+22:09:04 opti - DEBUG - Compliance: 9.5919e-05, dCompliance: (90,) array with mean 6.0452e-06
+22:09:04 opti - DEBUG - Finished iteration 58  with compliance 9.59193302899536e-05 and volume 0.49988885814306316
+22:09:04 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_58
+22:09:04 opti - DEBUG - Computing Solution
+22:09:04 opti - DEBUG - Generating Geometry
+22:09:04 mesh - DEBUG - Querying 450241 DeepSDF points
+22:09:05 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:09:05 mesh - DEBUG - Computing DeepSDF derivatives
+22:09:10 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.564169883728027
+22:09:10 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:09:10 opti - DEBUG - Writing surface mesh to simulation/tmpvv05xxdp/simulation_59/surf59.inp
+22:09:11 geometry - DEBUG - Tetrahedralizing surface mesh
+22:09:18 geometry - DEBUG - Exporting mesh with 262279 elements, 76420 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107964 boundaries with marker 3.
+22:09:21 geometry - DEBUG - 1 0-Normal vectors detected
+22:09:50 opti - DEBUG - Volume: 0.49989, dVolume: (90,) array with mean -0.020895
+22:15:07 opti - DEBUG - Compliance: 9.5979e-05, dCompliance: (90,) array with mean 6.0526e-06
+22:15:07 opti - DEBUG - Finished iteration 59  with compliance 9.597927945341184e-05 and volume 0.49988885744864187
+22:15:07 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_59
+22:15:07 MMA - INFO - It.:   49 | Obj.: 4.846e-01 | Constr.:  -1.111e-04 | ch.: 1.152e-03 | C: 9.592e-05
+22:15:07 opti - DEBUG - Computing Solution
+22:15:07 opti - DEBUG - Generating Geometry
+22:15:07 mesh - DEBUG - Querying 450241 DeepSDF points
+22:15:07 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:15:07 mesh - DEBUG - Computing DeepSDF derivatives
+22:15:13 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.569943189620972
+22:15:13 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:15:13 opti - DEBUG - Writing surface mesh to simulation/tmpr_qzd0wh/simulation_60/surf60.inp
+22:15:13 geometry - DEBUG - Tetrahedralizing surface mesh
+22:15:21 geometry - DEBUG - Exporting mesh with 261264 elements, 76264 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107988 boundaries with marker 3.
+22:15:24 geometry - DEBUG - 1 0-Normal vectors detected
+22:15:53 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020929
+22:21:03 opti - DEBUG - Compliance: 9.5954e-05, dCompliance: (90,) array with mean 6.08e-06
+22:21:03 opti - DEBUG - Finished iteration 60  with compliance 9.59538569167292e-05 and volume 0.4998843366675245
+22:21:03 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_60
+22:21:03 opti - DEBUG - Computing Solution
+22:21:03 opti - DEBUG - Generating Geometry
+22:21:04 mesh - DEBUG - Querying 450241 DeepSDF points
+22:21:04 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:21:04 mesh - DEBUG - Computing DeepSDF derivatives
+22:21:09 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.573429822921753
+22:21:09 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:21:09 opti - DEBUG - Writing surface mesh to simulation/tmpk63a4f29/simulation_61/surf61.inp
+22:21:10 geometry - DEBUG - Tetrahedralizing surface mesh
+22:21:17 geometry - DEBUG - Exporting mesh with 261368 elements, 76241 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107988 boundaries with marker 3.
+22:21:20 geometry - DEBUG - 1 0-Normal vectors detected
+22:21:50 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020929
+22:26:55 opti - DEBUG - Compliance: 9.5815e-05, dCompliance: (90,) array with mean 6.2226e-06
+22:26:55 opti - DEBUG - Finished iteration 61  with compliance 9.581509234437007e-05 and volume 0.49988433708620067
+22:26:55 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_61
+22:26:55 MMA - INFO - It.:   50 | Obj.: 4.848e-01 | Constr.:  -1.157e-04 | ch.: 1.582e-03 | C: 9.595e-05
+22:26:55 opti - DEBUG - Computing Solution
+22:26:55 opti - DEBUG - Generating Geometry
+22:26:55 mesh - DEBUG - Querying 450241 DeepSDF points
+22:26:55 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:26:55 mesh - DEBUG - Computing DeepSDF derivatives
+22:27:01 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565521240234375
+22:27:01 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:27:01 opti - DEBUG - Writing surface mesh to simulation/tmp3y119lf1/simulation_62/surf62.inp
+22:27:01 geometry - DEBUG - Tetrahedralizing surface mesh
+22:27:08 geometry - DEBUG - Exporting mesh with 261395 elements, 76319 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108008 boundaries with marker 3.
+22:27:11 geometry - DEBUG - 1 0-Normal vectors detected
+22:27:41 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020859
+22:32:40 opti - DEBUG - Compliance: 9.6022e-05, dCompliance: (90,) array with mean 5.9354e-06
+22:32:40 opti - DEBUG - Finished iteration 62  with compliance 9.60221202687458e-05 and volume 0.49988399876590106
+22:32:40 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_62
+22:32:40 opti - DEBUG - Computing Solution
+22:32:40 opti - DEBUG - Generating Geometry
+22:32:41 mesh - DEBUG - Querying 450241 DeepSDF points
+22:32:41 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:32:41 mesh - DEBUG - Computing DeepSDF derivatives
+22:32:46 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.571024417877197
+22:32:46 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:32:46 opti - DEBUG - Writing surface mesh to simulation/tmpp4yrxdj4/simulation_63/surf63.inp
+22:32:47 geometry - DEBUG - Tetrahedralizing surface mesh
+22:32:54 geometry - DEBUG - Exporting mesh with 261574 elements, 76325 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108008 boundaries with marker 3.
+22:32:57 geometry - DEBUG - 1 0-Normal vectors detected
+22:33:27 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020859
+22:38:30 opti - DEBUG - Compliance: 9.6028e-05, dCompliance: (90,) array with mean 6.0637e-06
+22:38:30 opti - DEBUG - Finished iteration 63  with compliance 9.60276322315184e-05 and volume 0.49988399882345835
+22:38:30 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_63
+22:38:30 MMA - INFO - It.:   51 | Obj.: 4.851e-01 | Constr.:  -1.160e-04 | ch.: 3.486e-03 | C: 9.602e-05
+22:38:30 opti - DEBUG - Computing Solution
+22:38:30 opti - DEBUG - Generating Geometry
+22:38:30 mesh - DEBUG - Querying 450241 DeepSDF points
+22:38:30 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:38:30 mesh - DEBUG - Computing DeepSDF derivatives
+22:38:36 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.571923017501831
+22:38:36 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:38:36 opti - DEBUG - Writing surface mesh to simulation/tmpyeu027ra/simulation_64/surf64.inp
+22:38:36 geometry - DEBUG - Tetrahedralizing surface mesh
+22:38:44 geometry - DEBUG - Exporting mesh with 261602 elements, 76335 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108020 boundaries with marker 3.
+22:38:46 geometry - DEBUG - 1 0-Normal vectors detected
+22:39:16 opti - DEBUG - Volume: 0.49989, dVolume: (90,) array with mean -0.020743
+22:44:37 opti - DEBUG - Compliance: 9.5913e-05, dCompliance: (90,) array with mean 6.0798e-06
+22:44:37 opti - DEBUG - Finished iteration 64  with compliance 9.591269612724656e-05 and volume 0.4998908103234194
+22:44:37 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_64
+22:44:38 opti - DEBUG - Computing Solution
+22:44:38 opti - DEBUG - Generating Geometry
+22:44:38 mesh - DEBUG - Querying 450241 DeepSDF points
+22:44:38 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:44:38 mesh - DEBUG - Computing DeepSDF derivatives
+22:44:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.568618059158325
+22:44:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:44:44 opti - DEBUG - Writing surface mesh to simulation/tmp3j7oa6yl/simulation_65/surf65.inp
+22:44:44 geometry - DEBUG - Tetrahedralizing surface mesh
+22:44:51 geometry - DEBUG - Exporting mesh with 261741 elements, 76348 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108020 boundaries with marker 3.
+22:44:54 geometry - DEBUG - 1 0-Normal vectors detected
+22:45:24 opti - DEBUG - Volume: 0.49989, dVolume: (90,) array with mean -0.020743
+22:50:45 opti - DEBUG - Compliance: 9.5878e-05, dCompliance: (90,) array with mean 6.085e-06
+22:50:45 opti - DEBUG - Finished iteration 65  with compliance 9.587773905603232e-05 and volume 0.49989081070015734
+22:50:45 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_65
+22:50:45 MMA - INFO - It.:   52 | Obj.: 4.845e-01 | Constr.:  -1.092e-04 | ch.: 2.774e-03 | C: 9.591e-05
+22:50:45 opti - DEBUG - Computing Solution
+22:50:45 opti - DEBUG - Generating Geometry
+22:50:45 mesh - DEBUG - Querying 450241 DeepSDF points
+22:50:45 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:50:45 mesh - DEBUG - Computing DeepSDF derivatives
+22:50:51 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.561617612838745
+22:50:51 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:50:51 opti - DEBUG - Writing surface mesh to simulation/tmpg8lfwyzj/simulation_66/surf66.inp
+22:50:51 geometry - DEBUG - Tetrahedralizing surface mesh
+22:50:59 geometry - DEBUG - Exporting mesh with 261684 elements, 76365 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108060 boundaries with marker 3.
+22:51:01 geometry - DEBUG - 1 0-Normal vectors detected
+22:51:31 opti - DEBUG - Volume: 0.49991, dVolume: (90,) array with mean -0.020768
+22:57:00 opti - DEBUG - Compliance: 9.5833e-05, dCompliance: (90,) array with mean 6.08e-06
+22:57:00 opti - DEBUG - Finished iteration 66  with compliance 9.583270879233955e-05 and volume 0.49991351077177054
+22:57:00 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_66
+22:57:00 opti - DEBUG - Computing Solution
+22:57:00 opti - DEBUG - Generating Geometry
+22:57:00 mesh - DEBUG - Querying 450241 DeepSDF points
+22:57:00 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+22:57:00 mesh - DEBUG - Computing DeepSDF derivatives
+22:57:06 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.569472312927246
+22:57:06 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+22:57:06 opti - DEBUG - Writing surface mesh to simulation/tmp6haf4wff/simulation_67/surf67.inp
+22:57:06 geometry - DEBUG - Tetrahedralizing surface mesh
+22:57:13 geometry - DEBUG - Exporting mesh with 260784 elements, 76272 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108060 boundaries with marker 3.
+22:57:16 geometry - DEBUG - 1 0-Normal vectors detected
+22:57:45 opti - DEBUG - Volume: 0.49991, dVolume: (90,) array with mean -0.020768
+23:03:46 opti - DEBUG - Compliance: 9.5862e-05, dCompliance: (90,) array with mean 6.072e-06
+23:03:46 opti - DEBUG - Finished iteration 67  with compliance 9.586212857199811e-05 and volume 0.4999135109242608
+23:03:46 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_67
+23:03:46 MMA - INFO - It.:   53 | Obj.: 4.841e-01 | Constr.:  -8.649e-05 | ch.: 2.007e-03 | C: 9.583e-05
+23:03:46 opti - DEBUG - Computing Solution
+23:03:46 opti - DEBUG - Generating Geometry
+23:03:47 mesh - DEBUG - Querying 450241 DeepSDF points
+23:03:47 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:03:47 mesh - DEBUG - Computing DeepSDF derivatives
+23:03:52 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.566448211669922
+23:03:52 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:03:52 opti - DEBUG - Writing surface mesh to simulation/tmp_h7gv_ju/simulation_68/surf68.inp
+23:03:53 geometry - DEBUG - Tetrahedralizing surface mesh
+23:04:00 geometry - DEBUG - Exporting mesh with 262374 elements, 76437 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108004 boundaries with marker 3.
+23:04:03 geometry - DEBUG - 1 0-Normal vectors detected
+23:04:33 opti - DEBUG - Volume: 0.49992, dVolume: (90,) array with mean -0.020713
+23:09:55 opti - DEBUG - Compliance: 9.5872e-05, dCompliance: (90,) array with mean 6.0047e-06
+23:09:55 opti - DEBUG - Finished iteration 68  with compliance 9.587176887944471e-05 and volume 0.49992057605865936
+23:09:55 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_68
+23:09:55 opti - DEBUG - Computing Solution
+23:09:55 opti - DEBUG - Generating Geometry
+23:09:55 mesh - DEBUG - Querying 450241 DeepSDF points
+23:09:55 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:09:55 mesh - DEBUG - Computing DeepSDF derivatives
+23:10:01 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5628862380981445
+23:10:01 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:10:01 opti - DEBUG - Writing surface mesh to simulation/tmpn2lojj96/simulation_69/surf69.inp
+23:10:02 geometry - DEBUG - Tetrahedralizing surface mesh
+23:10:09 geometry - DEBUG - Exporting mesh with 262298 elements, 76442 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108004 boundaries with marker 3.
+23:10:12 geometry - DEBUG - 1 0-Normal vectors detected
+23:10:41 opti - DEBUG - Volume: 0.49992, dVolume: (90,) array with mean -0.020713
+23:16:15 opti - DEBUG - Compliance: 9.5874e-05, dCompliance: (90,) array with mean 6.0379e-06
+23:16:15 opti - DEBUG - Finished iteration 69  with compliance 9.587402902889127e-05 and volume 0.49992057671793494
+23:16:15 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_69
+23:16:15 MMA - INFO - It.:   54 | Obj.: 4.843e-01 | Constr.:  -7.942e-05 | ch.: 2.504e-03 | C: 9.587e-05
+23:16:15 opti - DEBUG - Computing Solution
+23:16:15 opti - DEBUG - Generating Geometry
+23:16:15 mesh - DEBUG - Querying 450241 DeepSDF points
+23:16:15 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:16:15 mesh - DEBUG - Computing DeepSDF derivatives
+23:16:21 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.572146415710449
+23:16:21 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:16:21 opti - DEBUG - Writing surface mesh to simulation/tmp_km0lr7v/simulation_70/surf70.inp
+23:16:21 geometry - DEBUG - Tetrahedralizing surface mesh
+23:16:28 geometry - DEBUG - Exporting mesh with 261721 elements, 76335 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107944 boundaries with marker 3.
+23:16:31 geometry - DEBUG - 1 0-Normal vectors detected
+23:17:01 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020566
+23:22:26 opti - DEBUG - Compliance: 9.5692e-05, dCompliance: (90,) array with mean 6.0247e-06
+23:22:26 opti - DEBUG - Finished iteration 70  with compliance 9.569226733723905e-05 and volume 0.4998828907910178
+23:22:27 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_70
+23:22:27 opti - DEBUG - Computing Solution
+23:22:27 opti - DEBUG - Generating Geometry
+23:22:27 mesh - DEBUG - Querying 450241 DeepSDF points
+23:22:27 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:22:27 mesh - DEBUG - Computing DeepSDF derivatives
+23:22:32 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565305471420288
+23:22:32 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:22:33 opti - DEBUG - Writing surface mesh to simulation/tmpqk9zmj5e/simulation_71/surf71.inp
+23:22:33 geometry - DEBUG - Tetrahedralizing surface mesh
+23:22:40 geometry - DEBUG - Exporting mesh with 261938 elements, 76398 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107944 boundaries with marker 3.
+23:22:43 geometry - DEBUG - 1 0-Normal vectors detected
+23:23:13 opti - DEBUG - Volume: 0.49988, dVolume: (90,) array with mean -0.020566
+23:28:34 opti - DEBUG - Compliance: 9.5684e-05, dCompliance: (90,) array with mean 5.9968e-06
+23:28:34 opti - DEBUG - Finished iteration 71  with compliance 9.568369561754727e-05 and volume 0.49988289072482267
+23:28:34 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_71
+23:28:34 MMA - INFO - It.:   55 | Obj.: 4.834e-01 | Constr.:  -1.171e-04 | ch.: 2.730e-03 | C: 9.569e-05
+23:28:34 opti - DEBUG - Computing Solution
+23:28:34 opti - DEBUG - Generating Geometry
+23:28:35 mesh - DEBUG - Querying 450241 DeepSDF points
+23:28:35 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:28:35 mesh - DEBUG - Computing DeepSDF derivatives
+23:28:40 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5454089641571045
+23:28:40 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:28:40 opti - DEBUG - Writing surface mesh to simulation/tmpqs8466rs/simulation_72/surf72.inp
+23:28:41 geometry - DEBUG - Tetrahedralizing surface mesh
+23:28:48 geometry - DEBUG - Exporting mesh with 262085 elements, 76372 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107856 boundaries with marker 3.
+23:28:51 geometry - DEBUG - 1 0-Normal vectors detected
+23:29:21 opti - DEBUG - Volume: 0.49987, dVolume: (90,) array with mean -0.020577
+23:34:50 opti - DEBUG - Compliance: 9.5752e-05, dCompliance: (90,) array with mean 5.9846e-06
+23:34:50 opti - DEBUG - Finished iteration 72  with compliance 9.575182116883235e-05 and volume 0.4998651287676466
+23:34:50 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_72
+23:34:50 opti - DEBUG - Computing Solution
+23:34:50 opti - DEBUG - Generating Geometry
+23:34:50 mesh - DEBUG - Querying 450241 DeepSDF points
+23:34:50 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:34:50 mesh - DEBUG - Computing DeepSDF derivatives
+23:34:56 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.544317960739136
+23:34:56 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:34:56 opti - DEBUG - Writing surface mesh to simulation/tmpb6dj3xcn/simulation_73/surf73.inp
+23:34:56 geometry - DEBUG - Tetrahedralizing surface mesh
+23:35:04 geometry - DEBUG - Exporting mesh with 261488 elements, 76305 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107856 boundaries with marker 3.
+23:35:06 geometry - DEBUG - 1 0-Normal vectors detected
+23:35:36 opti - DEBUG - Volume: 0.49987, dVolume: (90,) array with mean -0.020577
+23:41:02 opti - DEBUG - Compliance: 9.5733e-05, dCompliance: (90,) array with mean 6.0182e-06
+23:41:02 opti - DEBUG - Finished iteration 73  with compliance 9.57327927439091e-05 and volume 0.4998651290811096
+23:41:02 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_73
+23:41:03 MMA - INFO - It.:   56 | Obj.: 4.837e-01 | Constr.:  -1.349e-04 | ch.: 3.435e-03 | C: 9.575e-05
+23:41:03 opti - DEBUG - Computing Solution
+23:41:03 opti - DEBUG - Generating Geometry
+23:41:03 mesh - DEBUG - Querying 450241 DeepSDF points
+23:41:03 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:41:03 mesh - DEBUG - Computing DeepSDF derivatives
+23:41:08 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.57595682144165
+23:41:08 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:41:09 opti - DEBUG - Writing surface mesh to simulation/tmphuv28fyt/simulation_74/surf74.inp
+23:41:09 geometry - DEBUG - Tetrahedralizing surface mesh
+23:41:16 geometry - DEBUG - Exporting mesh with 261444 elements, 76287 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107804 boundaries with marker 3.
+23:41:19 geometry - DEBUG - 1 0-Normal vectors detected
+23:41:49 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020435
+23:47:05 opti - DEBUG - Compliance: 9.5728e-05, dCompliance: (90,) array with mean 5.9304e-06
+23:47:05 opti - DEBUG - Finished iteration 74  with compliance 9.572820378132e-05 and volume 0.499954347712861
+23:47:05 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_74
+23:47:05 opti - DEBUG - Computing Solution
+23:47:05 opti - DEBUG - Generating Geometry
+23:47:06 mesh - DEBUG - Querying 450241 DeepSDF points
+23:47:06 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:47:06 mesh - DEBUG - Computing DeepSDF derivatives
+23:47:11 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.57415246963501
+23:47:11 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:47:11 opti - DEBUG - Writing surface mesh to simulation/tmpwyr657x7/simulation_75/surf75.inp
+23:47:12 geometry - DEBUG - Tetrahedralizing surface mesh
+23:47:19 geometry - DEBUG - Exporting mesh with 261682 elements, 76279 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107804 boundaries with marker 3.
+23:47:22 geometry - DEBUG - 1 0-Normal vectors detected
+23:47:52 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020435
+23:53:09 opti - DEBUG - Compliance: 9.56e-05, dCompliance: (90,) array with mean 5.9972e-06
+23:53:09 opti - DEBUG - Finished iteration 75  with compliance 9.560016662538228e-05 and volume 0.49995434792171073
+23:53:09 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_75
+23:53:09 MMA - INFO - It.:   57 | Obj.: 4.836e-01 | Constr.:  -4.565e-05 | ch.: 3.768e-03 | C: 9.573e-05
+23:53:09 opti - DEBUG - Computing Solution
+23:53:09 opti - DEBUG - Generating Geometry
+23:53:09 mesh - DEBUG - Querying 450241 DeepSDF points
+23:53:09 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:53:09 mesh - DEBUG - Computing DeepSDF derivatives
+23:53:15 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567144870758057
+23:53:15 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:53:15 opti - DEBUG - Writing surface mesh to simulation/tmpg67r60ps/simulation_76/surf76.inp
+23:53:15 geometry - DEBUG - Tetrahedralizing surface mesh
+23:53:23 geometry - DEBUG - Exporting mesh with 262121 elements, 76433 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107964 boundaries with marker 3.
+23:53:25 geometry - DEBUG - 1 0-Normal vectors detected
+23:53:55 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.0205
+23:59:15 opti - DEBUG - Compliance: 9.5696e-05, dCompliance: (90,) array with mean 5.9526e-06
+23:59:15 opti - DEBUG - Finished iteration 76  with compliance 9.56956153337631e-05 and volume 0.4999603605145091
+23:59:15 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_76
+23:59:15 MMA - INFO - It.:   58 | Obj.: 4.834e-01 | Constr.:  -3.964e-05 | ch.: 1.375e-03 | C: 9.570e-05
+23:59:15 opti - DEBUG - Computing Solution
+23:59:15 opti - DEBUG - Generating Geometry
+23:59:15 mesh - DEBUG - Querying 450241 DeepSDF points
+23:59:15 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+23:59:15 mesh - DEBUG - Computing DeepSDF derivatives
+23:59:21 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.559981822967529
+23:59:21 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+23:59:21 opti - DEBUG - Writing surface mesh to simulation/tmphb_j7vsp/simulation_77/surf77.inp
+23:59:21 geometry - DEBUG - Tetrahedralizing surface mesh
+23:59:28 geometry - DEBUG - Exporting mesh with 263490 elements, 76657 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107968 boundaries with marker 3.
+23:59:31 geometry - DEBUG - 1 0-Normal vectors detected
+00:00:02 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020422
+00:06:19 opti - DEBUG - Compliance: 9.5652e-05, dCompliance: (90,) array with mean 5.9709e-06
+00:06:19 opti - DEBUG - Finished iteration 77  with compliance 9.565210608574681e-05 and volume 0.49994002708306806
+00:06:19 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_77
+00:06:19 opti - DEBUG - Computing Solution
+00:06:19 opti - DEBUG - Generating Geometry
+00:06:19 mesh - DEBUG - Querying 450241 DeepSDF points
+00:06:19 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:06:19 mesh - DEBUG - Computing DeepSDF derivatives
+00:06:24 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.558401346206665
+00:06:24 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:06:25 opti - DEBUG - Writing surface mesh to simulation/tmpsdelmn3j/simulation_78/surf78.inp
+00:06:25 geometry - DEBUG - Tetrahedralizing surface mesh
+00:06:32 geometry - DEBUG - Exporting mesh with 262732 elements, 76553 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107968 boundaries with marker 3.
+00:06:35 geometry - DEBUG - 1 0-Normal vectors detected
+00:07:05 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020422
+00:13:30 opti - DEBUG - Compliance: 9.5483e-05, dCompliance: (90,) array with mean 5.9377e-06
+00:13:30 opti - DEBUG - Finished iteration 78  with compliance 9.548307531238748e-05 and volume 0.49994002730523945
+00:13:30 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_78
+00:13:31 MMA - INFO - It.:   59 | Obj.: 4.832e-01 | Constr.:  -5.997e-05 | ch.: 2.902e-03 | C: 9.565e-05
+00:13:31 opti - DEBUG - Computing Solution
+00:13:31 opti - DEBUG - Generating Geometry
+00:13:31 mesh - DEBUG - Querying 450241 DeepSDF points
+00:13:31 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:13:31 mesh - DEBUG - Computing DeepSDF derivatives
+00:13:36 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565297365188599
+00:13:36 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:13:37 opti - DEBUG - Writing surface mesh to simulation/tmppk7k7opx/simulation_79/surf79.inp
+00:13:37 geometry - DEBUG - Tetrahedralizing surface mesh
+00:13:44 geometry - DEBUG - Exporting mesh with 262403 elements, 76498 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107968 boundaries with marker 3.
+00:13:47 geometry - DEBUG - 1 0-Normal vectors detected
+00:14:16 opti - DEBUG - Volume: 0.49991, dVolume: (90,) array with mean -0.020399
+00:19:54 opti - DEBUG - Compliance: 9.5546e-05, dCompliance: (90,) array with mean 5.9131e-06
+00:19:54 opti - DEBUG - Finished iteration 79  with compliance 9.554598199857703e-05 and volume 0.49990645569834247
+00:19:54 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_79
+00:19:54 opti - DEBUG - Computing Solution
+00:19:54 opti - DEBUG - Generating Geometry
+00:19:55 mesh - DEBUG - Querying 450241 DeepSDF points
+00:19:55 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:19:55 mesh - DEBUG - Computing DeepSDF derivatives
+00:20:00 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.560953140258789
+00:20:00 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:20:00 opti - DEBUG - Writing surface mesh to simulation/tmptkyz_t2s/simulation_80/surf80.inp
+00:20:01 geometry - DEBUG - Tetrahedralizing surface mesh
+00:20:08 geometry - DEBUG - Exporting mesh with 262348 elements, 76490 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107968 boundaries with marker 3.
+00:20:11 geometry - DEBUG - 1 0-Normal vectors detected
+00:20:41 opti - DEBUG - Volume: 0.49991, dVolume: (90,) array with mean -0.020399
+00:26:21 opti - DEBUG - Compliance: 9.5641e-05, dCompliance: (90,) array with mean 5.9346e-06
+00:26:21 opti - DEBUG - Finished iteration 80  with compliance 9.564113927569386e-05 and volume 0.4999064552255421
+00:26:21 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_80
+00:26:21 MMA - INFO - It.:   60 | Obj.: 4.827e-01 | Constr.:  -9.354e-05 | ch.: 1.586e-03 | C: 9.555e-05
+00:26:21 opti - DEBUG - Computing Solution
+00:26:21 opti - DEBUG - Generating Geometry
+00:26:21 mesh - DEBUG - Querying 450241 DeepSDF points
+00:26:21 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:26:21 mesh - DEBUG - Computing DeepSDF derivatives
+00:26:27 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.556424140930176
+00:26:27 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:26:27 opti - DEBUG - Writing surface mesh to simulation/tmpohxu5f6e/simulation_81/surf81.inp
+00:26:27 geometry - DEBUG - Tetrahedralizing surface mesh
+00:26:35 geometry - DEBUG - Exporting mesh with 262660 elements, 76513 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107920 boundaries with marker 3.
+00:26:37 geometry - DEBUG - 1 0-Normal vectors detected
+00:27:07 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020373
+00:32:39 opti - DEBUG - Compliance: 9.5448e-05, dCompliance: (90,) array with mean 5.9082e-06
+00:32:39 opti - DEBUG - Finished iteration 81  with compliance 9.544803278195122e-05 and volume 0.49995669350240923
+00:32:39 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_81
+00:32:39 MMA - INFO - It.:   61 | Obj.: 4.822e-01 | Constr.:  -4.331e-05 | ch.: 5.063e-03 | C: 9.545e-05
+00:32:39 opti - DEBUG - Computing Solution
+00:32:39 opti - DEBUG - Generating Geometry
+00:32:40 mesh - DEBUG - Querying 450241 DeepSDF points
+00:32:40 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:32:40 mesh - DEBUG - Computing DeepSDF derivatives
+00:32:45 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.555675268173218
+00:32:45 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:32:45 opti - DEBUG - Writing surface mesh to simulation/tmp4uqnz6kl/simulation_82/surf82.inp
+00:32:46 geometry - DEBUG - Tetrahedralizing surface mesh
+00:32:53 geometry - DEBUG - Exporting mesh with 262242 elements, 76402 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107856 boundaries with marker 3.
+00:32:56 geometry - DEBUG - 1 0-Normal vectors detected
+00:33:26 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020337
+00:38:47 opti - DEBUG - Compliance: 9.5407e-05, dCompliance: (90,) array with mean 5.825e-06
+00:38:47 opti - DEBUG - Finished iteration 82  with compliance 9.540711760631708e-05 and volume 0.4999605495976508
+00:38:47 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_82
+00:38:47 MMA - INFO - It.:   62 | Obj.: 4.820e-01 | Constr.:  -3.945e-05 | ch.: 8.101e-03 | C: 9.541e-05
+00:38:47 opti - DEBUG - Computing Solution
+00:38:47 opti - DEBUG - Generating Geometry
+00:38:47 mesh - DEBUG - Querying 450241 DeepSDF points
+00:38:47 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:38:47 mesh - DEBUG - Computing DeepSDF derivatives
+00:38:53 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.559261083602905
+00:38:53 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:38:53 opti - DEBUG - Writing surface mesh to simulation/tmp1yhsp2cb/simulation_83/surf83.inp
+00:38:53 geometry - DEBUG - Tetrahedralizing surface mesh
+00:39:01 geometry - DEBUG - Exporting mesh with 262309 elements, 76423 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107852 boundaries with marker 3.
+00:39:03 geometry - DEBUG - 1 0-Normal vectors detected
+00:39:34 opti - DEBUG - Volume: 0.5, dVolume: (90,) array with mean -0.020408
+00:46:19 opti - DEBUG - Compliance: 9.5374e-05, dCompliance: (90,) array with mean 5.8604e-06
+00:46:19 opti - DEBUG - Finished iteration 83  with compliance 9.53736374667853e-05 and volume 0.5000043202393497
+00:46:19 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_83
+00:46:19 MMA - INFO - It.:   63 | Obj.: 4.818e-01 | Constr.:  4.320e-06 | ch.: 1.770e-03 | C: 9.537e-05
+00:46:19 opti - DEBUG - Computing Solution
+00:46:19 opti - DEBUG - Generating Geometry
+00:46:19 mesh - DEBUG - Querying 450241 DeepSDF points
+00:46:19 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:46:19 mesh - DEBUG - Computing DeepSDF derivatives
+00:46:25 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.559789419174194
+00:46:25 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:46:25 opti - DEBUG - Writing surface mesh to simulation/tmp7_u8gb31/simulation_84/surf84.inp
+00:46:25 geometry - DEBUG - Tetrahedralizing surface mesh
+00:46:33 geometry - DEBUG - Exporting mesh with 261704 elements, 76369 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107868 boundaries with marker 3.
+00:46:36 geometry - DEBUG - 1 0-Normal vectors detected
+00:47:06 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.020365
+00:52:34 opti - DEBUG - Compliance: 9.5396e-05, dCompliance: (90,) array with mean 5.8985e-06
+00:52:34 opti - DEBUG - Finished iteration 84  with compliance 9.539622927173446e-05 and volume 0.4999803590361096
+00:52:34 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_84
+00:52:34 MMA - INFO - It.:   64 | Obj.: 4.819e-01 | Constr.:  -1.964e-05 | ch.: 1.666e-03 | C: 9.540e-05
+00:52:34 opti - DEBUG - Computing Solution
+00:52:34 opti - DEBUG - Generating Geometry
+00:52:34 mesh - DEBUG - Querying 450241 DeepSDF points
+00:52:34 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:52:34 mesh - DEBUG - Computing DeepSDF derivatives
+00:52:40 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.558010578155518
+00:52:40 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:52:40 opti - DEBUG - Writing surface mesh to simulation/tmpcqlqa981/simulation_85/surf85.inp
+00:52:40 geometry - DEBUG - Tetrahedralizing surface mesh
+00:52:48 geometry - DEBUG - Exporting mesh with 263544 elements, 76656 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108060 boundaries with marker 3.
+00:52:50 geometry - DEBUG - 1 0-Normal vectors detected
+00:53:20 opti - DEBUG - Volume: 0.49997, dVolume: (90,) array with mean -0.020438
+00:58:43 opti - DEBUG - Compliance: 9.5302e-05, dCompliance: (90,) array with mean 5.9737e-06
+00:58:43 opti - DEBUG - Finished iteration 85  with compliance 9.530173581890296e-05 and volume 0.4999688378707409
+00:58:43 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_85
+00:58:43 MMA - INFO - It.:   65 | Obj.: 4.815e-01 | Constr.:  -3.116e-05 | ch.: 7.537e-04 | C: 9.530e-05
+00:58:43 opti - DEBUG - Computing Solution
+00:58:43 opti - DEBUG - Generating Geometry
+00:58:43 mesh - DEBUG - Querying 450241 DeepSDF points
+00:58:44 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+00:58:44 mesh - DEBUG - Computing DeepSDF derivatives
+00:58:49 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.571147680282593
+00:58:49 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+00:58:49 opti - DEBUG - Writing surface mesh to simulation/tmpvth64c_o/simulation_86/surf86.inp
+00:58:50 geometry - DEBUG - Tetrahedralizing surface mesh
+00:58:57 geometry - DEBUG - Exporting mesh with 263932 elements, 76713 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108108 boundaries with marker 3.
+00:59:00 geometry - DEBUG - 1 0-Normal vectors detected
+00:59:30 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020386
+01:04:50 opti - DEBUG - Compliance: 9.5269e-05, dCompliance: (90,) array with mean 5.9083e-06
+01:04:50 opti - DEBUG - Finished iteration 86  with compliance 9.526907550510782e-05 and volume 0.49995135020348797
+01:04:50 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_86
+01:04:50 MMA - INFO - It.:   66 | Obj.: 4.813e-01 | Constr.:  -4.865e-05 | ch.: 1.072e-03 | C: 9.527e-05
+01:04:50 opti - DEBUG - Computing Solution
+01:04:50 opti - DEBUG - Generating Geometry
+01:04:50 mesh - DEBUG - Querying 450241 DeepSDF points
+01:04:50 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:04:50 mesh - DEBUG - Computing DeepSDF derivatives
+01:04:56 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5658042430877686
+01:04:56 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:04:56 opti - DEBUG - Writing surface mesh to simulation/tmp1am235eh/simulation_87/surf87.inp
+01:04:56 geometry - DEBUG - Tetrahedralizing surface mesh
+01:05:04 geometry - DEBUG - Exporting mesh with 263119 elements, 76626 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108116 boundaries with marker 3.
+01:05:07 geometry - DEBUG - 1 0-Normal vectors detected
+01:05:36 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020329
+01:10:54 opti - DEBUG - Compliance: 9.5259e-05, dCompliance: (90,) array with mean 6.0302e-06
+01:10:54 opti - DEBUG - Finished iteration 87  with compliance 9.525909113541203e-05 and volume 0.49995032448831606
+01:10:54 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_87
+01:10:54 MMA - INFO - It.:   67 | Obj.: 4.812e-01 | Constr.:  -4.968e-05 | ch.: 1.886e-03 | C: 9.526e-05
+01:10:54 opti - DEBUG - Computing Solution
+01:10:54 opti - DEBUG - Generating Geometry
+01:10:55 mesh - DEBUG - Querying 450241 DeepSDF points
+01:10:55 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:10:55 mesh - DEBUG - Computing DeepSDF derivatives
+01:11:00 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.568781614303589
+01:11:00 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:11:00 opti - DEBUG - Writing surface mesh to simulation/tmpha7t35kp/simulation_88/surf88.inp
+01:11:01 geometry - DEBUG - Tetrahedralizing surface mesh
+01:11:08 geometry - DEBUG - Exporting mesh with 263114 elements, 76572 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108072 boundaries with marker 3.
+01:11:11 geometry - DEBUG - 1 0-Normal vectors detected
+01:11:41 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.02037
+01:17:03 opti - DEBUG - Compliance: 9.526e-05, dCompliance: (90,) array with mean 5.8604e-06
+01:17:03 opti - DEBUG - Finished iteration 88  with compliance 9.525982531436979e-05 and volume 0.49993916409959355
+01:17:03 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_88
+01:17:03 MMA - INFO - It.:   68 | Obj.: 4.812e-01 | Constr.:  -6.084e-05 | ch.: 1.169e-03 | C: 9.526e-05
+01:17:03 opti - DEBUG - Computing Solution
+01:17:03 opti - DEBUG - Generating Geometry
+01:17:04 mesh - DEBUG - Querying 450241 DeepSDF points
+01:17:04 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:17:04 mesh - DEBUG - Computing DeepSDF derivatives
+01:17:09 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570757627487183
+01:17:09 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:17:09 opti - DEBUG - Writing surface mesh to simulation/tmpzd9th8mf/simulation_89/surf89.inp
+01:17:10 geometry - DEBUG - Tetrahedralizing surface mesh
+01:17:17 geometry - DEBUG - Exporting mesh with 263031 elements, 76575 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108100 boundaries with marker 3.
+01:17:20 geometry - DEBUG - 1 0-Normal vectors detected
+01:17:49 opti - DEBUG - Volume: 0.49991, dVolume: (90,) array with mean -0.020326
+01:23:09 opti - DEBUG - Compliance: 9.5341e-05, dCompliance: (90,) array with mean 5.92e-06
+01:23:09 opti - DEBUG - Finished iteration 89  with compliance 9.534056447587695e-05 and volume 0.4999104642128778
+01:23:09 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_89
+01:23:09 MMA - INFO - It.:   69 | Obj.: 4.817e-01 | Constr.:  -8.954e-05 | ch.: 1.101e-03 | C: 9.534e-05
+01:23:09 opti - DEBUG - Computing Solution
+01:23:09 opti - DEBUG - Generating Geometry
+01:23:10 mesh - DEBUG - Querying 450241 DeepSDF points
+01:23:10 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:23:10 mesh - DEBUG - Computing DeepSDF derivatives
+01:23:15 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.563791275024414
+01:23:15 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:23:15 opti - DEBUG - Writing surface mesh to simulation/tmpt6r_rr47/simulation_90/surf90.inp
+01:23:16 geometry - DEBUG - Tetrahedralizing surface mesh
+01:23:23 geometry - DEBUG - Exporting mesh with 262918 elements, 76568 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108068 boundaries with marker 3.
+01:23:26 geometry - DEBUG - 1 0-Normal vectors detected
+01:23:56 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020345
+01:29:08 opti - DEBUG - Compliance: 9.5303e-05, dCompliance: (90,) array with mean 5.945e-06
+01:29:08 opti - DEBUG - Finished iteration 90  with compliance 9.53031431895304e-05 and volume 0.49993645044694807
+01:29:08 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_90
+01:29:09 MMA - INFO - It.:   70 | Obj.: 4.815e-01 | Constr.:  -6.355e-05 | ch.: 3.676e-04 | C: 9.530e-05
+01:29:09 opti - DEBUG - Computing Solution
+01:29:09 opti - DEBUG - Generating Geometry
+01:29:09 mesh - DEBUG - Querying 450241 DeepSDF points
+01:29:09 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:29:09 mesh - DEBUG - Computing DeepSDF derivatives
+01:29:14 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5667479038238525
+01:29:14 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:29:15 opti - DEBUG - Writing surface mesh to simulation/tmpq1792h5d/simulation_91/surf91.inp
+01:29:15 geometry - DEBUG - Tetrahedralizing surface mesh
+01:29:22 geometry - DEBUG - Exporting mesh with 261934 elements, 76426 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107988 boundaries with marker 3.
+01:29:25 geometry - DEBUG - 1 0-Normal vectors detected
+01:29:55 opti - DEBUG - Volume: 0.49992, dVolume: (90,) array with mean -0.020356
+01:35:06 opti - DEBUG - Compliance: 9.5201e-05, dCompliance: (90,) array with mean 5.9288e-06
+01:35:06 opti - DEBUG - Finished iteration 91  with compliance 9.520061116026013e-05 and volume 0.49992190538037695
+01:35:06 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_91
+01:35:06 MMA - INFO - It.:   71 | Obj.: 4.809e-01 | Constr.:  -7.809e-05 | ch.: 2.874e-04 | C: 9.520e-05
+01:35:06 opti - DEBUG - Computing Solution
+01:35:06 opti - DEBUG - Generating Geometry
+01:35:06 mesh - DEBUG - Querying 450241 DeepSDF points
+01:35:06 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:35:06 mesh - DEBUG - Computing DeepSDF derivatives
+01:35:12 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567135572433472
+01:35:12 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:35:12 opti - DEBUG - Writing surface mesh to simulation/tmp6ss35rmb/simulation_92/surf92.inp
+01:35:12 geometry - DEBUG - Tetrahedralizing surface mesh
+01:35:19 geometry - DEBUG - Exporting mesh with 262401 elements, 76461 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108012 boundaries with marker 3.
+01:35:22 geometry - DEBUG - 1 0-Normal vectors detected
+01:35:52 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.0203
+01:41:09 opti - DEBUG - Compliance: 9.5219e-05, dCompliance: (90,) array with mean 5.8854e-06
+01:41:09 opti - DEBUG - Finished iteration 92  with compliance 9.521899971572911e-05 and volume 0.49994946337164947
+01:41:09 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_92
+01:41:09 MMA - INFO - It.:   72 | Obj.: 4.810e-01 | Constr.:  -5.054e-05 | ch.: 4.278e-03 | C: 9.522e-05
+01:41:09 opti - DEBUG - Computing Solution
+01:41:09 opti - DEBUG - Generating Geometry
+01:41:09 mesh - DEBUG - Querying 450241 DeepSDF points
+01:41:09 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:41:09 mesh - DEBUG - Computing DeepSDF derivatives
+01:41:15 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.565140962600708
+01:41:15 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:41:15 opti - DEBUG - Writing surface mesh to simulation/tmpwp6q4c13/simulation_93/surf93.inp
+01:41:15 geometry - DEBUG - Tetrahedralizing surface mesh
+01:41:23 geometry - DEBUG - Exporting mesh with 262705 elements, 76539 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108048 boundaries with marker 3.
+01:41:25 geometry - DEBUG - 1 0-Normal vectors detected
+01:41:55 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020245
+01:47:20 opti - DEBUG - Compliance: 9.5219e-05, dCompliance: (90,) array with mean 5.8354e-06
+01:47:20 opti - DEBUG - Finished iteration 93  with compliance 9.521913686534211e-05 and volume 0.4999465899945242
+01:47:20 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_93
+01:47:20 MMA - INFO - It.:   73 | Obj.: 4.810e-01 | Constr.:  -5.341e-05 | ch.: 1.648e-03 | C: 9.522e-05
+01:47:20 opti - DEBUG - Computing Solution
+01:47:20 opti - DEBUG - Generating Geometry
+01:47:21 mesh - DEBUG - Querying 450241 DeepSDF points
+01:47:21 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:47:21 mesh - DEBUG - Computing DeepSDF derivatives
+01:47:26 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5653204917907715
+01:47:26 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:47:26 opti - DEBUG - Writing surface mesh to simulation/tmp_u9w4f4y/simulation_94/surf94.inp
+01:47:27 geometry - DEBUG - Tetrahedralizing surface mesh
+01:47:35 geometry - DEBUG - Exporting mesh with 262869 elements, 76529 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107984 boundaries with marker 3.
+01:47:37 geometry - DEBUG - 1 0-Normal vectors detected
+01:48:07 opti - DEBUG - Volume: 0.49995, dVolume: (90,) array with mean -0.020219
+01:53:37 opti - DEBUG - Compliance: 9.5135e-05, dCompliance: (90,) array with mean 5.8803e-06
+01:53:37 opti - DEBUG - Finished iteration 94  with compliance 9.513466317671985e-05 and volume 0.49995130036421076
+01:53:37 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_94
+01:53:37 MMA - INFO - It.:   74 | Obj.: 4.806e-01 | Constr.:  -4.870e-05 | ch.: 1.627e-03 | C: 9.513e-05
+01:53:37 opti - DEBUG - Computing Solution
+01:53:37 opti - DEBUG - Generating Geometry
+01:53:37 mesh - DEBUG - Querying 450241 DeepSDF points
+01:53:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:53:37 mesh - DEBUG - Computing DeepSDF derivatives
+01:53:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567895412445068
+01:53:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:53:43 opti - DEBUG - Writing surface mesh to simulation/tmpgmhrlbnp/simulation_95/surf95.inp
+01:53:43 geometry - DEBUG - Tetrahedralizing surface mesh
+01:53:51 geometry - DEBUG - Exporting mesh with 262864 elements, 76542 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108004 boundaries with marker 3.
+01:53:54 geometry - DEBUG - 1 0-Normal vectors detected
+01:54:24 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020238
+01:59:43 opti - DEBUG - Compliance: 9.523e-05, dCompliance: (90,) array with mean 5.9676e-06
+01:59:43 opti - DEBUG - Finished iteration 95  with compliance 9.522966131691055e-05 and volume 0.49993986932672285
+01:59:43 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_95
+01:59:43 MMA - INFO - It.:   75 | Obj.: 4.811e-01 | Constr.:  -6.013e-05 | ch.: 9.078e-04 | C: 9.523e-05
+01:59:43 opti - DEBUG - Computing Solution
+01:59:43 opti - DEBUG - Generating Geometry
+01:59:43 mesh - DEBUG - Querying 450241 DeepSDF points
+01:59:43 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+01:59:43 mesh - DEBUG - Computing DeepSDF derivatives
+01:59:49 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.562957048416138
+01:59:49 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+01:59:49 opti - DEBUG - Writing surface mesh to simulation/tmp343d4vzx/simulation_96/surf96.inp
+01:59:49 geometry - DEBUG - Tetrahedralizing surface mesh
+01:59:57 geometry - DEBUG - Exporting mesh with 262533 elements, 76483 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107880 boundaries with marker 3.
+02:00:00 geometry - DEBUG - 1 0-Normal vectors detected
+02:00:30 opti - DEBUG - Volume: 0.49992, dVolume: (90,) array with mean -0.020202
+02:06:12 opti - DEBUG - Compliance: 9.5179e-05, dCompliance: (90,) array with mean 5.9365e-06
+02:06:12 opti - DEBUG - Finished iteration 96  with compliance 9.517882343346249e-05 and volume 0.49992095768282846
+02:06:12 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_96
+02:06:12 MMA - INFO - It.:   76 | Obj.: 4.808e-01 | Constr.:  -7.904e-05 | ch.: 4.298e-03 | C: 9.518e-05
+02:06:12 opti - DEBUG - Computing Solution
+02:06:12 opti - DEBUG - Generating Geometry
+02:06:12 mesh - DEBUG - Querying 450241 DeepSDF points
+02:06:12 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:06:12 mesh - DEBUG - Computing DeepSDF derivatives
+02:06:18 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.555730819702148
+02:06:18 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:06:18 opti - DEBUG - Writing surface mesh to simulation/tmp8wvh3ps_/simulation_97/surf97.inp
+02:06:18 geometry - DEBUG - Tetrahedralizing surface mesh
+02:06:26 geometry - DEBUG - Exporting mesh with 262438 elements, 76454 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107908 boundaries with marker 3.
+02:06:29 geometry - DEBUG - 1 0-Normal vectors detected
+02:06:58 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020275
+02:12:33 opti - DEBUG - Compliance: 9.5089e-05, dCompliance: (90,) array with mean 5.9333e-06
+02:12:33 opti - DEBUG - Finished iteration 97  with compliance 9.508931408181692e-05 and volume 0.49996161918530735
+02:12:33 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_97
+02:12:33 MMA - INFO - It.:   77 | Obj.: 4.804e-01 | Constr.:  -3.838e-05 | ch.: 4.803e-03 | C: 9.509e-05
+02:12:33 opti - DEBUG - Computing Solution
+02:12:33 opti - DEBUG - Generating Geometry
+02:12:34 mesh - DEBUG - Querying 450241 DeepSDF points
+02:12:34 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:12:34 mesh - DEBUG - Computing DeepSDF derivatives
+02:12:39 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.555498361587524
+02:12:39 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:12:39 opti - DEBUG - Writing surface mesh to simulation/tmprq8r5lc9/simulation_98/surf98.inp
+02:12:40 geometry - DEBUG - Tetrahedralizing surface mesh
+02:12:47 geometry - DEBUG - Exporting mesh with 263174 elements, 76575 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107920 boundaries with marker 3.
+02:12:50 geometry - DEBUG - 1 0-Normal vectors detected
+02:13:20 opti - DEBUG - Volume: 0.49997, dVolume: (90,) array with mean -0.020221
+02:19:38 opti - DEBUG - Compliance: 9.5156e-05, dCompliance: (90,) array with mean 5.8466e-06
+02:19:38 opti - DEBUG - Finished iteration 98  with compliance 9.515622089651443e-05 and volume 0.4999651486900303
+02:19:38 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_98
+02:19:39 MMA - INFO - It.:   78 | Obj.: 4.807e-01 | Constr.:  -3.485e-05 | ch.: 3.094e-03 | C: 9.516e-05
+02:19:39 opti - DEBUG - Computing Solution
+02:19:39 opti - DEBUG - Generating Geometry
+02:19:39 mesh - DEBUG - Querying 450241 DeepSDF points
+02:19:39 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:19:39 mesh - DEBUG - Computing DeepSDF derivatives
+02:19:44 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.558478116989136
+02:19:44 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:19:45 opti - DEBUG - Writing surface mesh to simulation/tmpccph5o7i/simulation_99/surf99.inp
+02:19:45 geometry - DEBUG - Tetrahedralizing surface mesh
+02:19:52 geometry - DEBUG - Exporting mesh with 262804 elements, 76536 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107932 boundaries with marker 3.
+02:19:55 geometry - DEBUG - 1 0-Normal vectors detected
+02:20:25 opti - DEBUG - Volume: 0.50001, dVolume: (90,) array with mean -0.02028
+02:27:16 opti - DEBUG - Compliance: 9.5098e-05, dCompliance: (90,) array with mean 5.9445e-06
+02:27:16 opti - DEBUG - Finished iteration 99  with compliance 9.509819040950766e-05 and volume 0.5000054061172962
+02:27:16 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_99
+02:27:16 MMA - INFO - It.:   79 | Obj.: 4.804e-01 | Constr.:  5.406e-06 | ch.: 2.267e-03 | C: 9.510e-05
+02:27:16 opti - DEBUG - Computing Solution
+02:27:16 opti - DEBUG - Generating Geometry
+02:27:16 mesh - DEBUG - Querying 450241 DeepSDF points
+02:27:16 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:27:16 mesh - DEBUG - Computing DeepSDF derivatives
+02:27:22 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.558627605438232
+02:27:22 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:27:22 opti - DEBUG - Writing surface mesh to simulation/tmpqljj_mxx/simulation_100/surf100.inp
+02:27:22 geometry - DEBUG - Tetrahedralizing surface mesh
+02:27:30 geometry - DEBUG - Exporting mesh with 262218 elements, 76423 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107880 boundaries with marker 3.
+02:27:33 geometry - DEBUG - 1 0-Normal vectors detected
+02:28:03 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020253
+02:34:11 opti - DEBUG - Compliance: 9.5113e-05, dCompliance: (90,) array with mean 5.8517e-06
+02:34:11 opti - DEBUG - Finished iteration 100  with compliance 9.51130449309762e-05 and volume 0.49996028453635166
+02:34:11 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_100
+02:34:11 MMA - INFO - It.:   80 | Obj.: 4.805e-01 | Constr.:  -3.972e-05 | ch.: 7.343e-04 | C: 9.511e-05
+02:34:11 opti - DEBUG - Computing Solution
+02:34:11 opti - DEBUG - Generating Geometry
+02:34:11 mesh - DEBUG - Querying 450241 DeepSDF points
+02:34:11 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:34:11 mesh - DEBUG - Computing DeepSDF derivatives
+02:34:17 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.566836833953857
+02:34:17 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:34:17 opti - DEBUG - Writing surface mesh to simulation/tmppjafe5p0/simulation_101/surf101.inp
+02:34:17 geometry - DEBUG - Tetrahedralizing surface mesh
+02:34:25 geometry - DEBUG - Exporting mesh with 263058 elements, 76576 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107960 boundaries with marker 3.
+02:34:28 geometry - DEBUG - 1 0-Normal vectors detected
+02:34:58 opti - DEBUG - Volume: 0.49994, dVolume: (90,) array with mean -0.020247
+02:40:09 opti - DEBUG - Compliance: 9.5111e-05, dCompliance: (90,) array with mean 5.9202e-06
+02:40:09 opti - DEBUG - Finished iteration 101  with compliance 9.511080512762045e-05 and volume 0.49994124310800264
+02:40:09 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_101
+02:40:09 MMA - INFO - It.:   81 | Obj.: 4.805e-01 | Constr.:  -5.876e-05 | ch.: 1.416e-03 | C: 9.511e-05
+02:40:09 opti - DEBUG - Computing Solution
+02:40:09 opti - DEBUG - Generating Geometry
+02:40:09 mesh - DEBUG - Querying 450241 DeepSDF points
+02:40:09 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:40:09 mesh - DEBUG - Computing DeepSDF derivatives
+02:40:15 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5667548179626465
+02:40:15 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:40:15 opti - DEBUG - Writing surface mesh to simulation/tmp3tlswp9j/simulation_102/surf102.inp
+02:40:15 geometry - DEBUG - Tetrahedralizing surface mesh
+02:40:23 geometry - DEBUG - Exporting mesh with 262321 elements, 76429 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107884 boundaries with marker 3.
+02:40:25 geometry - DEBUG - 1 0-Normal vectors detected
+02:40:55 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020292
+02:46:54 opti - DEBUG - Compliance: 9.5139e-05, dCompliance: (90,) array with mean 5.7937e-06
+02:46:54 opti - DEBUG - Finished iteration 102  with compliance 9.513937586689705e-05 and volume 0.499985778663532
+02:46:54 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_102
+02:46:54 MMA - INFO - It.:   82 | Obj.: 4.806e-01 | Constr.:  -1.422e-05 | ch.: 2.789e-04 | C: 9.514e-05
+02:46:54 opti - DEBUG - Computing Solution
+02:46:54 opti - DEBUG - Generating Geometry
+02:46:54 mesh - DEBUG - Querying 450241 DeepSDF points
+02:46:54 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:46:54 mesh - DEBUG - Computing DeepSDF derivatives
+02:47:00 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.545471429824829
+02:47:00 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:47:00 opti - DEBUG - Writing surface mesh to simulation/tmp3bj5l0d0/simulation_103/surf103.inp
+02:47:00 geometry - DEBUG - Tetrahedralizing surface mesh
+02:47:08 geometry - DEBUG - Exporting mesh with 262402 elements, 76446 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107860 boundaries with marker 3.
+02:47:10 geometry - DEBUG - 1 0-Normal vectors detected
+02:47:41 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020283
+02:52:40 opti - DEBUG - Compliance: 9.5081e-05, dCompliance: (90,) array with mean 5.89e-06
+02:52:40 opti - DEBUG - Finished iteration 103  with compliance 9.50807220962776e-05 and volume 0.4999612214917774
+02:52:40 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_103
+02:52:40 MMA - INFO - It.:   83 | Obj.: 4.803e-01 | Constr.:  -3.878e-05 | ch.: 1.519e-03 | C: 9.508e-05
+02:52:40 opti - DEBUG - Computing Solution
+02:52:40 opti - DEBUG - Generating Geometry
+02:52:40 mesh - DEBUG - Querying 450241 DeepSDF points
+02:52:40 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:52:40 mesh - DEBUG - Computing DeepSDF derivatives
+02:52:46 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.555718183517456
+02:52:46 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:52:46 opti - DEBUG - Writing surface mesh to simulation/tmp6mub7_yy/simulation_104/surf104.inp
+02:52:46 geometry - DEBUG - Tetrahedralizing surface mesh
+02:52:54 geometry - DEBUG - Exporting mesh with 263304 elements, 76593 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107912 boundaries with marker 3.
+02:52:57 geometry - DEBUG - 1 0-Normal vectors detected
+02:53:27 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.02028
+02:59:19 opti - DEBUG - Compliance: 9.5085e-05, dCompliance: (90,) array with mean 5.9209e-06
+02:59:19 opti - DEBUG - Finished iteration 104  with compliance 9.508517865972822e-05 and volume 0.4999794293806966
+02:59:19 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_104
+02:59:19 MMA - INFO - It.:   84 | Obj.: 4.804e-01 | Constr.:  -2.057e-05 | ch.: 3.793e-04 | C: 9.509e-05
+02:59:19 opti - DEBUG - Computing Solution
+02:59:19 opti - DEBUG - Generating Geometry
+02:59:19 mesh - DEBUG - Querying 450241 DeepSDF points
+02:59:19 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+02:59:19 mesh - DEBUG - Computing DeepSDF derivatives
+02:59:25 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5717761516571045
+02:59:25 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+02:59:25 opti - DEBUG - Writing surface mesh to simulation/tmp19bh_mgo/simulation_105/surf105.inp
+02:59:26 geometry - DEBUG - Tetrahedralizing surface mesh
+02:59:33 geometry - DEBUG - Exporting mesh with 262130 elements, 76451 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107944 boundaries with marker 3.
+02:59:36 geometry - DEBUG - 1 0-Normal vectors detected
+03:00:06 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.020267
+03:05:50 opti - DEBUG - Compliance: 9.5026e-05, dCompliance: (90,) array with mean 5.8885e-06
+03:05:50 opti - DEBUG - Finished iteration 105  with compliance 9.502569869857108e-05 and volume 0.4999773579380589
+03:05:50 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_105
+03:05:50 MMA - INFO - It.:   85 | Obj.: 4.801e-01 | Constr.:  -2.264e-05 | ch.: 1.915e-04 | C: 9.503e-05
+03:05:50 opti - DEBUG - Computing Solution
+03:05:50 opti - DEBUG - Generating Geometry
+03:05:50 mesh - DEBUG - Querying 450241 DeepSDF points
+03:05:50 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:05:50 mesh - DEBUG - Computing DeepSDF derivatives
+03:05:56 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567228317260742
+03:05:56 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:05:56 opti - DEBUG - Writing surface mesh to simulation/tmpvhs1tbpk/simulation_106/surf106.inp
+03:05:56 geometry - DEBUG - Tetrahedralizing surface mesh
+03:06:04 geometry - DEBUG - Exporting mesh with 262893 elements, 76546 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107948 boundaries with marker 3.
+03:06:06 geometry - DEBUG - 1 0-Normal vectors detected
+03:06:36 opti - DEBUG - Volume: 0.49997, dVolume: (90,) array with mean -0.020266
+03:12:40 opti - DEBUG - Compliance: 9.5003e-05, dCompliance: (90,) array with mean 5.8422e-06
+03:12:40 opti - DEBUG - Finished iteration 106  with compliance 9.500302905312531e-05 and volume 0.4999660283466778
+03:12:40 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_106
+03:12:40 MMA - INFO - It.:   86 | Obj.: 4.799e-01 | Constr.:  -3.397e-05 | ch.: 3.494e-04 | C: 9.500e-05
+03:12:40 opti - DEBUG - Computing Solution
+03:12:40 opti - DEBUG - Generating Geometry
+03:12:41 mesh - DEBUG - Querying 450241 DeepSDF points
+03:12:41 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:12:41 mesh - DEBUG - Computing DeepSDF derivatives
+03:12:46 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.551011562347412
+03:12:46 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:12:46 opti - DEBUG - Writing surface mesh to simulation/tmpylju7_m8/simulation_107/surf107.inp
+03:12:47 geometry - DEBUG - Tetrahedralizing surface mesh
+03:12:54 geometry - DEBUG - Exporting mesh with 263041 elements, 76602 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107936 boundaries with marker 3.
+03:12:57 geometry - DEBUG - 1 0-Normal vectors detected
+03:13:27 opti - DEBUG - Volume: 0.49997, dVolume: (90,) array with mean -0.020314
+03:18:37 opti - DEBUG - Compliance: 9.5003e-05, dCompliance: (90,) array with mean 5.8655e-06
+03:18:37 opti - DEBUG - Finished iteration 107  with compliance 9.500275982319654e-05 and volume 0.4999669416800193
+03:18:37 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_107
+03:18:37 MMA - INFO - It.:   87 | Obj.: 4.799e-01 | Constr.:  -3.306e-05 | ch.: 1.301e-03 | C: 9.500e-05
+03:18:37 opti - DEBUG - Computing Solution
+03:18:37 opti - DEBUG - Generating Geometry
+03:18:37 mesh - DEBUG - Querying 450241 DeepSDF points
+03:18:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:18:37 mesh - DEBUG - Computing DeepSDF derivatives
+03:18:43 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570173978805542
+03:18:43 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:18:43 opti - DEBUG - Writing surface mesh to simulation/tmp614k1tur/simulation_108/surf108.inp
+03:18:43 geometry - DEBUG - Tetrahedralizing surface mesh
+03:18:51 geometry - DEBUG - Exporting mesh with 262270 elements, 76452 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107948 boundaries with marker 3.
+03:18:54 geometry - DEBUG - 1 0-Normal vectors detected
+03:19:24 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020293
+03:24:36 opti - DEBUG - Compliance: 9.4981e-05, dCompliance: (90,) array with mean 5.7625e-06
+03:24:36 opti - DEBUG - Finished iteration 108  with compliance 9.498143831490324e-05 and volume 0.499988189210636
+03:24:36 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_108
+03:24:36 MMA - INFO - It.:   88 | Obj.: 4.798e-01 | Constr.:  -1.181e-05 | ch.: 2.691e-05 | C: 9.498e-05
+03:24:36 opti - DEBUG - Computing Solution
+03:24:36 opti - DEBUG - Generating Geometry
+03:24:37 mesh - DEBUG - Querying 450241 DeepSDF points
+03:24:37 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:24:37 mesh - DEBUG - Computing DeepSDF derivatives
+03:24:42 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.562553405761719
+03:24:42 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:24:42 opti - DEBUG - Writing surface mesh to simulation/tmpkmiwzchb/simulation_109/surf109.inp
+03:24:43 geometry - DEBUG - Tetrahedralizing surface mesh
+03:24:50 geometry - DEBUG - Exporting mesh with 262417 elements, 76469 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107956 boundaries with marker 3.
+03:24:53 geometry - DEBUG - 1 0-Normal vectors detected
+03:25:23 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020294
+03:31:25 opti - DEBUG - Compliance: 9.496e-05, dCompliance: (90,) array with mean 5.8924e-06
+03:31:25 opti - DEBUG - Finished iteration 109  with compliance 9.49596085743127e-05 and volume 0.49998501411140317
+03:31:25 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_109
+03:31:25 MMA - INFO - It.:   89 | Obj.: 4.797e-01 | Constr.:  -1.499e-05 | ch.: 8.003e-04 | C: 9.496e-05
+03:31:25 opti - DEBUG - Computing Solution
+03:31:25 opti - DEBUG - Generating Geometry
+03:31:25 mesh - DEBUG - Querying 450241 DeepSDF points
+03:31:25 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:31:25 mesh - DEBUG - Computing DeepSDF derivatives
+03:31:31 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.568974494934082
+03:31:31 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:31:31 opti - DEBUG - Writing surface mesh to simulation/tmpjyyxrpuk/simulation_110/surf110.inp
+03:31:31 geometry - DEBUG - Tetrahedralizing surface mesh
+03:31:39 geometry - DEBUG - Exporting mesh with 263041 elements, 76566 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107964 boundaries with marker 3.
+03:31:42 geometry - DEBUG - 1 0-Normal vectors detected
+03:32:11 opti - DEBUG - Volume: 0.49996, dVolume: (90,) array with mean -0.020289
+03:37:51 opti - DEBUG - Compliance: 9.4942e-05, dCompliance: (90,) array with mean 5.8861e-06
+03:37:51 opti - DEBUG - Finished iteration 110  with compliance 9.494232710067122e-05 and volume 0.49996145789961727
+03:37:51 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_110
+03:37:51 MMA - INFO - It.:   90 | Obj.: 4.796e-01 | Constr.:  -3.854e-05 | ch.: 1.028e-03 | C: 9.494e-05
+03:37:51 opti - DEBUG - Computing Solution
+03:37:51 opti - DEBUG - Generating Geometry
+03:37:52 mesh - DEBUG - Querying 450241 DeepSDF points
+03:37:52 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:37:52 mesh - DEBUG - Computing DeepSDF derivatives
+03:37:57 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.561760425567627
+03:37:57 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:37:57 geometry - DEBUG - Mesh is not watertight - trying to fix by eliminating degenerate faces
+03:37:57 caching - DEBUG - 8 items cleared from cache: ['edges_face', 'edges', 'edges_sorted', 'is_winding_consistent', 'is_watertight', 'triangles', 'triangles_cross', 'area_faces']
+03:37:58 geometry - DEBUG - Successfully fixed mesh.
+03:37:58 opti - DEBUG - Writing surface mesh to simulation/tmpaxh8ysej/simulation_111/surf111.inp
+03:37:58 geometry - DEBUG - Tetrahedralizing surface mesh
+03:38:05 geometry - DEBUG - Exporting mesh with 262471 elements, 76483 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107962 boundaries with marker 3.
+03:38:08 geometry - DEBUG - 1 0-Normal vectors detected
+03:38:38 opti - DEBUG - Volume: 0.49997, dVolume: (90,) array with mean -0.02028
+03:44:02 opti - DEBUG - Compliance: 9.4832e-05, dCompliance: (90,) array with mean 5.7455e-06
+03:44:02 opti - DEBUG - Finished iteration 111  with compliance 9.4831527626899e-05 and volume 0.49996866948903773
+03:44:03 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_111
+03:44:03 MMA - INFO - It.:   91 | Obj.: 4.791e-01 | Constr.:  -3.133e-05 | ch.: 3.890e-04 | C: 9.483e-05
+03:44:03 opti - DEBUG - Computing Solution
+03:44:03 opti - DEBUG - Generating Geometry
+03:44:03 mesh - DEBUG - Querying 450241 DeepSDF points
+03:44:03 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:44:03 mesh - DEBUG - Computing DeepSDF derivatives
+03:44:08 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.53960919380188
+03:44:08 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:44:09 opti - DEBUG - Writing surface mesh to simulation/tmp6ziq3gq1/simulation_112/surf112.inp
+03:44:09 geometry - DEBUG - Tetrahedralizing surface mesh
+03:44:16 geometry - DEBUG - Exporting mesh with 262579 elements, 76511 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107956 boundaries with marker 3.
+03:44:19 geometry - DEBUG - 1 0-Normal vectors detected
+03:44:49 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.020293
+03:50:52 opti - DEBUG - Compliance: 9.4985e-05, dCompliance: (90,) array with mean 5.9067e-06
+03:50:52 opti - DEBUG - Finished iteration 112  with compliance 9.498493518144786e-05 and volume 0.4999783157205715
+03:50:52 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_112
+03:50:52 MMA - INFO - It.:   92 | Obj.: 4.799e-01 | Constr.:  -2.168e-05 | ch.: 1.189e-03 | C: 9.498e-05
+03:50:52 opti - DEBUG - Computing Solution
+03:50:52 opti - DEBUG - Generating Geometry
+03:50:53 mesh - DEBUG - Querying 450241 DeepSDF points
+03:50:53 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:50:53 mesh - DEBUG - Computing DeepSDF derivatives
+03:50:58 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.551969766616821
+03:50:58 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:50:58 opti - DEBUG - Writing surface mesh to simulation/tmpe7bhcuy2/simulation_113/surf113.inp
+03:50:59 geometry - DEBUG - Tetrahedralizing surface mesh
+03:51:06 geometry - DEBUG - Exporting mesh with 262478 elements, 76480 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107960 boundaries with marker 3.
+03:51:09 geometry - DEBUG - 1 0-Normal vectors detected
+03:51:39 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.020261
+03:57:15 opti - DEBUG - Compliance: 9.5009e-05, dCompliance: (90,) array with mean 5.705e-06
+03:57:15 opti - DEBUG - Finished iteration 113  with compliance 9.500909603136027e-05 and volume 0.4999849302150683
+03:57:15 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_113
+03:57:15 MMA - INFO - It.:   93 | Obj.: 4.800e-01 | Constr.:  -1.507e-05 | ch.: 4.446e-04 | C: 9.501e-05
+03:57:15 opti - DEBUG - Computing Solution
+03:57:15 opti - DEBUG - Generating Geometry
+03:57:15 mesh - DEBUG - Querying 450241 DeepSDF points
+03:57:16 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+03:57:16 mesh - DEBUG - Computing DeepSDF derivatives
+03:57:21 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.549473762512207
+03:57:21 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+03:57:21 opti - DEBUG - Writing surface mesh to simulation/tmpcixqjtvb/simulation_114/surf114.inp
+03:57:22 geometry - DEBUG - Tetrahedralizing surface mesh
+03:57:29 geometry - DEBUG - Exporting mesh with 262392 elements, 76461 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107920 boundaries with marker 3.
+03:57:32 geometry - DEBUG - 1 0-Normal vectors detected
+03:58:02 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020266
+04:03:16 opti - DEBUG - Compliance: 9.494e-05, dCompliance: (90,) array with mean 5.8259e-06
+04:03:16 opti - DEBUG - Finished iteration 114  with compliance 9.493969534464358e-05 and volume 0.49998513020121516
+04:03:16 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_114
+04:03:16 MMA - INFO - It.:   94 | Obj.: 4.796e-01 | Constr.:  -1.487e-05 | ch.: 6.484e-04 | C: 9.494e-05
+04:03:16 opti - DEBUG - Computing Solution
+04:03:16 opti - DEBUG - Generating Geometry
+04:03:16 mesh - DEBUG - Querying 450241 DeepSDF points
+04:03:16 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:03:16 mesh - DEBUG - Computing DeepSDF derivatives
+04:03:22 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.553141832351685
+04:03:22 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:03:22 opti - DEBUG - Writing surface mesh to simulation/tmpkbjan32m/simulation_115/surf115.inp
+04:03:22 geometry - DEBUG - Tetrahedralizing surface mesh
+04:03:30 geometry - DEBUG - Exporting mesh with 262660 elements, 76488 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107912 boundaries with marker 3.
+04:03:32 geometry - DEBUG - 1 0-Normal vectors detected
+04:04:03 opti - DEBUG - Volume: 0.5, dVolume: (90,) array with mean -0.020281
+04:09:15 opti - DEBUG - Compliance: 9.4922e-05, dCompliance: (90,) array with mean 5.8521e-06
+04:09:15 opti - DEBUG - Finished iteration 115  with compliance 9.492204070438594e-05 and volume 0.499995153419961
+04:09:15 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_115
+04:09:16 MMA - INFO - It.:   95 | Obj.: 4.795e-01 | Constr.:  -4.847e-06 | ch.: 1.816e-04 | C: 9.492e-05
+04:09:16 opti - DEBUG - Computing Solution
+04:09:16 opti - DEBUG - Generating Geometry
+04:09:16 mesh - DEBUG - Querying 450241 DeepSDF points
+04:09:16 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:09:16 mesh - DEBUG - Computing DeepSDF derivatives
+04:09:21 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.562783241271973
+04:09:21 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:09:22 opti - DEBUG - Writing surface mesh to simulation/tmp_ewczfth/simulation_116/surf116.inp
+04:09:22 geometry - DEBUG - Tetrahedralizing surface mesh
+04:09:30 geometry - DEBUG - Exporting mesh with 262718 elements, 76499 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107928 boundaries with marker 3.
+04:09:32 geometry - DEBUG - 1 0-Normal vectors detected
+04:10:03 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.02028
+04:15:43 opti - DEBUG - Compliance: 9.4931e-05, dCompliance: (90,) array with mean 5.8729e-06
+04:15:43 opti - DEBUG - Finished iteration 116  with compliance 9.493121197240992e-05 and volume 0.4999920069660173
+04:15:43 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_116
+04:15:43 MMA - INFO - It.:   96 | Obj.: 4.796e-01 | Constr.:  -7.993e-06 | ch.: 8.805e-04 | C: 9.493e-05
+04:15:43 opti - DEBUG - Computing Solution
+04:15:43 opti - DEBUG - Generating Geometry
+04:15:44 mesh - DEBUG - Querying 450241 DeepSDF points
+04:15:44 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:15:44 mesh - DEBUG - Computing DeepSDF derivatives
+04:15:49 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.5614378452301025
+04:15:49 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:15:49 opti - DEBUG - Writing surface mesh to simulation/tmpbt9lhyvt/simulation_117/surf117.inp
+04:15:50 geometry - DEBUG - Tetrahedralizing surface mesh
+04:15:58 geometry - DEBUG - Exporting mesh with 262747 elements, 76526 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107936 boundaries with marker 3.
+04:16:00 geometry - DEBUG - 1 0-Normal vectors detected
+04:16:30 opti - DEBUG - Volume: 0.49998, dVolume: (90,) array with mean -0.020276
+04:21:52 opti - DEBUG - Compliance: 9.4985e-05, dCompliance: (90,) array with mean 5.8277e-06
+04:21:52 opti - DEBUG - Finished iteration 117  with compliance 9.498536430880693e-05 and volume 0.499977809177038
+04:21:52 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_117
+04:21:52 MMA - INFO - It.:   97 | Obj.: 4.799e-01 | Constr.:  -2.219e-05 | ch.: 3.446e-04 | C: 9.499e-05
+04:21:52 opti - DEBUG - Computing Solution
+04:21:52 opti - DEBUG - Generating Geometry
+04:21:52 mesh - DEBUG - Querying 450241 DeepSDF points
+04:21:52 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:21:52 mesh - DEBUG - Computing DeepSDF derivatives
+04:21:58 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.56214165687561
+04:21:58 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:21:58 opti - DEBUG - Writing surface mesh to simulation/tmp424bwowp/simulation_118/surf118.inp
+04:21:58 geometry - DEBUG - Tetrahedralizing surface mesh
+04:22:06 geometry - DEBUG - Exporting mesh with 262864 elements, 76540 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107948 boundaries with marker 3.
+04:22:08 geometry - DEBUG - 1 0-Normal vectors detected
+04:22:39 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020267
+04:28:23 opti - DEBUG - Compliance: 9.4953e-05, dCompliance: (90,) array with mean 5.8613e-06
+04:28:23 opti - DEBUG - Finished iteration 118  with compliance 9.49533082006192e-05 and volume 0.4999925818012171
+04:28:23 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_118
+04:28:23 MMA - INFO - It.:   98 | Obj.: 4.797e-01 | Constr.:  -7.418e-06 | ch.: 1.528e-03 | C: 9.495e-05
+04:28:23 opti - DEBUG - Computing Solution
+04:28:23 opti - DEBUG - Generating Geometry
+04:28:23 mesh - DEBUG - Querying 450241 DeepSDF points
+04:28:23 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:28:23 mesh - DEBUG - Computing DeepSDF derivatives
+04:28:29 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.570369243621826
+04:28:29 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:28:29 opti - DEBUG - Writing surface mesh to simulation/tmpy63fxoz2/simulation_119/surf119.inp
+04:28:30 geometry - DEBUG - Tetrahedralizing surface mesh
+04:28:37 geometry - DEBUG - Exporting mesh with 262496 elements, 76516 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 108004 boundaries with marker 3.
+04:28:40 geometry - DEBUG - 1 0-Normal vectors detected
+04:29:10 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020284
+04:35:00 opti - DEBUG - Compliance: 9.5001e-05, dCompliance: (90,) array with mean 5.8293e-06
+04:35:00 opti - DEBUG - Finished iteration 119  with compliance 9.500114443611425e-05 and volume 0.4999901104808498
+04:35:00 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_119
+04:35:00 MMA - INFO - It.:   99 | Obj.: 4.799e-01 | Constr.:  -9.890e-06 | ch.: 3.134e-04 | C: 9.500e-05
+04:35:00 opti - DEBUG - Computing Solution
+04:35:00 opti - DEBUG - Generating Geometry
+04:35:00 mesh - DEBUG - Querying 450241 DeepSDF points
+04:35:00 utils - DEBUG - torch.cuda.memory_allocated:   1.69GiB | torch.cuda.memory_reserved:   2.47GiB
+04:35:00 mesh - DEBUG - Computing DeepSDF derivatives
+04:35:06 mesh - DEBUG - Time for querying 450241 points and computing derivatives: 5.567828178405762
+04:35:06 mesh - DEBUG - Maximum memory used by cuda:   5.38GiB
+04:35:06 opti - DEBUG - Writing surface mesh to simulation/tmp4zbyzyhq/simulation_120/surf120.inp
+04:35:06 geometry - DEBUG - Tetrahedralizing surface mesh
+04:35:14 geometry - DEBUG - Exporting mesh with 261846 elements, 76390 vertices, 6660 boundaries with marker 1, 14368 boundaries with marker 2, and 107980 boundaries with marker 3.
+04:35:16 geometry - DEBUG - 1 0-Normal vectors detected
+04:35:46 opti - DEBUG - Volume: 0.49999, dVolume: (90,) array with mean -0.020276
+04:41:35 opti - DEBUG - Compliance: 9.4901e-05, dCompliance: (90,) array with mean 5.7722e-06
+04:41:35 opti - DEBUG - Finished iteration 120  with compliance 9.490090851405511e-05 and volume 0.49999043856859327
+04:41:35 opti - DEBUG - Saving simulation results to optimization_runs/round_cross_more_knot_vecs/simulation_120
+04:41:35 MMA - INFO - It.:  100 | Obj.: 4.794e-01 | Constr.:  -9.561e-06 | ch.: 2.525e-05 | C: 9.490e-05
+04:41:35 MMA - INFO - Max Iterations reached
