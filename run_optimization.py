@@ -10,7 +10,7 @@ if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description="Run a DeepMS optimization")
     deep_sdf.add_common_args(arg_parser)
     args = arg_parser.parse_args()
-    optimization_dir = "optimization_runs/round_cross_more_knot_vecs"
+    optimization_dir = "optimization_runs/round_cross_more_knot_vecs_limit"
     args.logfile = optimization_dir+"/optimization_logs.log"
     configure_logging(args)
 

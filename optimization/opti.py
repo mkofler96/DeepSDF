@@ -374,7 +374,7 @@ class struct_optimization():
             else:
                 shown_geom = [mesh]
                 name = "animtation"
-            showable = gus.show([f"Iteration: {index:<3}", shown_geom], cam=cam, interactive=False, offscreen=True)
+            showable = gus.show([f"Iteration: {index:<3}", shown_geom], cam=cam, interactive=False, offscreen=True, return_showable_list=True)
 
 
             showable.screenshot(mesh_file.with_suffix(".png").as_posix())

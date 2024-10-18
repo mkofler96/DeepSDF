@@ -20,3 +20,4 @@
 *optimization_runs/*/old_sims*/
 *optimization_runs/*/*/paraview_output/*
 *simulation/tmp*/
+surfs
