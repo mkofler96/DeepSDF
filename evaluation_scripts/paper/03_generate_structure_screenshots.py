@@ -91,7 +91,7 @@ for ax in axs:
     ax.set_yticks([])
     ax.set_xlabel(r"$x$")
     ax.set_ylabel(r"$y$")
-plt.savefig(f"{this_folder}/structure_latent{graded_string}.png", dpi=600, bbox_inches="tight")
+# plt.savefig(f"{this_folder}/structure_latent{graded_string}.png", dpi=600, bbox_inches="tight")
 
 def transform(x, t):
     p = 2/t

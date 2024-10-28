@@ -59,7 +59,7 @@ def scatter_contour_at_z_level(fun, z_level=0, res=100, custom_axis = None,
 
 
 def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, custom_axis = None,
-                               eval_area = (-1,1), scale=(1,1),
+                               eval_area = (-1,1), scale=1,
                                custom_zoom = None,
                                 clim = None, flip_axes=False):
     """
@@ -81,7 +81,6 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
     spacing = 2.0/res              # Distance between points
 
     points = generate_plane_points(origin, normal, res, res, spacing)
-
     #     x = np.linspace(eval_area[0], eval_area[1], num=res)
     # y = np.linspace(eval_area[0], eval_area[1], num=res)
     # X, Y = np.meshgrid(x, y)
@@ -100,8 +99,9 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         cbar.set_clim(clim[0], clim[1])
     else:
         cbar.set_clim(-1,1)
-    ax[0].set_aspect(1)
-    ax[0].axis("off")
+    ax[0].set_aspect(scale)
+    ax[0].set_xticks([]) 
+    ax[0].set_yticks([]) 
     if custom_zoom is not None and not custom_axis:
         x2 = np.linspace(custom_zoom["x"][0], custom_zoom["x"][1], num=res)
         y2 = np.linspace(custom_zoom["y"][0], custom_zoom["y"][1], num=res)
@@ -110,12 +110,13 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         sdf2 = fun(np.vstack([X2.flatten(), Y2.flatten(), Z2.flatten()]).T).reshape(X2.shape)
 
         # cbar = ax[1].scatter(X2, Y2, c=sdf2, cmap="seismic")
-        cbar = ax[1].contour(X2*scale[0], Y2*scale[0], sdf2, levels=[0], colors="black")
+        cbar = ax[1].contour(X2, Y2, sdf2, levels=[0], colors="black")
         if clim:
             cbar.set_clim(clim[0], clim[1])
         else:
             cbar.set_clim(-1,1)
-        ax[1].set_aspect(1)
+        ax[1].set_aspect(scale)
+
     if plt_show:
         plt.show()
 
