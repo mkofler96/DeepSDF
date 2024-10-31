@@ -21,3 +21,4 @@
 *optimization_runs/*/*/paraview_output/*
 *simulation/tmp*/
 surfs
+surfs_final_optimization

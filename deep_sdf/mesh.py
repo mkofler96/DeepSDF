@@ -20,8 +20,9 @@ import deep_sdf.utils
 
 try:
     from kaolin.non_commercial import FlexiCubes
-except(ModuleNotFoundError):
+except(ModuleNotFoundError, ImportError):
     logger.debug("This functionality requires kaolin library")
+    from flexicubes.flexicubes import FlexiCubes
 
 def create_mesh(
     decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, device=None
