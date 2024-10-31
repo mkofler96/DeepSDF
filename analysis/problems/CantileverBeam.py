@@ -51,8 +51,8 @@ class CantileverBeam:
         nm_bdr[1] = 1
 
         mfem.ConstantCoefficient(1.0)
-        llambda = 0
-        mu = 105
+        llambda = 121
+        mu = 80
         lambda_cf = mfem.ConstantCoefficient(llambda)
         mu_cf = mfem.ConstantCoefficient(mu)
 
