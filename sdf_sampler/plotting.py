@@ -61,7 +61,8 @@ def scatter_contour_at_z_level(fun, z_level=0, res=100, custom_axis = None,
 def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, custom_axis = None,
                                eval_area = (-1,1), scale=1,
                                custom_zoom = None,
-                                clim = None, flip_axes=False):
+                                clim = None, flip_axes=False,
+                                cmap = "seismic", show_zero_level=True):
     """
     example for custom zoom:
         custom_zoom={"x": [0.25, 0.75],
@@ -93,8 +94,9 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         sdf = sdf.T
     
     # cbar = ax[0].scatter(X, Y, c=sdf, cmap="seismic")c
-    cbar = ax[0].contourf(sdf, cmap="seismic", levels=10)
-    ax[0].contour(sdf, levels=[0], colors="black", linewidths=0.5)
+    cbar = ax[0].contourf(sdf, cmap=cmap, levels=10)
+    if show_zero_level:
+        ax[0].contour(sdf, levels=[0], colors="black", linewidths=0.5)
     if clim:
         cbar.set_clim(clim[0], clim[1])
     else:
