@@ -5,6 +5,8 @@ import os
 import gustaf as gus
 import logging
 import pathlib
+import torch
+import matplotlib.pyplot as plt
 
 import deep_sdf.workspace as ws
 import deep_sdf.mesh
@@ -67,3 +69,79 @@ def show_random_training_files(experiment_directory,
             current_plot.append(mesh)
         plots.append(current_plot)
     gus.show(*plots)
+
+def running_mean(x, N):
+    cumsum = np.cumsum(np.insert(x, 0, 0))
+    return (cumsum[N:] - cumsum[:-N]) / float(N)
+
+
+def plot_logs(experiment_directory, show_lr=False, ax=None):
+
+    logs = torch.load(os.path.join(experiment_directory, ws.logs_filename))
+
+    logging.info("latest epoch is {}".format(logs["epoch"]))
+
+    num_iters = len(logs["loss"])
+    iters_per_epoch = num_iters / logs["epoch"]
+
+    logging.info("{} iters per epoch".format(iters_per_epoch))
+
+    smoothed_loss_41 = running_mean(logs["loss"], 41)
+    smoothed_loss_1601 = running_mean(logs["loss"], 1601)
+
+    
+    show_plt = False
+
+    if show_lr:
+        if ax is None:
+            fig, ax = plt.subplots(1,2)
+            fig.tight_layout()
+            show_plt = True
+    else:
+        if ax is None:
+            fig, ax = plt.subplots()
+            show_plt = True
+        ax = [ax]
+
+    ax[0].plot(
+        np.arange(num_iters) / iters_per_epoch,
+        logs["loss"],
+        "#82c6eb",
+        np.arange(20, num_iters - 20) / iters_per_epoch,
+        smoothed_loss_41,
+        "#2a9edd"
+    )
+
+    ax[0].set(xlabel="Epoch", ylabel="Loss")
+    ax[0].legend(["Loss", "Loss (Running Mean)", "Loss (Running Mean 1601)"])
+
+    if show_lr:
+        combined_lrs = np.array(logs["learning_rate"])
+        ax[1].plot(
+            np.arange(combined_lrs.shape[0]),
+            combined_lrs[:, 0],
+            np.arange(combined_lrs.shape[0]),
+            combined_lrs[:, 1],
+        )
+        ax[1].set(xlabel="Epoch", ylabel="Learning Rate")
+        ax[1].legend(["Decoder", "Latent Vector"])
+    # elif type == "time":
+    #     ax.plot(logs["timing"], "#833eb7")
+    #     ax.set(xlabel="Epoch", ylabel="Time per Epoch (s)", title="Timing")
+
+    # elif type == "lat_mag":
+    #     ax.plot(logs["latent_magnitude"])
+    #     ax.set(xlabel="Epoch", ylabel="Magnitude", title="Latent Vector Magnitude")
+
+    # elif type == "param_mag":
+    #     for _name, mags in logs["param_magnitude"].items():
+    #         ax.plot(mags)
+    #     ax.set(xlabel="Epoch", ylabel="Magnitude", title="Parameter Magnitude")
+    #     ax.legend(logs["param_magnitude"].keys())
+
+    # else:
+    #     raise Exception('unrecognized plot type "{}"'.format(type))
+    for axis in ax:
+        axis.grid()
+    if show_plt:
+        plt.show()
