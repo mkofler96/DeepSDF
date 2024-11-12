@@ -25,44 +25,26 @@ except(ModuleNotFoundError, ImportError):
     from flexicubes.flexicubes import FlexiCubes
 
 def create_mesh(
-    decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None, device=None
+    decoder, latent_vec, N=256, max_batch=32 ** 3, device=None
 ):
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    start = time.time()
-    ply_filename = filename
-
     decoder.eval()
+    flexi_cubes_constructor = FlexiCubes(device=device)
 
-    # NOTE: the voxel_origin is actually the (bottom, left, down) corner, not the middle
-    voxel_origin = [-1, -1, -1]
-    voxel_size = 2.0 / (N - 1)
-
-    overall_index = torch.arange(0, N ** 3, 1, out=torch.LongTensor())
-    samples = torch.zeros(N ** 3, 4)
-
-    # transform first 3 columns
-    # to be the x, y, z index
-    samples[:, 2] = overall_index % N
-    samples[:, 1] = (overall_index.long() // N) % N
-    samples[:, 0] = ((overall_index.long() // N) // N) % N
-
-    # transform first 3 columns
-    # to be the x, y, z coordinate
-    samples[:, 0] = (samples[:, 0] * voxel_size) + voxel_origin[2]
-    samples[:, 1] = (samples[:, 1] * voxel_size) + voxel_origin[1]
-    samples[:, 2] = (samples[:, 2] * voxel_size) + voxel_origin[0]
-
-    num_samples = N ** 3
-
-    samples.requires_grad = False
+    samples, cube_idx = flexi_cubes_constructor.construct_voxel_grid(resolution=(N,N,N))
+    # transform samples from [-0.5, 0.5] to [-1, 1]
+    samples = samples.to(device)*2
+    cube_idx = cube_idx.to(device)
 
     head = 0
-    latent_vec = latent_vec.to(device)
+    latent_vec = torch.tensor(latent_vec).to(device)
+    num_samples = len(samples)
+    sdf_values = torch.zeros(samples.shape[0]).to(device)
     while head < num_samples:
         sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].to(device)
 
-        samples[head : min(head + max_batch, num_samples), 3] = (
+        sdf_values[head : min(head + max_batch, num_samples)] = (
             deep_sdf.utils.decode_sdf(decoder, latent_vec, sample_subset)
             .squeeze(1)
             .detach()
@@ -70,20 +52,12 @@ def create_mesh(
         )
         head += max_batch
 
-    sdf_values = samples[:, 3]
-    sdf_values = sdf_values.reshape(N, N, N)
-
-    end = time.time()
-    print("sampling takes: %f" % (end - start))
-
-    convert_sdf_samples_to_ply(
-        sdf_values.data.cpu(),
-        voxel_origin,
-        voxel_size,
-        ply_filename,
-        offset,
-        scale,
-    )
+    verts, faces, loss = flexi_cubes_constructor(voxelgrid_vertices=torch.tensor(samples[:, :3]).to(device),
+                                scalar_field=sdf_values.view(-1), 
+                                cube_idx=cube_idx,
+                                resolution=(N,N,N),
+                                output_tetmesh=False)
+    return verts, faces
 
 
 def convert_sdf_samples_to_ply(
