@@ -6,6 +6,7 @@ import deep_sdf.workspace as ws
 import pathlib
 import time
 import datetime
+import gustaf as gus
 
 def main(experiment_directory, checkpoint, max_batch=32):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -15,7 +16,7 @@ def main(experiment_directory, checkpoint, max_batch=32):
 
     specs = json.load(open(specs_filename))
 
-    arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
+    arch = __import__("deep_sdf.networks." + specs["NetworkArch"], fromlist=["Decoder"])
 
     latent_size = specs["CodeLength"]
 
@@ -52,9 +53,12 @@ def main(experiment_directory, checkpoint, max_batch=32):
             print(f"Skipping {fname}")
             continue
         print(f"Reconstructing {fname} ({i}/{len(latent)})")
-        deep_sdf.mesh.create_mesh(
-            decoder, latent_in, str(fname.with_suffix("")), N=256, max_batch=int(max_batch**3)
+        verts, faces = deep_sdf.mesh.create_mesh(
+            decoder, latent_in, N=256, max_batch=int(max_batch**3)
         )
+        mesh = gus.Faces(verts.cpu(), faces.cpu())
+        gus.io.meshio.export(fname, mesh)
+
 
     # interpolate between two latents
     indices = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -84,9 +88,10 @@ def main(experiment_directory, checkpoint, max_batch=32):
                 print(f"Skipping {fname}")
                 continue
             deep_sdf.mesh.create_mesh(
-                decoder, latent_in, str(fname.with_suffix("")), N=256, max_batch=int(max_batch**3)
+                decoder, latent_in,  N=256, max_batch=int(max_batch**3)
             )
-
+            mesh = gus.Faces(verts.cpu(), faces.cpu())
+            gus.io.meshio.export(fname, mesh)
             end = time.time()
             # logging.info("epoch {}...".format(epoch))
             tot_time = time.time() - start

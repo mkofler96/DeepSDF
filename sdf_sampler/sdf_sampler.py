@@ -67,6 +67,45 @@ class BoxSDF(SDFBase):
         output = np.linalg.norm(queries - self.center, axis=1, ord=np.inf) - self.box_size
         return output.reshape(-1,1)
 
+class SphereSDF(SDFBase):
+    def __init__(self, radius: float = 1,
+                  center: npt.ArrayLike= np.array([0,0,0])):
+        self.radius = radius
+        self.center = center
+
+    def __call__(self, queries: npt.ArrayLike) -> npt.ArrayLike:
+        output = np.linalg.norm(queries-self.center, axis=1) - self.radius
+        return output.reshape(-1,1)
+
+class CrossSDF(SDFBase):
+    def __init__(self, radius):
+        self.radius = radius
+        
+    def __call__(self, queries: npt.ArrayLike) -> npt.ArrayLike:
+        output = np.linalg.norm(queries, axis=1, ord=np.inf)
+
+        # add x cylinder
+        cylinder = np.sqrt(queries[:,1]**2 + queries[:,2]**2) - self.radius
+        output = np.minimum(output, cylinder)
+        # add y cylinder
+        cylinder = np.sqrt(queries[:,0]**2 + queries[:,2]**2) - self.radius
+        output = np.minimum(output, cylinder)
+        # add z cylinder
+        cylinder = np.sqrt(queries[:,0]**2 + queries[:,1]**2) - self.radius
+        output = np.minimum(output, cylinder)
+
+        return output.reshape(-1,1)
+
+class Blend(SDFBase):
+    def __init__(self, obj1, obj2, k=0.5):
+        self.obj1 = obj1
+        self.obj2 = obj2
+        self.k = k
+
+    def __call__(self, input_param):
+        result = self.k * self.obj1(input_param) + (1 - self.k) * self.obj2(input_param)
+        return result
+    
 
 class DataSetInfo(typing.TypedDict):
     dataset_name: str

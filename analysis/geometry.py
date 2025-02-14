@@ -66,7 +66,7 @@ class DeepSDFMesh():
     def get_n_control_points(self) -> int:
         return self.latent_vec_interpolation.control_points.shape[0]
 
-    def generate_surface_mesh(self, control_points):
+    def generate_surface_mesh(self, control_points, normalize_jac=True):
         """
         generates mesh from control points
         """
@@ -90,8 +90,9 @@ class DeepSDFMesh():
         jac[:,0,:] = jac[:,0,:]*2
 
         faces = []
-        jac[np.where(jac>1)] = 0
-        jac[np.where(jac<-1)] = 0
+        if normalize_jac:
+            jac[np.where(jac>1)] = 0
+            jac[np.where(jac<-1)] = 0
         # check watertightness of mesh
         tri_m = trimesh.Trimesh(verts_np, faces_np, vertex_attributes={"jac": jac})
         if self.options["remove_orphans"]:

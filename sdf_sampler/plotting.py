@@ -68,14 +68,14 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         custom_zoom={"x": [0.25, 0.75],
                         "y": [-0.25, -0.75]}
     """
-    plt_show = True
+
     if custom_axis:
         ax = [custom_axis]
-        plt_show = False
+
     elif custom_zoom is not None:
-        _, ax = plt.subplots(1, 2)
+        fig, ax = plt.subplots(1, 2)
     else:
-        _, ax = plt.subplots(1, 1)
+        fig, ax = plt.subplots(1, 1)
         ax = [ax]
 
 
@@ -94,9 +94,9 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
         sdf = sdf.T
     
     # cbar = ax[0].scatter(X, Y, c=sdf, cmap="seismic")c
-    cbar = ax[0].contourf(sdf, cmap=cmap, levels=10)
+    cbar = ax[0].contourf(sdf, cmap=cmap, levels=100)
     if show_zero_level:
-        ax[0].contour(sdf, levels=[0], colors="black", linewidths=0.5)
+        ax[0].contour(sdf, levels=[0], colors="black", linewidths=1.5)
     if clim:
         cbar.set_clim(clim[0], clim[1])
     else:
@@ -119,9 +119,9 @@ def scatter_contour_at_origin(fun, origin=(0,0,0), normal=(0,0,1), res=100, cust
             cbar.set_clim(-1,1)
         ax[1].set_aspect(scale)
 
-    if plt_show:
+    if not custom_axis:
         plt.show()
-
+        return fig
 
 def generate_plane_points(origin, normal, num_points_u, num_points_v, spacing):
     """

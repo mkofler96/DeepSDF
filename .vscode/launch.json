@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python Debugger: Plot Convergence",
             "type": "debugpy",
@@ -16,6 +17,14 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": "-e experiments/simple_geom --batch_split 5"
+        },
+        {
+            "name": "Debug Create Ply File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "-e experiments/round_cross_big_network -c 1000"
         },
         {
             "name": "Create Libtorch Executable",
